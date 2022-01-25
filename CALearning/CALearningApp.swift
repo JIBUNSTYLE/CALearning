@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct CALearningApp: App {
+    
+    @StateObject var presenter = Presenter()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(presenter)
         }
     }
 }

@@ -14,6 +14,13 @@
 		707CA967279F833900EAFC66 /* CALearningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA966279F833900EAFC66 /* CALearningTests.swift */; };
 		707CA971279F833900EAFC66 /* CALearningUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA970279F833900EAFC66 /* CALearningUITests.swift */; };
 		707CA973279F833900EAFC66 /* CALearningUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA972279F833900EAFC66 /* CALearningUITestsLaunchTests.swift */; };
+		707CA986279F8C1500EAFC66 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA985279F8C1500EAFC66 /* Splash.swift */; };
+		707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA987279F8C3D00EAFC66 /* Tutorial.swift */; };
+		707CA98A279F8C5600EAFC66 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA989279F8C5600EAFC66 /* Login.swift */; };
+		707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA98C279F8FA500EAFC66 /* Boot.swift */; };
+		707CA991279F933E00EAFC66 /* Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA990279F933E00EAFC66 /* Usecase.swift */; };
+		707CA995279FA89A00EAFC66 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA994279FA89A00EAFC66 /* Application.swift */; };
+		707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Presenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +51,14 @@
 		707CA96C279F833900EAFC66 /* CALearningUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CALearningUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CA970279F833900EAFC66 /* CALearningUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningUITests.swift; sourceTree = "<group>"; };
 		707CA972279F833900EAFC66 /* CALearningUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		707CA97F279F83B600EAFC66 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		707CA985279F8C1500EAFC66 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
+		707CA987279F8C3D00EAFC66 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		707CA989279F8C5600EAFC66 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		707CA98C279F8FA500EAFC66 /* Boot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boot.swift; sourceTree = "<group>"; };
+		707CA990279F933E00EAFC66 /* Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecase.swift; sourceTree = "<group>"; };
+		707CA994279FA89A00EAFC66 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		707CA996279FD1BA00EAFC66 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +109,13 @@
 		707CA954279F833700EAFC66 /* CALearning */ = {
 			isa = PBXGroup;
 			children = (
+				707CA980279F8B6300EAFC66 /* Service */,
+				707CA98E279F932100EAFC66 /* System */,
 				707CA955279F833700EAFC66 /* CALearningApp.swift */,
 				707CA957279F833700EAFC66 /* ContentView.swift */,
 				707CA959279F833900EAFC66 /* Assets.xcassets */,
 				707CA95B279F833900EAFC66 /* Preview Content */,
+				707CA97F279F83B600EAFC66 /* README.md */,
 			);
 			path = CALearning;
 			sourceTree = "<group>";
@@ -125,6 +143,75 @@
 				707CA972279F833900EAFC66 /* CALearningUITestsLaunchTests.swift */,
 			);
 			path = CALearningUITests;
+			sourceTree = "<group>";
+		};
+		707CA980279F8B6300EAFC66 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				707CA992279FA87800EAFC66 /* Domain */,
+				707CA98B279F8F6A00EAFC66 /* Application */,
+				707CA981279F8B6A00EAFC66 /* Presentation */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		707CA981279F8B6A00EAFC66 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				707CA982279F8BDE00EAFC66 /* Views */,
+				707CA996279FD1BA00EAFC66 /* Presenter.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		707CA982279F8BDE00EAFC66 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				707CA985279F8C1500EAFC66 /* Splash.swift */,
+				707CA987279F8C3D00EAFC66 /* Tutorial.swift */,
+				707CA989279F8C5600EAFC66 /* Login.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		707CA98B279F8F6A00EAFC66 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				707CA98C279F8FA500EAFC66 /* Boot.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		707CA98E279F932100EAFC66 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				707CA98F279F933000EAFC66 /* Protocols */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
+		707CA98F279F933000EAFC66 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				707CA990279F933E00EAFC66 /* Usecase.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		707CA992279FA87800EAFC66 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				707CA993279FA88A00EAFC66 /* Models */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		707CA993279FA88A00EAFC66 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				707CA994279FA89A00EAFC66 /* Application.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +344,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */,
+				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
+				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
+				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
+				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
+				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
+				707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
