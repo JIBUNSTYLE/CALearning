@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7077C99327A007D70035E404 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99227A007D70035E404 /* Quick */; };
+		7077C99627A007EB0035E404 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99527A007EB0035E404 /* Nimble */; };
+		7077C99827A007FD0035E404 /* BootSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99727A007FD0035E404 /* BootSpec.swift */; };
+		7077C99B27A0D4760035E404 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99A27A0D4760035E404 /* DataStore.swift */; };
+		7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */; };
+		7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9A127A0D8BD0035E404 /* Dependencies.swift */; };
 		707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA955279F833700EAFC66 /* CALearningApp.swift */; };
 		707CA958279F833700EAFC66 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA957279F833700EAFC66 /* ContentView.swift */; };
 		707CA95A279F833900EAFC66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 707CA959279F833900EAFC66 /* Assets.xcassets */; };
 		707CA95D279F833900EAFC66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 707CA95C279F833900EAFC66 /* Preview Assets.xcassets */; };
-		707CA967279F833900EAFC66 /* CALearningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA966279F833900EAFC66 /* CALearningTests.swift */; };
 		707CA971279F833900EAFC66 /* CALearningUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA970279F833900EAFC66 /* CALearningUITests.swift */; };
 		707CA973279F833900EAFC66 /* CALearningUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA972279F833900EAFC66 /* CALearningUITestsLaunchTests.swift */; };
 		707CA986279F8C1500EAFC66 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA985279F8C1500EAFC66 /* Splash.swift */; };
@@ -41,13 +46,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7077C99727A007FD0035E404 /* BootSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootSpec.swift; sourceTree = "<group>"; };
+		7077C99A27A0D4760035E404 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataStore.swift; sourceTree = "<group>"; };
+		7077C9A127A0D8BD0035E404 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		707CA952279F833700EAFC66 /* CALearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CALearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CA955279F833700EAFC66 /* CALearningApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningApp.swift; sourceTree = "<group>"; };
 		707CA957279F833700EAFC66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		707CA959279F833900EAFC66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		707CA95C279F833900EAFC66 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		707CA962279F833900EAFC66 /* CALearningTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CALearningTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		707CA966279F833900EAFC66 /* CALearningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningTests.swift; sourceTree = "<group>"; };
 		707CA96C279F833900EAFC66 /* CALearningUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CALearningUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CA970279F833900EAFC66 /* CALearningUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningUITests.swift; sourceTree = "<group>"; };
 		707CA972279F833900EAFC66 /* CALearningUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -73,6 +81,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7077C99327A007D70035E404 /* Quick in Frameworks */,
+				7077C99627A007EB0035E404 /* Nimble in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +96,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7077C99927A0D4390035E404 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				7077C99A27A0D4760035E404 /* DataStore.swift */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		7077C99C27A0D58D0035E404 /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
 		707CA949279F833700EAFC66 = {
 			isa = PBXGroup;
 			children = (
@@ -131,7 +157,7 @@
 		707CA965279F833900EAFC66 /* CALearningTests */ = {
 			isa = PBXGroup;
 			children = (
-				707CA966279F833900EAFC66 /* CALearningTests.swift */,
+				7077C99727A007FD0035E404 /* BootSpec.swift */,
 			);
 			path = CALearningTests;
 			sourceTree = "<group>";
@@ -150,6 +176,7 @@
 			children = (
 				707CA992279FA87800EAFC66 /* Domain */,
 				707CA98B279F8F6A00EAFC66 /* Application */,
+				7077C99C27A0D58D0035E404 /* Infrastructure */,
 				707CA981279F8B6A00EAFC66 /* Presentation */,
 			);
 			path = Service;
@@ -202,6 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				707CA993279FA88A00EAFC66 /* Models */,
+				7077C99927A0D4390035E404 /* Interfaces */,
+				7077C9A127A0D8BD0035E404 /* Dependencies.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -230,6 +259,8 @@
 			dependencies = (
 			);
 			name = CALearning;
+			packageProductDependencies = (
+			);
 			productName = CALearning;
 			productReference = 707CA952279F833700EAFC66 /* CALearning.app */;
 			productType = "com.apple.product-type.application";
@@ -248,6 +279,10 @@
 				707CA964279F833900EAFC66 /* PBXTargetDependency */,
 			);
 			name = CALearningTests;
+			packageProductDependencies = (
+				7077C99227A007D70035E404 /* Quick */,
+				7077C99527A007EB0035E404 /* Nimble */,
+			);
 			productName = CALearningTests;
 			productReference = 707CA962279F833900EAFC66 /* CALearningTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -302,6 +337,10 @@
 				Base,
 			);
 			mainGroup = 707CA949279F833700EAFC66;
+			packageReferences = (
+				7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */,
+				7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */,
+			);
 			productRefGroup = 707CA953279F833700EAFC66 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -344,9 +383,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
 				707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */,
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
+				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
+				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
@@ -360,7 +402,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				707CA967279F833900EAFC66 /* CALearningTests.swift in Sources */,
+				7077C99827A007FD0035E404 /* BootSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,6 +721,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Quick.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Nimble.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7077C99227A007D70035E404 /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		7077C99527A007EB0035E404 /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 707CA94A279F833700EAFC66 /* Project object */;
 }

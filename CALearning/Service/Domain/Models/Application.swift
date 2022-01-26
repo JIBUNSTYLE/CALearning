@@ -11,11 +11,16 @@ class Application {
     
     var hasCompletedTutorial: Bool {
         get {
-            // TODO
-            return true
+            if let value = Dependencies.shared.dataStore.get(KeyValue.BoolKey.hasCompletedTutorial) {
+                return value
+            } else {
+                return false
+            }
         }
         set {
-            // TODO
+            Dependencies.shared.dataStore.save(
+                .bool(key: .hasCompletedTutorial, value: newValue)
+            )
         }
     }
 }

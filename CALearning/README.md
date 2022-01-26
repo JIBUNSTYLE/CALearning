@@ -6,6 +6,8 @@ CALearning
 3. ユースケースのコードによる表現
 4. ドメインモデルの実装
 5. プレゼンテーション層でのユースケース呼び出し
+6. インフラ層と依存性逆転の原則
+7. 振る舞い駆動開発
 
 
 # 1. フォルダ構成
@@ -518,5 +520,178 @@ Run でアプリを実行します。「Splash」が表示されてから、2秒
 > boot は正常終了
 
 これは usecase bootが実行され、基本コースの `アプリはユーザがチュートリアルを完了した記録がないかを調べる` → `チュートリアル完了の記録がある場合_アプリはログイン画面を表示` というシナリオを通ったことを示しています。
+
+
+# 6. インフラ層と依存性逆転の原則
+
+さて、ドメインモデルの実装に戻ります。
+チュートリアルが終わっているか否かをドメインモデルであるApplicationが判断できるようにしたいですが、ここでデータ保存などのインフラ層に置くべきコードを書くのはご法度です。
+
+そこで、依存性逆転の原則に則り、データ保存の仕様を決めるプロトコルを作成し、インフラ層でそれを実装するようにします。
+
+Service/Domain/Interfacesフォルダを作成し、DataStore.swift の Swift ファイルを新規作成します。
+
+```DataStore.swift
+protocol Key: CaseIterable, RawRepresentable where Self.RawValue == String {
+    associatedtype ValueType
+}
+
+enum KeyValue {
+
+    enum BoolKey: String, Key {
+        typealias ValueType = Bool
+        case hasCompletedTutorial
+    }
+    
+    case bool(key: BoolKey, value: BoolKey.ValueType)
+}
+
+protocol StoreInterface {
+
+    /// データの保存
+    func save(_ keyValue: KeyValue)
+
+    /// データの取り出し
+    func get<T: Key>(_ key: T) -> T.ValueType?
+
+    /// データの削除
+    func delete<T: Key>(_ key: T)
+}
+```
+
+これを実装するクラスため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swift ファイルを新規作成します。
+
+```UserDefaultsDataStore.swift
+struct UserDefaultsDataStore : DataStore {
+    
+    func save(_ keyValue: KeyValue) {
+        switch keyValue {
+        case .bool(let key, let value):
+            UserDefaults.standard.set(value, forKey: key.rawValue)
+        }
+    }
+    
+    func get<T: Key>(_ key: T) -> T.ValueType? {
+        return UserDefaults.standard
+            .object(forKey: key.rawValue) as? T.ValueType
+    }
+    
+    func delete<T: Key>(_ key: T) {
+        UserDefaults.standard.removeObject(forKey: key.rawValue)
+    }
+}
+```
+
+ドメインモデルからインフラ層での実装を呼び出すため、実装を抽象化して保持するシングルトンオブジェクトを作成します。
+Service/Domain 以下に Dependencies.swift のSwiftファイルを新規作成します。
+
+
+```Dependencies.swift
+struct Dependencies {
+    // シングルトン
+    static private(set) var shared: Dependencies = Dependencies()
+    
+    // 依存性逆転が必要なものが増えたら足していく
+    var dataStore: DataStore
+   
+    init(
+        dataStore: DataStore = UserDefaultsDataStore()
+    ) {
+        self.dataStore = dataStore
+    }
+    
+    /// mockなどを差し込む際に使う
+    func set(mock: Dependencies) {
+        Dipendencies.shared = mock
+    }
+}
+```
+
+ドメインモデル Application の hasCompletedTutorialの 実装は以下のようになります。
+
+```Application.swift
+    var hasCompletedTutorial: Bool {
+        get {
+            if let value = Dependencies.shared.dataStore.get(KeyValue.BoolKey.hasCompletedTutorial) {
+                return value
+            } else {
+                return false
+            }
+        }
+        set {
+            Dependencies.shared.dataStore.save(
+                .bool(key: .hasCompletedTutorial, value: newValue)
+            )
+        }
+    }
+```
+
+
+# 7. 振る舞い駆動開発
+
+QuickおよびNimbleというパッケージをUnitTest用のターゲットに導入します。
+File > Add packages... を開き、検索窓に以下を入力し、パッケージを追加します。
+
+- https://github.com/Quick/Quick.git
+- https://github.com/Quick/Nimble.git
+
+SwiftPMのパッケージ検索は[ここ](https://swiftpackageindex.com/)）で行えます。
+追加する際に、どのTargetに追加するかを問われるので、UnitTestsを選択します。
+
+
+ここではユースケース毎にSpecファイルを作成することにします。
+Testsフォルダ以下に、`Unit Test Case Class`としてBootSpecをQuickSpecのサブクラスとして新規作成します。
+
+
+```BootSpec.swift
+import XCTest
+@testable import CALearning
+
+import Quick
+import Nimble
+
+class BootSpec: QuickSpec {
+
+    override func spec() {
+        let presenter = Presenter()
+        
+        describe("アプリを起動する") {
+            context("チュートリアル完了の記録がある場合") {
+                beforeEach {
+                    presenter.currentView = .splash
+                    Application().hasCompletedTutorial = true
+                }
+                it("アプリはログイン画面を表示") {
+                    presenter.boot()
+                    
+                    expect(presenter.currentView)
+                        .toEventually(equal(Views.login), timeout: .seconds(2))
+                        
+                }
+            }
+            context("チュートリアル完了の記録がない場合") {
+                beforeEach {
+                    presenter.currentView = .splash
+                    Application().hasCompletedTutorial = false
+                }
+                it("アプリはチュートリアル画面を表示") {
+                    presenter.boot()
+                    
+                    expect(presenter.currentView)
+                        .toEventually(equal(Views.tutorial), timeout: .seconds(2))
+                }
+            }
+        }
+    }
+}
+```
+
+describe にはユースケースを記述します。
+context にはユースケースシナリオの分岐部分を記述します。
+it には期待する結果を記述します。
+
+このアーキテクチャでは、Viewがユーザの操作を受け付けるとPresenterを通してユースケースを実行するので、振る舞いテストとしては、Viewから呼ぶPresenterのメソッドを直接呼び出し、View Modelなどが期待する結果となっているかのアサーションを記述します。
+
+
 
 // 以上
