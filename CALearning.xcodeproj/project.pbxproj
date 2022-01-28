@@ -115,6 +115,7 @@
 		707CA949279F833700EAFC66 = {
 			isa = PBXGroup;
 			children = (
+				707CA97F279F83B600EAFC66 /* README.md */,
 				707CA954279F833700EAFC66 /* CALearning */,
 				707CA965279F833900EAFC66 /* CALearningTests */,
 				707CA96F279F833900EAFC66 /* CALearningUITests */,
@@ -141,7 +142,6 @@
 				707CA957279F833700EAFC66 /* ContentView.swift */,
 				707CA959279F833900EAFC66 /* Assets.xcassets */,
 				707CA95B279F833900EAFC66 /* Preview Content */,
-				707CA97F279F83B600EAFC66 /* README.md */,
 			);
 			path = CALearning;
 			sourceTree = "<group>";
