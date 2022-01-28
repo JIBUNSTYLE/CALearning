@@ -180,7 +180,7 @@ CombineはReactiveX（RxSwift）のApple版で、非同期処理によるデー�
 BootをUsecaseプロトコルを準拠するようにし、next関数を実装します。
 next関数は、自身が表すシーンの次のシーンを返すように実装します。処理終了の場合には nil を返すようにします。
 
-```Boot.switf
+```Boot.swift
 enum Boot : Usecase {
     ...
     
@@ -457,7 +457,8 @@ struct ContentView: View {
 
 ここでは `environmentObject` を選択します。
 
-```CALearningApp.swift@main
+```CALearningApp.swift
+@main
 struct CALearningApp: App {
 
     @StateObject var presenter = Presenter()
