@@ -18,7 +18,13 @@ enum KeyValue {
         case hasCompletedTutorial
     }
     
+    enum StringKey: String, Key {
+        typealias ValueType = String
+        case udid
+    }
+    
     case bool(key: BoolKey, value: BoolKey.ValueType)
+    case string(key: StringKey, value: StringKey.ValueType)
 }
 
 protocol DataStore {

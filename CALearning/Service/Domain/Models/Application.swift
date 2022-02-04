@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class Application {
     
@@ -22,5 +23,32 @@ class Application {
                 .bool(key: .hasCompletedTutorial, value: newValue)
             )
         }
+    }
+    
+    private(set) var udid: String? {
+        get {
+            return Dependencies.shared.dataStore.get(KeyValue.StringKey.udid)
+        }
+        set {
+            guard let udid = newValue else {
+                return Dependencies.shared.dataStore.delete(KeyValue.StringKey.udid)
+            }
+            Dependencies.shared.dataStore.save(
+                .string(key: .udid, value: udid)
+            )
+        }
+    }
+    
+    func publishUdid() -> AnyPublisher<String, Error> {
+        return Dependencies.shared.backend.publishUdid()
+    }
+    
+    func save(udid: String) -> Void {
+        self.udid = udid
+    }
+    
+    func discardUdid() -> Void {
+        print("保存されたUDIDを消します")
+        self.udid = nil
     }
 }

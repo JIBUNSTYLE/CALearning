@@ -13,11 +13,14 @@ struct Dependencies {
     
     // 依存性逆転が必要なものが増えたら足していく
     var dataStore: DataStore
+    var backend: Backend
    
     init(
         dataStore: DataStore = UserDefaultsDataStore()
+        , backend: Backend = ApiBackend(apiClient: nil)
     ) {
         self.dataStore = dataStore
+        self.backend = backend
     }
     
     /// mockなどを差し込む際に使う

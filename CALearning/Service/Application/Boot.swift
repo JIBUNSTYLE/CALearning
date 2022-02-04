@@ -12,11 +12,13 @@ import Combine
 enum Boot : Usecase {
     
     enum Basics {
-        case アプリはユーザがチュートリアルを完了した記録がないかを調べる
+        case アプリはサーバで発行したUDIDが保存されていないかを調べる
+        case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
         case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
     }
     
     enum Alternatives {
+        case UDIDがない場合_アプリはUDIDを取得する
         case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
     }
     
@@ -24,19 +26,38 @@ enum Boot : Usecase {
     case alternate(scene: Alternatives)
     
     init() {
-        self = .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる)
+        self = .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)
     }
     
     func next() -> AnyPublisher<Boot, Error>? {
         switch self {
+        case .basic(.アプリはサーバで発行したUDIDが保存されていないかを調べる):
+            return self.checkUdid()
+            
         case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
             return self.detect()
 
         case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
             return nil
+
+        case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
+            return self.publishUdid()
+            
         case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
             return nil
         }
+    }
+    
+    private func checkUdid() -> AnyPublisher<Boot, Error> {
+        return Deferred {
+            Future<Boot, Error> { promise in
+                guard let udid = Application().udid else {
+                    return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
+                }
+                promise(.success(.basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
+            }
+        }
+        .eraseToAnyPublisher()
     }
     
     private func detect() -> AnyPublisher<Boot, Error> {
@@ -57,5 +78,15 @@ enum Boot : Usecase {
             }
         }
         .eraseToAnyPublisher()
+    }
+    
+    private func publishUdid() -> AnyPublisher<Boot, Error> {
+        return Application()
+            .publishUdid()
+            .map { udid -> Boot in
+                Application().save(udid: udid)
+                return .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
+            }
+            .eraseToAnyPublisher()
     }
 }

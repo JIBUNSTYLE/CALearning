@@ -13,6 +13,16 @@
 		7077C99B27A0D4760035E404 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99A27A0D4760035E404 /* DataStore.swift */; };
 		7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */; };
 		7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9A127A0D8BD0035E404 /* Dependencies.swift */; };
+		7077C9A527A8F36C0035E404 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C9A427A8F36C0035E404 /* Alamofire */; };
+		7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9A827A8F9560035E404 /* ApiClient.swift */; };
+		7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9AA27A8F9830035E404 /* SystemErrors.swift */; };
+		7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9AC27A8F9BD0035E404 /* ServiceErrors.swift */; };
+		7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9B127A8FDF20035E404 /* MockApiClient.swift */; };
+		7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9B327A8FF760035E404 /* AlamofireApiClient.swift */; };
+		7077C9B627A906F90035E404 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9B527A906F90035E404 /* Api.swift */; };
+		7077C9BC27AB5C540035E404 /* Apis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BB27AB5C540035E404 /* Apis.swift */; };
+		7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BD27AB7ABD0035E404 /* Backend.swift */; };
+		7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BF27AB7B280035E404 /* ApiBackend.swift */; };
 		707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA955279F833700EAFC66 /* CALearningApp.swift */; };
 		707CA958279F833700EAFC66 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA957279F833700EAFC66 /* ContentView.swift */; };
 		707CA95A279F833900EAFC66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 707CA959279F833900EAFC66 /* Assets.xcassets */; };
@@ -50,6 +60,15 @@
 		7077C99A27A0D4760035E404 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataStore.swift; sourceTree = "<group>"; };
 		7077C9A127A0D8BD0035E404 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
+		7077C9A827A8F9560035E404 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		7077C9AA27A8F9830035E404 /* SystemErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemErrors.swift; sourceTree = "<group>"; };
+		7077C9AC27A8F9BD0035E404 /* ServiceErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceErrors.swift; sourceTree = "<group>"; };
+		7077C9B127A8FDF20035E404 /* MockApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockApiClient.swift; sourceTree = "<group>"; };
+		7077C9B327A8FF760035E404 /* AlamofireApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireApiClient.swift; sourceTree = "<group>"; };
+		7077C9B527A906F90035E404 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		7077C9BB27AB5C540035E404 /* Apis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apis.swift; sourceTree = "<group>"; };
+		7077C9BD27AB7ABD0035E404 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
+		7077C9BF27AB7B280035E404 /* ApiBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiBackend.swift; sourceTree = "<group>"; };
 		707CA952279F833700EAFC66 /* CALearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CALearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CA955279F833700EAFC66 /* CALearningApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningApp.swift; sourceTree = "<group>"; };
 		707CA957279F833700EAFC66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7077C9A527A8F36C0035E404 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				7077C99A27A0D4760035E404 /* DataStore.swift */,
+				7077C9BD27AB7ABD0035E404 /* Backend.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -107,9 +128,28 @@
 		7077C99C27A0D58D0035E404 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				7077C9B727AB5BD50035E404 /* ApiBackend */,
 				7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */,
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		7077C9B027A8FDB50035E404 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				7077C9B327A8FF760035E404 /* AlamofireApiClient.swift */,
+				7077C9B127A8FDF20035E404 /* MockApiClient.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		7077C9B727AB5BD50035E404 /* ApiBackend */ = {
+			isa = PBXGroup;
+			children = (
+				7077C9BB27AB5C540035E404 /* Apis.swift */,
+				7077C9BF27AB7B280035E404 /* ApiBackend.swift */,
+			);
+			path = ApiBackend;
 			sourceTree = "<group>";
 		};
 		707CA949279F833700EAFC66 = {
@@ -139,6 +179,7 @@
 				707CA98E279F932100EAFC66 /* System */,
 				707CA955279F833700EAFC66 /* CALearningApp.swift */,
 				707CA957279F833700EAFC66 /* ContentView.swift */,
+				7077C9AA27A8F9830035E404 /* SystemErrors.swift */,
 				707CA959279F833900EAFC66 /* Assets.xcassets */,
 				707CA95B279F833900EAFC66 /* Preview Content */,
 				707CA97F279F83B600EAFC66 /* README.md */,
@@ -178,6 +219,7 @@
 				707CA98B279F8F6A00EAFC66 /* Application */,
 				7077C99C27A0D58D0035E404 /* Infrastructure */,
 				707CA981279F8B6A00EAFC66 /* Presentation */,
+				7077C9AC27A8F9BD0035E404 /* ServiceErrors.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -213,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				707CA98F279F933000EAFC66 /* Protocols */,
+				7077C9B027A8FDB50035E404 /* Implementations */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -221,6 +264,8 @@
 			isa = PBXGroup;
 			children = (
 				707CA990279F933E00EAFC66 /* Usecase.swift */,
+				7077C9B527A906F90035E404 /* Api.swift */,
+				7077C9A827A8F9560035E404 /* ApiClient.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -260,6 +305,7 @@
 			);
 			name = CALearning;
 			packageProductDependencies = (
+				7077C9A427A8F36C0035E404 /* Alamofire */,
 			);
 			productName = CALearning;
 			productReference = 707CA952279F833700EAFC66 /* CALearning.app */;
@@ -340,6 +386,7 @@
 			packageReferences = (
 				7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */,
 				7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */,
+				7077C9A327A8F36C0035E404 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 707CA953279F833700EAFC66 /* Products */;
 			projectDirPath = "";
@@ -383,15 +430,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7077C9B627A906F90035E404 /* Api.swift in Sources */,
 				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
+				7077C9BC27AB5C540035E404 /* Apis.swift in Sources */,
 				707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */,
+				7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */,
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
+				7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
+				7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */,
+				7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
+				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
+				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
+				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
 				707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */,
@@ -739,6 +795,14 @@
 				kind = branch;
 			};
 		};
+		7077C9A327A8F36C0035E404 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -751,6 +815,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
+		};
+		7077C9A427A8F36C0035E404 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7077C9A327A8F36C0035E404 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

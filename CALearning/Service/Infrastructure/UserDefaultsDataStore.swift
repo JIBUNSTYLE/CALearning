@@ -13,6 +13,8 @@ struct UserDefaultsDataStore : DataStore {
         switch keyValue {
         case .bool(let key, let value):
             UserDefaults.standard.set(value, forKey: key.rawValue)
+        case .string(let key, let value):
+            UserDefaults.standard.set(value, forKey: key.rawValue)
         }
     }
     
