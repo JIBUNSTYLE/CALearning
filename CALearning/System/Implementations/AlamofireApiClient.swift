@@ -60,9 +60,23 @@ class AlamofireApiClient: ApiClient {
                             promise(.success(entity))
 
                         case .failure(let error):
+
+                            if case 400 = response.response?.statusCode
+                                , let data = response.data
+                            {
+                                do {
+                                    let errorResponse = try api.deserializeErrorResponse(data)
+                                    return promise(.failure(
+                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api, causedBy: error)
+                                    ))
+                                } catch {
+                                    
+                                }
+                            }
+                            
                             promise(.failure(
-                                ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api, causedBy: error))
-                            )
+                                ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api, causedBy: error)
+                            ))
                         }
                 }
             }

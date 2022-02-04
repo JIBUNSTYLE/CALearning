@@ -8,11 +8,6 @@
 import Foundation
 import Alamofire
 
-struct ErrorResponse: Codable, Error {
-    let code: Int
-    let message: String
-}
-
 struct Apis {
     static let BASE_URL = "http://apps.dev.timesclub.jp/yorimichiappsweb" // Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String
 

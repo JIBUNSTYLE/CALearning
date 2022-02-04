@@ -8,6 +8,12 @@
 import Foundation
 import Alamofire
 
+struct ErrorResponse: Codable, Error {
+    let code: String
+    let title: String
+    let message: String
+}
+
 protocol Api {
     associatedtype Entity: Codable
     
@@ -26,5 +32,11 @@ extension Api {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
         return try decoder.decode(Entity.self, from: json)
+    }
+    
+    func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
+        return try decoder.decode(ErrorResponse.self, from: json)
     }
 }
