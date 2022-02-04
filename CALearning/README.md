@@ -78,7 +78,7 @@ currentViewの値を変えることで、TutorialやLoginが表示されてい�
 
 ## 3.1 ユースケースシナリオの記述
 
-Service/Application/Useasesフォルダを作成し、Boot.swift の Swift ファイルを新規作成します。
+Service/Application/Usecasesフォルダを作成し、Boot.swift の Swift ファイルを新規作成します。
 
 ユースケースシナリオの基本コース／代替コースを以下のようにenumの入れ子で表現します。
 デフォルト値としシナリオの初めの状態をinit関数で定義します。
@@ -546,7 +546,7 @@ enum KeyValue {
     case bool(key: BoolKey, value: BoolKey.ValueType)
 }
 
-protocol StoreInterface {
+protocol DataStore {
 
     /// データの保存
     func save(_ keyValue: KeyValue)
