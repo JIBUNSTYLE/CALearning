@@ -105,12 +105,15 @@ enum Boot {
 }
 ```
 
+Swift の enum はとても強力で、入れ子にできたり、associated valueを持つことができたり、関数を持たせることができます。
+@see: https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html
+
 ## 3.2 ユースケースの実装
 
 enumで定義したユースケースのシナリオを実行可能にします。
-具体的には再起呼び出しを使って、シナリオの一つひとつのSceneを処理していくようにします。
+具体的には再起呼び出しを使って、シナリオの一つひとつ（ここではシーンと呼ぶことにします）を処理していくようにします。
 
-System/Protocolsフォルダを作成し、Usecase.swift の Swift ファイルを新規作成します。
+System/Protocolsフォルダを作成し、Usecase.swift の Swiftファイルを新規作成します。
 
 ```Usecase.swift
 import Combine
@@ -170,10 +173,14 @@ extension Usecase {
 }
 ```
 
-BootをUsecaseプロトコルを準拠するようにし、next関数を実装します。
-next関数は、自身が表すSceneの次の処理を指定します。処理終了の場合には nil を返すようにします。
+CombineはReactiveX（RxSwift）のApple版で、非同期処理によるデータの変更を別の処理に伝播させるといった Reactiveプログラミングを実現するフレームワークです。
+@see: https://developer.apple.com/documentation/combine
 
-```Boot.switf
+
+BootをUsecaseプロトコルを準拠するようにし、next関数を実装します。
+next関数は、自身が表すシーンの次のシーンを返すように実装します。処理終了の場合には nil を返すようにします。
+
+```Boot.swift
 enum Boot : Usecase {
     ...
     
@@ -226,6 +233,8 @@ enum Boot : Usecase {
     }
 ```
 
+ここではSplashを2秒表示させるものとして実装しています。
+
 # 4. ドメインモデルの実装
 
 一旦、ユースケースの実装は置いておいて、ドメインモデルを作成します。
@@ -234,7 +243,7 @@ enum Boot : Usecase {
 
 様々な値をアプリが保持するので、アプリを表すドメインモデルをオブジェクトとして作成します。
 
-Service/Domain/Modelsフォルダ作成し、Application.swift の Swift ファイルを新規作成します。
+Service/Domain/Modelsフォルダ作成し、Application.swift の Swiftファイルを新規作成します。
 
 ```Application.swift
 class Application {
@@ -251,7 +260,8 @@ class Application {
 }
 ```
 
-実際の中身としては、データ読み書き用のプロトコルを作成し、それを実装する形でインフラ層でデータ読み書き機能を実装し、それを使うようにします。
+一旦、呼ばれたら true を返すのみとします。
+在るべき実装としては、データ読み書き用のプロトコルを宣言し、それを実装する形でインフラ層でデータ読み書き機能を実装し、それを使うようにします（6で行います）。
 
 ## 4.2 ドメインモデルを利用してユースケースを実装する
 
@@ -285,7 +295,7 @@ class Application {
 ## 5.1 ユースケースの実行
 
 以下のように、Bootユースケースを初期化し、interact関数を実行し、結果をサブスクライブするようにします（これをどこに実装するかについては5.2参照）。
-結果は実際に実行されたSceneの配列（これをscenarioと呼ぶことにします）で返ってくるので、その最後のSceneが何だったかによって、次の処理を変更します。
+結果は実際に実行されたシーンの配列（これをscenarioと呼ぶことにします）で返ってくるので、その最後のシーンが何だったかによって、次の処理を変更します。
 
 ```swift
     Boot()
@@ -310,10 +320,10 @@ class Application {
 
 ## 5.2 ユースケースをどこから呼ぶべきか
 
-拡張性の担保を一番に考えた場合、Viewは表示のために設定された値を表示するためのコードのみを持つべきです。
+拡張性の担保や再利用性を考えた場合、Viewは表示のために設定された値を表示するためのコードのみを持つべきです。
 値を取得するためのコード、ユースケースの結果に応じて表示内容を加工するなどの処理は、別のオブジェクトで担うようにします。
 
-ここではそれら、Viewから呼ばれてユースケースを実行し、その結果をViewに伝える（Viewが参照する値を保持する）役割をもつオブジェクトを`Preseter`とします。
+ここではそれら、Viewから呼ばれてユースケースを実行し、その結果をViewに伝える（Viewが参照する値を保持する）役割をもつオブジェクトを`Presenter`とします。
 
 ## 5.3 Presenterの実装
 
@@ -322,7 +332,6 @@ class Application {
 この処理を、SwiftUIでは Swift5.1で導入された`Property Wrapper`という機能を使って実現しています。
 
 `Property Wrapper` とは、プロパティの制御をテンプレート化したもので、SwiftUI でのView Modelとして `ObservableObject` などの `Property Wrapper` が用意されています。
-
 @see: https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app
 
 ここでは、`Presenter` を `ObservableObject` として実装します。
@@ -359,7 +368,7 @@ class Presenter: ObservableObject {
 }
 ```
 
-ユースケースの実行結果で遷移する画面を変更したいため、ContetViewで保持していた currentViewプロパティ を Presenterに移植します。
+ユースケースの実行結果で遷移する画面を変更したいため、ContetViewで保持していた currentViewプロパティ を `Presenter` に移植します。
 
 
 ```Presenter.swift
@@ -420,9 +429,9 @@ struct ContentView: View {
     ...
 ```
 
-5.4.2 あるView以下の子孫すべてとつなぐ
+### 5.4.2 あるView以下の子孫すべてとつなぐ
 
-以下のように、`.environmentObject`モディファイアで指定し、View側に `@EnvironmentObject`を用意すると、`.environmentObject`モディファイアで指定したView以下、すべての子孫で同一の`Presenter`を参照できます。
+以下のように、`.environmentObject`モディファイアで指定し、View側に `@EnvironmentObject`を用意すると、`.environmentObject`モディファイアで指定したView以下、すべての子孫で同一の `Presenter` を参照できます。
 
 ```CALearningApp.swift
 @main
@@ -446,9 +455,10 @@ struct ContentView: View {
 }
 ``` 
 
-ここでは後者を選択します。
+ここでは `environmentObject` を選択します。
 
-```CALearningApp.swift@main
+```CALearningApp.swift
+@main
 struct CALearningApp: App {
 
     @StateObject var presenter = Presenter()
@@ -559,7 +569,8 @@ protocol DataStore {
 }
 ```
 
-これを実装するクラスため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swift ファイルを新規作成します。
+これを実装するクラスため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swiftファイルを新規作成します。
+ここではデータストアの実体としてUserDefaultsを使います。
 
 ```UserDefaultsDataStore.swift
 struct UserDefaultsDataStore : DataStore {
@@ -607,7 +618,7 @@ struct Dependencies {
 }
 ```
 
-ドメインモデル Application の hasCompletedTutorialの 実装は以下のようになります。
+ドメインモデル Application の hasCompletedTutorialの実装は以下のようになります。
 
 ```Application.swift
     var hasCompletedTutorial: Bool {
@@ -630,12 +641,12 @@ struct Dependencies {
 # 7. 振る舞い駆動開発
 
 QuickおよびNimbleというパッケージをUnitTest用のターゲットに導入します。
-File > Add packages... を開き、検索窓に以下を入力し、パッケージを追加します。
+Xcodeのメニューから、File > Add packages... を開き、右上の検索窓に以下を入力し、パッケージを追加します。
 
 - https://github.com/Quick/Quick.git
 - https://github.com/Quick/Nimble.git
 
-SwiftPMのパッケージ検索は[ここ](https://swiftpackageindex.com/)）で行えます。
+SwiftPMのパッケージ検索は[ここ](https://swiftpackageindex.com/)で行えます。
 追加する際に、どのTargetに追加するかを問われるので、UnitTestsを選択します。
 
 
@@ -690,7 +701,32 @@ describe にはユースケースを記述します。
 context にはユースケースシナリオの分岐部分を記述します。
 it には期待する結果を記述します。
 
+itってなんやねん、というと、英語では it should be... と期待する結果を書くから it なのです。
+
+ユースケースシナリオ＝仕様＝テストです。テストさえ書けば、詳細設計書は不要です（Tests as Documentation）。
+
 このアーキテクチャでは、Viewがユーザの操作を受け付けるとPresenterを通してユースケースを実行するので、振る舞いテストとしては、Viewから呼ぶPresenterのメソッドを直接呼び出し、View Modelなどが期待する結果となっているかのアサーションを記述します。
+
+
+もちろんユースケース以外にも、複雑なメソッドの機能テストも振る舞いを記述してテストをすることができます。
+
+```swift
+    describe("UserDefaultsDataStore.save") {
+        context("引数が .bool(key: .hasCompletedTutorial, value: true )") {
+            it("UserDefautlsに文字列キーhasCompletedTutorialで、trueが保存されること) {
+                UserDefaultsDataStore().save(.bool(key: .hasCompletedTutorial, value: true))
+                
+                expect {
+                    guard let result = UserDefaults.standard.object(forKey: "hasCompletedTutorial") as? Bool else {
+                        return .failed(reason: "hasCompletedTutorialをキーとする値がありません")
+                    }
+                }.to(beTrue())
+            }
+        }
+    }
+```
+
+これは関数の仕様書であり、使い方のサンプルでもあります（Specification by Example）。
 
 
 # 8. インフラ層／APIクライアント
@@ -699,7 +735,6 @@ Alamofireというパッケージを導入します。
 File > Add packages... を開き、検索窓に以下を入力し、パッケージを追加します。
 
 - https://github.com/Alamofire/Alamofire.git
-
 
 
 // 以上
