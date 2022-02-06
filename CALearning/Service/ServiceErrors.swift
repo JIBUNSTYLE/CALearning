@@ -13,8 +13,6 @@ enum ServiceErrors: Error {
         case ネットワーク接続不可
     }
 
-    /// API仕様書に従い、APIが返してくるエラーコードをAPI毎に定義しています。
-
     case client(_ error: Client)
     case server(_ error: ErrorResponse)
 

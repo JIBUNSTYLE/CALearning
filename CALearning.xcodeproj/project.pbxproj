@@ -128,7 +128,8 @@
 		7077C99C27A0D58D0035E404 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				7077C9B727AB5BD50035E404 /* ApiBackend */,
+				7077C9BB27AB5C540035E404 /* Apis.swift */,
+				7077C9BF27AB7B280035E404 /* ApiBackend.swift */,
 				7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */,
 			);
 			path = Infrastructure;
@@ -141,15 +142,6 @@
 				7077C9B127A8FDF20035E404 /* MockApiClient.swift */,
 			);
 			path = Implementations;
-			sourceTree = "<group>";
-		};
-		7077C9B727AB5BD50035E404 /* ApiBackend */ = {
-			isa = PBXGroup;
-			children = (
-				7077C9BB27AB5C540035E404 /* Apis.swift */,
-				7077C9BF27AB7B280035E404 /* ApiBackend.swift */,
-			);
-			path = ApiBackend;
 			sourceTree = "<group>";
 		};
 		707CA949279F833700EAFC66 = {

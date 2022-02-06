@@ -12,8 +12,8 @@ import Foundation
 /// - service: サービスで予め想定しているエラー
 /// - system: サービスで想定していないエラー
 enum ErrorWrapper<T>: Error {
-    case service(error: ServiceErrors, args: T, causedBy: Error?)
-    case system(error: SystemErrors, args: T, causedBy: Error?)
+    case service(error: ServiceErrors, args: T?, causedBy: Error?)
+    case system(error: SystemErrors, args: T?, causedBy: Error?)
 }
 
 enum SystemErrors: Error {
@@ -30,6 +30,7 @@ enum SystemErrors: Error {
 
     enum Api: Error {
         case クライアントの初期化に失敗
+        case エラーレスポンスのデシリアライズに失敗(responseJson: String)
         // call時（specでは扱わない）
         case レスポンスがnil
         case デシリアライズに失敗(responseJson: String)

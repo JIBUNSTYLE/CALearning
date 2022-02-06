@@ -24,6 +24,7 @@ protocol Api {
 
     // サーバから戻ってきたJSONを専用の構造体に変更する
     func deserialize(_ json: Data) throws -> Entity
+    func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse
 }
 
 extension Api {

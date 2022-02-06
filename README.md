@@ -74,7 +74,7 @@ currentViewの値を変えることで、TutorialやLoginが表示されてい�
 
 # 3. ユースケースのコードによる表現
 
-ここではユースケースをenumで表現します。
+ここではユースケースをenumで表現します。例としてユースケース【アプリを起動する】を実装します。
 
 ## 3.1 ユースケースシナリオの記述
 
@@ -569,7 +569,7 @@ protocol DataStore {
 }
 ```
 
-これを実装するクラスため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swiftファイルを新規作成します。
+これを実装するため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swiftファイルを新規作成します。
 ここではデータストアの実体としてUserDefaultsを使います。
 
 ```UserDefaultsDataStore.swift
@@ -731,10 +731,562 @@ itってなんやねん、というと、英語では it should be... と期待�
 
 # 8. インフラ層／APIクライアント
 
-Alamofireというパッケージを導入します。
+インフラ層でのAPIクライアントの実装を通して、ユースケースの実装と依存性逆転の原則のさらなる実践を行いましょう。
+
+まずは事前準備としてAlamofireというパッケージを導入します。
 File > Add packages... を開き、検索窓に以下を入力し、パッケージを追加します。
 
 - https://github.com/Alamofire/Alamofire.git
+
+## 8.1 ユースケースシナリオの拡張
+
+以下のように、ユースケース【アプリを起動する】を拡張します。
+ここではアプリはサーバとAPIを通じて通信し、サーバ側で発行されたUDIDをアプリが保持する仕様とします。
+
+```Boot.swift
+enum Boot : Usecase {
+    
+    enum Basics {
+        case アプリはサーバで発行したUDIDが保存されていないかを調べる
+        case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
+        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
+    }
+    
+    enum Alternatives {
+        case UDIDがない場合_アプリはUDIDを取得する
+        case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
+    }
+    
+    ...
+    
+    func next() -> AnyPublisher<Boot, Error>? {
+        switch self {
+        case .basic(.アプリはサーバで発行したUDIDが保存されていないかを調べる):
+            return self.checkUdid()
+            
+        case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
+            return self.detect()
+
+        case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
+            return nil
+
+        case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
+            return self.publishUdid()
+            
+        case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
+            return nil
+        }
+    }
+```
+
+サーバで発行したUDIDを、アプリはUserDefaultsに保存するものとします。
+以下の様に、KeyValue に StringKey を追加します。
+
+```DataStore.swift
+enum KeyValue {
+
+    enum BoolKey: String, Key {
+        typealias ValueType = Bool
+        case hasCompletedTutorial
+    }
+    
+    enum StringKey: String, Key {
+        typealias ValueType = String
+        case udid
+    }
+    
+    case bool(key: BoolKey, value: BoolKey.ValueType)
+    case string(key: StringKey, value: StringKey.ValueType)
+}
+```
+
+ドメインモデル `Application` に、UDIDを保存／読み出しする Computed Property を追加します。
+
+```Application.swift
+    private(set) var udid: String? {
+        get {
+            return Dependencies.shared.dataStore.get(KeyValue.StringKey.udid)
+        }
+        set {
+            guard let udid = newValue else {
+                return Dependencies.shared.dataStore.delete(KeyValue.StringKey.udid)
+            }
+            Dependencies.shared.dataStore.save(
+                .string(key: .udid, value: udid)
+            )
+        }
+    }
+```
+
+getは外部から行えるようにしつつも、setはApplicationからしか行えなえないように、アクセス修飾子を private(set) とします。
+そして、setter 用のメソッドを用意します。
+
+```Application.swift
+    func save(udid: String) -> Void {
+        self.udid = udid
+    }
+    
+    func discardUdid() -> Void {
+        self.udid = nil
+    }
+```
+
+上記の Computed Property を使い、Bootが持つcheckUdid関数は以下のように実装します。
+
+```Boot.swift
+    private func checkUdid() -> AnyPublisher<Boot, Error> {
+        return Deferred {
+            Future<Boot, Error> { promise in
+                guard let udid = Application().udid else {
+                    return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
+                }
+                promise(.success(.basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+```
+
+## 8.2 エラーの定義
+
+APIの定義に入っていく前に、エラーの定義を行いましょう。
+ここでは、想定されるエラーは `サービスエラー`、想定しないエラーを `システムエラー` とします。
+
+Swiftでは、エラーの定義は Errorプロトコルに準拠するenumで表現します。
+Serviceフォルダ以下に ServiceErrors.swiftの、Systemフォルダ以下に SystemErrors.swiftの Swiftファイルを新規作成します。
+
+```ServiceErrors.swift
+enum ServiceErrors: Error {
+    // TODO
+}
+```
+
+```SystemErrors.swift
+enum SystemErrors: Error {
+    // TODO
+}
+```
+
+また、これら２種類のエラーを共通して処理できるようにラップするエラーも用意します。
+
+```SystemErrors.swift
+enum ErrorWrapper<T>: Error {
+    case service(error: ServiceErrors, args: T?, causedBy: Error?)
+    case system(error: SystemErrors, args: T?, causedBy: Error?)
+}
+```
+
+argsにはエラー発生時の引数を、causedByには発生の元となるエラーがあれば指定できるようにします。
+
+## 8.3 APIとAPIクライアントのプロトコル
+
+SwiftにはCodableというプロトコルが用意されています。これは、例えばJSONで記述されたパラメータ群を、任意のデータ型に変換することができます。
+APIのレスポンスとしてJSONを受け取る場合、Codableを利用することでレスポンスをstructに簡単に変換できます。
+
+@see: https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
+
+
+
+ここでは APIは正常応答および異常応答として、それぞれ決まった型のデータを返すものとします。
+正常応答はAPI毎に異なる型で、異常応答はHTTPステータスコードが400番以上であるものとし、全APIで型は共通とします。
+
+
+上記の仕様の元、各APIは、以下のAPIプロトコルに準拠するように定義します。
+System/Protocolsフォルダ以下に、Api.swift の Swiftファイルを新規作成します。
+
+```Api.swift
+import Alamofire
+
+struct ErrorResponse: Codable, Error {
+    let code: String
+    let title: String
+    let message: String
+}
+
+protocol Api {
+    associatedtype Entity: Codable
+    
+    var method: HTTPMethod { get }
+    var url: String { get }
+    var headers: HTTPHeaders? { get }
+    var params: [String: Any] { get }
+
+    // サーバから戻ってきたJSONを専用の構造体に変更する
+    func deserialize(_ json: Data) throws -> Entity
+    func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse
+}
+
+extension Api {
+    
+    func deserialize(_ json: Data) throws -> Entity {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
+        return try decoder.decode(Entity.self, from: json)
+    }
+    
+    func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
+        return try decoder.decode(ErrorResponse.self, from: json)
+    }
+}
+```
+
+上記APIプロトコルを実装する実際のAPIを「実行する」APIクライアントのprotocolを作成します。
+わざわざprotocolを作るのは、実際のAPIクライアントとは別にモックのAPIクライアントを作成し、テストなどで差し替え可能にするためです。
+
+System/Protocolsフォルダ以下に、ApiClient.swift の Swiftファイルを新規作成します。
+
+```ApiClient.swift
+import Combine
+
+protocol ApiClient {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api
+}
+```
+
+## 8.4 APIとAPIクライアントの実装
+
+実際に API を実装していきます。
+ここでは、サーバ側でUDIDを発行する API を `POST`メソッド で定義します。
+
+APIのエンドポイントは「http://localhost:8080/udids」とします。
+
+Service/Infrastructureフォルダ以下に、Apis.swift の Swiftファイルを新規作成します。
+
+```Apis.swift
+import Alamofire
+
+struct Apis {
+    static let BASE_URL = "http://localhost:8000"
+    static let DEFAULT_HEADERS = HTTPHeaders(["Content-Type" : "application/json"])
+ 
+    /// 端末識別ID発行
+    struct Udid: Api {
+        typealias Entity = Response
+
+        struct Response: Codable {
+            let udid: String
+        }
+
+        let method = HTTPMethod.post
+        let url = Apis.BASE_URL + "/udids"
+        let headers: HTTPHeaders?
+        let params: [String: Any]
+
+        init(headers: HTTPHeaders? = Apis.DEFAULT_HEADERS) {
+            self.params = ["appDeviceKbn" : 11]
+            self.headers = headers
+        }
+    }
+}
+```
+
+このAPIを実行するAPIクライアントをAlamofireを使って実装します。
+System/Implementationsフォルダを作成し、AlamofireApiClient.swift の Swiftファイルを新規作成します。
+
+```AlamofireApiClient.swift
+import Combine
+import Alamofire
+
+class AlamofireApiClient: ApiClient {
+    // 端末のネットワーク状況を検査するクラス
+    private(set) var reachabilityManager: NetworkReachabilityManager?
+    // ネットワークに接続されているか否か
+    private(set) var reachablityStatus: NetworkReachabilityManager.NetworkReachabilityStatus = .unknown
+
+    init() throws {
+        // 通信状況の監視を起動
+        guard let reachabilityManager = NetworkReachabilityManager() else {
+            // TODO: システムエラー: APIクライントの初期化に失敗
+        }
+        
+        reachabilityManager.startListening(onUpdatePerforming: { status in
+            print("ReachabilityStatusが変わりました: \(self.reachablityStatus) -> \(status)")
+            self.reachablityStatus = status
+        })
+        
+        self.reachablityStatus = reachabilityManager.status
+        self.reachabilityManager = reachabilityManager
+    }
+    
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+
+        return Deferred {
+            Future<T.Entity, ErrorWrapper<T>> { promise in
+                
+                guard case .reachable(_) = self.reachablityStatus else {
+                    // TODO: サービスエラー: ネットワーク接続不可
+                }
+                
+                print(">>>>> API Request: \(api.url) with \(api.params)")
+                
+                AF.request(
+                    api.url
+                    , method: api.method
+                    , parameters: api.params
+                    , encoding: JSONEncoding.default
+                    , headers: api.headers
+                )
+                    .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
+                    .responseDecodable(of: T.Entity.self) { response in
+                        
+                        switch response.result {
+                        case .success(let entity):
+                            promise(.success(entity))
+
+                        case .failure(let error):
+
+                            if case 400 = response.response?.statusCode
+                                , let data = response.data
+                            {
+                                do {
+                                    let errorResponse = try api.deserializeErrorResponse(data)
+                                    // TODO: サービスエラー: エラーレスポンス 
+                                } catch {
+                                    // TODO: システムエラー: エラーレスポンスのデシリアライズに失敗
+                                }
+                            }
+                            // TODO: システムエラー: その他のエラー
+                        }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+}
+```
+
+エラーとして、
+
+- システムエラー: APIクライントの初期化に失敗
+- サービスエラー: ネットワーク接続不可
+- サービスエラー: エラーレスポンス
+- システムエラー: エラーレスポンスのデシリアライズに失敗
+- システムエラー: その他のエラー
+
+が必要となりました。以下のようにエラーを定義します。
+
+
+```ServiceErrors.swift
+enum ServiceErrors: Error {
+    enum Client: Error {
+        case ネットワーク接続不可
+    }
+
+    case client(_ error: Client)
+    case server(_ error: ErrorResponse)
+}
+```
+
+```SystemErrors.swift
+enum SystemErrors: Error {
+    enum Api: Error {
+        case クライアントの初期化に失敗
+        case エラーレスポンスのデシリアライズに失敗(responseJson: String)
+        case その他のエラー(statusCode: Int?)
+    }
+
+    case api(_ error: Api)
+}
+```
+
+これらを使い、AlamofireApiClientの実装は以下のようになります。
+
+```AlamofireApiClient.swift
+class AlamofireApiClient: ApiClient {
+    ...
+    init() throws {
+        // 通信状況の監視を起動
+        guard let reachabilityManager = NetworkReachabilityManager() else {
+            throw SystemErrors.api(SystemErrors.Api.クライアントの初期化に失敗)
+        }
+        ...
+    }
+    
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+
+        return Deferred {
+            Future<T.Entity, ErrorWrapper<T>> { promise in
+                
+                guard case .reachable(_) = self.reachablityStatus else {
+                    return promise(.failure(
+                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api, causedBy: nil)
+                    ))
+                }
+                
+                print(">>>>> API Request: \(api.url) with \(api.params)")
+                
+                AF.request(
+                    api.url
+                    , method: api.method
+                    , parameters: api.params
+                    , encoding: JSONEncoding.default
+                    , headers: api.headers
+                )
+                    .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
+                    .responseDecodable(of: T.Entity.self) { response in
+                        
+                        switch response.result {
+                        case .success(let entity):
+                            promise(.success(entity))
+
+                        case .failure(let error):
+
+                            if case 400 = response.response?.statusCode
+                                , let data = response.data
+                            {
+                                do {
+                                    let errorResponse = try api.deserializeErrorResponse(data)
+                                    return promise(.failure(
+                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api, causedBy: error)
+                                    )) 
+                                } catch {
+                                    return promise(.failure(
+                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api, causedBy: error)
+                                    ))
+                                }
+                            }
+                            promise(.failure(
+                                ErrorWrapper.system(error: SystemErrors.api(.その他のエラー(statusCode: response.response?.statusCode)), args: api, causedBy: error)
+                            ))
+                        }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+}
+```
+
+## 8.5 モックAPIクライアントの実装
+
+APIクライアントを実装しましたが、APIサーバーがないと動作確認はできません。
+ここではAPIクライントのモックを作成してドメインモデル、ユースケースの実装を進めましょう。
+
+System/Implementations以下に、MockApiClient.swift の Swiftファイルを新規作成します。
+
+```MockApiClient.swift
+import Combine
+import Alamofire
+
+struct MockApiClient<U> : ApiClient where U: Api {
+    
+    enum ApiResult<T> where T : Api {
+        case success(entity: T.Entity)
+        case failure(by: ErrorWrapper<T>)
+    }
+
+    let stub: ApiResult<U>
+
+    init(stub: ApiResult<U>) {
+        self.stub = stub
+    }
+    
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+
+        return Deferred {
+            Future<T.Entity, ErrorWrapper<T>> { promise in
+                guard let _api = api as? U else {
+                    // TODO: システムエラー: 準備されたAPIスタブが呼び出されたAPIと合致しません
+                }
+                
+                if case .success(let entity) = self.stub {
+                    do {
+                        let jsonEncoder = JSONEncoder()
+                        jsonEncoder.dateEncodingStrategy = .iso8601
+                        let data = try jsonEncoder.encode(entity)
+                        let entity = try api.deserialize(data)
+                        promise(.success(entity))
+                    } catch let error {
+                        // TODO: システムエラー: 準備されたAPIスタブのEncodeまたはDecodeに失敗
+                    }
+                } else if case .failure(let errorWrapper) = self.stub {
+                    promise(.failure(errorWrapper as! ErrorWrapper<T>))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+}
+```
+
+MockApiClientはAPIレスポンスのスタブとして正常応答および異常応答を初期化時に受け取るようにします。
+正常応答が設定された場合には、スタブを一旦デコードしてからエンコードして返します。
+異常応答が設定された場合には、それをそのまま返します。
+
+ここで新たなシステムエラーの追加が必要になりました。以下のようにエラーを定義します。
+上記の TODO 部分は自分で書いてみましょう。
+
+```SystemErrors.swift
+enum SystemErrors: Error {
+    enum Api: Error {
+        case クライアントの初期化に失敗
+        case エラーレスポンスのデシリアライズに失敗(responseJson: String)
+        case その他のエラー(statusCode: Int?)
+    }
+    
+    enum MockApiClient: Error {
+        case 準備されたAPIスタブが呼び出されたAPIと合致しません(message: String)
+        case 準備されたAPIスタブのEncodeまたはDecodeに失敗(stub: String)
+    }
+
+    case api(_ error: Api)
+    case mockApi(_ error: MockApi)
+}
+```
+
+## 8.6 依存性逆転の原則
+
+アプリは多くの場合、何らかのバックエンドを持ちます。それはNodeJSで実装されたAPIサーバーかもしれませんし、firebaseなどのBaasかもしれません。
+
+バックエンド実装が何であろうと、ドメインモデルの実装を変える必要がないように、バックエンドもプロトコルを作成します。
+
+Service/Domain/Interfacesフォルダに Backend.swift の Swift ファイルを新規作成します。
+
+```Backend.swift
+import Combine
+
+protocol Backend {
+
+    /// UDIDを発行します。
+    func publishUdid() -> AnyPublisher<String, Error>
+}
+```
+
+これを実装するApiBackendを作成します。 
+Service/Infrastructureフォルダに、ApiBackend.swift の Swiftファイルを新規作成します。
+
+```ApiBackend.swift
+import Combine
+
+struct ApiBackend : Backend {
+    let apiClient: ApiClient
+    
+    init(apiClient: ApiClient?) {
+        if let apiClient = apiClient {
+            self.apiClient = apiClient
+        } else {
+            do {
+                self.apiClient = try AlamofireApiClient()
+            } catch {
+                fatalError()
+            }
+        }
+    }
+    
+    func publishUdid() -> AnyPublisher<String, Error> {
+        self.apiClient.call(api: Apis.Udid())
+            .map { response in
+                return response.udid
+            }
+            .mapError { errorWrapper in
+                return errorWrapper
+            }
+            .eraseToAnyPublisher()
+    }
+}
+```
 
 
 // 以上

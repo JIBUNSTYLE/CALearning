@@ -51,11 +51,10 @@ struct MockApiClient<U> : ApiClient where U: Api {
                 
                 if case .success(let entity) = self.stub {
                     do {
-                        var data: Data?
                         let jsonEncoder = JSONEncoder()
                         jsonEncoder.dateEncodingStrategy = .iso8601
-                        data = try! jsonEncoder.encode(entity)
-                        let entity = try api.deserialize(data!)
+                        let data = try jsonEncoder.encode(entity)
+                        let entity = try api.deserialize(data)
                         promise(.success(entity))
                     } catch let error {
                         promise(.failure(

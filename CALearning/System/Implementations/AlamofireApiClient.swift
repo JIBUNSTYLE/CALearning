@@ -69,8 +69,10 @@ class AlamofireApiClient: ApiClient {
                                     return promise(.failure(
                                         ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api, causedBy: error)
                                     ))
-                                } catch {
-                                    
+                                } catch let error {
+                                    return promise(.failure(
+                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api, causedBy: error)
+                                    ))
                                 }
                             }
                             

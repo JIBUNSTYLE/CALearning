@@ -13,18 +13,31 @@ struct Dependencies {
     
     // 依存性逆転が必要なものが増えたら足していく
     var dataStore: DataStore
-    var backend: Backend
+    var backend: Backend?
    
     init(
         dataStore: DataStore = UserDefaultsDataStore()
-        , backend: Backend = ApiBackend(apiClient: nil)
+        , backend: Backend? = nil
     ) {
         self.dataStore = dataStore
-        self.backend = backend
+        
+        if let b = backend {
+            self.backend = b
+        } else {
+            do {
+                self.backend = try ApiBackend()
+            } catch let error {
+                print("\(error)")
+            }
+        }
     }
     
     /// mockなどを差し込む際に使う
-    func set(mock: Dependencies) {
-        Dependencies.shared = mock
+    func set(
+        dataStore: DataStore? = nil
+        , backend: Backend? = nil
+    ) {
+        if let d = dataStore { Dependencies.shared.dataStore = d }
+        if let b = backend { Dependencies.shared.backend = b }
     }
 }

@@ -12,14 +12,12 @@ struct ApiBackend : Backend {
     
     let apiClient: ApiClient
     
-    init(apiClient: ApiClient?) {
-        if let apiClient = apiClient {
-            self.apiClient = apiClient
+    init(apiClient: ApiClient? = nil) throws {
+        if let a = apiClient {
+            self.apiClient = a
         } else {
             do {
                 self.apiClient = try AlamofireApiClient()
-            } catch {
-                fatalError()
             }
         }
     }

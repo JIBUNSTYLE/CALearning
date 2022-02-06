@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct Apis {
-    static let BASE_URL = "http://apps.dev.timesclub.jp/yorimichiappsweb" // Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String
+    static let BASE_URL = "http://localhost:8000" // Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String
 
     static let DEFAULT_HEADERS = HTTPHeaders(["Content-Type" : "application/json"])
  
@@ -22,7 +22,7 @@ struct Apis {
         }
 
         let method = HTTPMethod.post
-        let url = Apis.BASE_URL + "/device/id/issue"
+        let url = Apis.BASE_URL + "/udids"
         let headers: HTTPHeaders?
         let params: [String: Any]
 
