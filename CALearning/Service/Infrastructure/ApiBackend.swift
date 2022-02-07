@@ -12,14 +12,14 @@ struct ApiBackend : Backend {
     
     let apiClient: ApiClient
     
-    init(apiClient: ApiClient? = nil) throws {
-        if let a = apiClient {
-            self.apiClient = a
-        } else {
-            do {
-                self.apiClient = try AlamofireApiClient()
-            }
+    init() throws {
+        do {
+            self.apiClient = try AlamofireApiClient()
         }
+    }
+    
+    init(apiClient: ApiClient) {
+        self.apiClient = apiClient
     }
     
     func publishUdid() -> AnyPublisher<String, Error> {

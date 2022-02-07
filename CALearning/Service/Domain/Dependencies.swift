@@ -12,8 +12,8 @@ struct Dependencies {
     static private(set) var shared: Dependencies = Dependencies()
     
     // 依存性逆転が必要なものが増えたら足していく
-    var dataStore: DataStore
-    var backend: Backend?
+    private(set) var dataStore: DataStore
+    private(set) var backend: Backend
    
     init(
         dataStore: DataStore = UserDefaultsDataStore()
@@ -27,7 +27,8 @@ struct Dependencies {
             do {
                 self.backend = try ApiBackend()
             } catch let error {
-                print("\(error)")
+                // 在るべきはPreesntation層まで伝えてダイアログ表示などが適切
+                fatalError(error.localizedDescription)
             }
         }
     }

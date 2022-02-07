@@ -603,7 +603,7 @@ struct Dependencies {
     static private(set) var shared: Dependencies = Dependencies()
     
     // 依存性逆転が必要なものが増えたら足していく
-    var dataStore: DataStore
+    private(set) var dataStore: DataStore
    
     init(
         dataStore: DataStore = UserDefaultsDataStore()
@@ -612,8 +612,10 @@ struct Dependencies {
     }
     
     /// mockなどを差し込む際に使う
-    func set(mock: Dependencies) {
-        Dipendencies.shared = mock
+    func set(
+        dataStore: DataStore? = nil
+    ) {
+        if let d = dataStore { Dependencies.shared.dataStore = d }
     }
 }
 ```
@@ -771,7 +773,8 @@ enum Boot : Usecase {
             return nil
 
         case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
-            return self.publishUdid()
+            // TODO: UDIDを取得する
+            // return self.publishUdid()
             
         case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
             return nil
@@ -1263,16 +1266,14 @@ import Combine
 struct ApiBackend : Backend {
     let apiClient: ApiClient
     
-    init(apiClient: ApiClient?) {
-        if let apiClient = apiClient {
-            self.apiClient = apiClient
-        } else {
-            do {
-                self.apiClient = try AlamofireApiClient()
-            } catch {
-                fatalError()
-            }
+    init() throws {
+        do {
+            self.apiClient = try AlamofireApiClient()
         }
+    }
+    
+    init(apiClient: ApiClient) {
+        self.apiClient = apiClient
     }
     
     func publishUdid() -> AnyPublisher<String, Error> {
@@ -1288,5 +1289,96 @@ struct ApiBackend : Backend {
 }
 ```
 
+Dependenciesを以下のように拡張します。
+
+```Dependencies.swift
+struct Dependencies {
+    ...
+    
+    // 依存性逆転が必要なものが増えたら足していく
+    private(set) var dataStore: DataStore
+    private(set) var backend: Backend
+   
+    init(
+        dataStore: DataStore = UserDefaultsDataStore()
+        , backend: Backend? = nil
+    ) {
+        self.dataStore = dataStore
+        
+        if let b = backend {
+            self.backend = b
+        } else {
+            do {
+                self.backend = try ApiBackend()
+            } catch let error {
+                // 在るべきはPreesntation層まで伝えてダイアログ表示などが適切
+                fatalError(error.localizedDescription)
+            }
+        }
+    }
+    
+    /// mockなどを差し込む際に使う
+    func set(
+        dataStore: DataStore? = nil
+        , backend: Backend? = nil
+    ) {
+        if let d = dataStore { Dependencies.shared.dataStore = d }
+        if let b = backend { Dependencies.shared.backend = b }
+    }
+}
+```
+
+`ApiBackend` は初期化時にエラーが発生することがあるので、Dependencies.init()のデフォルト引数で指定することができません。nilの場合には`ApiBackend`をインスタンス化するようにし、万一 `ApiBackend` の初期化に失敗した場合には アプリを終了するようにしています。
+
+## 8.7 ドメインモデルの拡張とユースケースの実装
+
+Backendオブジェクトを用いて`Application`には以下のメソッドを追加します。
+
+```Application.swift
+    func publishUdid() -> AnyPublisher<String, Error> {
+        return Dependencies.shared.backend.publishUdid()
+    }
+```
+
+`Boot`にて、TODOとしていた `publishUdid`メソッドの実装は以下のようになりまっす。
+
+```Boot.swift
+    private func publishUdid() -> AnyPublisher<Boot, Error> {
+        return Application()
+            .publishUdid()
+            .map { udid -> Boot in
+                Application().save(udid: udid)
+                return .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
+            }
+            .eraseToAnyPublisher()
+    }
+```
+
+## 8.8 モックとスタブによる動作確認
+
+APIサーバーがまだない状況では、Backend実装をMockApiClientに差し替えて実行しましょう。
+差し替えのタイミングはユースケース実行前で、ここでは`presenter`内とします。
+
+```Presenter.swift
+    func boot() {
+        let apiClient = MockApiClient<Apis.Udid>(stub: .success(entity: Apis.Udid.Entity(udid: "hoge")))
+        let backend = ApiBackend(apiClient: apiClient)
+        Dependencies.shared.set(backend: backend)
+
+        Application().discardUdid() // UDIDが保存されているとAPIが呼ばれないので消す
+        
+        Boot()
+            .interact()
+            ...
+```
+
+異常系を再現する場合にはstubを以下のように変更します。
+
+```Presenter.swift
+        let apiClient = MockApiClient<Apis.Udid>(stub: .failure(by: ErrorWrapper<Apis.Udid>.service(error: .client(.ネットワーク接続不可), args: Apis.Udid(), causedBy: nil)))
+```
+
+ここまで実装したことで、エラーは消えていると思います。
+シミュレータで実行して確認してみましょう。
 
 // 以上

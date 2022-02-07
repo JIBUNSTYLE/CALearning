@@ -21,13 +21,14 @@ class Presenter: ObservableObject {
             , afterCall: { result in
                 print("● afterCall: \(result)")
             })
+
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .failure(by: ErrorWrapper<Apis.Udid>.service(error: .client(.ネットワーク接続不可), args: Apis.Udid(), causedBy: nil))
 //            , afterCall: { result in
 //                print("● afterCall: \(result)")
 //            })
         let backend = ApiBackend(apiClient: apiClient)
-        Dependencies.shared.set(mock: Dependencies(backend: backend))
+        Dependencies.shared.set(backend: backend)
 
         Application().discardUdid()
         
