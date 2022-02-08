@@ -713,19 +713,36 @@ itってなんやねん、というと、英語では it should be... と期待�
 もちろんユースケース以外にも、複雑なメソッドの機能テストも振る舞いを記述してテストをすることができます。
 
 ```swift
-    describe("UserDefaultsDataStore.save") {
-        context("引数が .bool(key: .hasCompletedTutorial, value: true )") {
-            it("UserDefautlsに文字列キーhasCompletedTutorialで、trueが保存されること) {
-                UserDefaultsDataStore().save(.bool(key: .hasCompletedTutorial, value: true))
-                
-                expect {
-                    guard let result = UserDefaults.standard.object(forKey: "hasCompletedTutorial") as? Bool else {
-                        return .failed(reason: "hasCompletedTutorialをキーとする値がありません")
-                    }
-                }.to(beTrue())
+        describe("UserDefaultsDataStore.save") {
+            context("引数が .bool(key: .hasCompletedTutorial, value: true )") {
+                it("UserDefautlsに文字列キーhasCompletedTutorialで、trueが保存されること") {
+                    UserDefaultsDataStore().save(.bool(key: .hasCompletedTutorial, value: true))
+                    
+                    expect(UserDefaults.standard.object(forKey: "hasCompletedTutorial") as? Bool).to(beTrue())
+                    
+                }
+            }
+            
+            context("引数が .bool(key: .hasCompletedTutorial, value: false )") {
+                it("UserDefautlsに文字列キーhasCompletedTutorialで、falseが保存されること") {
+                    UserDefaultsDataStore().save(.bool(key: .hasCompletedTutorial, value: false))
+                    
+                    expect(UserDefaults.standard.object(forKey: "hasCompletedTutorial") as? Bool).to(beFalse())
+                    
+                }
             }
         }
-    }
+        
+        describe("UserDefaultsDataStore.delete") {
+            context("引数が KeyValue.BoolKey.hasCompletedTutorial") {
+                it("UserDefautlsに文字列キーhasCompletedTutorialが保存されていないこと") {
+                    UserDefaultsDataStore().delete(KeyValue.BoolKey.hasCompletedTutorial)
+                    
+                    expect(UserDefaults.standard.object(forKey: "hasCompletedTutorial") as? Bool).to(beNil())
+                    
+                }
+            }
+        }
 ```
 
 これは関数の仕様書であり、使い方のサンプルでもあります（Specification by Example）。
