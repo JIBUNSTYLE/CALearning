@@ -14,16 +14,20 @@ enum Boot : Usecase {
     enum Basics {
         case アプリはサーバで発行したUDIDが保存されていないかを調べる
         case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
-        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
     }
     
     enum Alternatives {
         case UDIDがない場合_アプリはUDIDを取得する
+    }
+    
+    enum Goals {
+        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
         case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
     }
     
     case basic(scene: Basics)
     case alternate(scene: Alternatives)
+    case last(scene: Goals)
     
     init() {
         self = .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)
@@ -37,13 +41,10 @@ enum Boot : Usecase {
         case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
             return self.detect()
 
-        case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
-            return nil
-
         case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
             return self.publishUdid()
             
-        case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
+        case .last:
             return nil
         }
     }
@@ -70,9 +71,9 @@ enum Boot : Usecase {
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                     if Application().hasCompletedTutorial {
-                        promise(.success(.basic(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示)))
+                        promise(.success(.last(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示)))
                     } else {
-                        promise(.success(.alternate(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示)))
+                        promise(.success(.last(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示)))
                     }
                 }
             }

@@ -14,7 +14,7 @@ class Presenter: ObservableObject {
     
     private var cancellables = [AnyCancellable]()
     
-    func boot() {
+    func boot(from initialScene: Boot = Boot()) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -32,7 +32,7 @@ class Presenter: ObservableObject {
 //
 //        Application().discardUdid()
 //
-        Boot()
+        initialScene
             .interact()
             .sink { completion in
                 if case .finished = completion {
@@ -43,10 +43,12 @@ class Presenter: ObservableObject {
             } receiveValue: { scenario in
                 print("usecase - boot: \(scenario)")
                 
-                if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
+                guard case .last(let goal) = scenario.last else { fatalError() }
+                    
+                switch goal {
+                case .チュートリアル完了の記録がある場合_アプリはログイン画面を表示:
                     self.currentView = .login
-
-                } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
+                case .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示:
                     self.currentView = .tutorial
                 }
             }
