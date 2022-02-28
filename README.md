@@ -30,7 +30,7 @@ CALearning
 
 # 2. Viewの表示
 
-新規プロジェクト作成時点で、`View` として ContetView.swift が作られます。 ContetView はアプリの実体である CALearningApp から呼ばれています。
+新規プロジェクト作成時点で、`View` として ContentView.swift が作られます。 ContentView はアプリの実体である CALearningApp から呼ばれています。
 
 ここでは、ContentView はサービスの `View` の表示を制御するものとして利用することにし、`Viewコンテナ` と呼びます。
 
@@ -46,7 +46,7 @@ Service/Presentation/Viewsフォルダを作成し、Splash.swift／Tutorial.swi
 
 ContentViewが状態として、表示したいViewに対応するenumを保持するようにします。
 
-```ContetView.swift
+```ContentView.swift
 
 enum Views {
     case splash, tutorial, login
@@ -368,7 +368,7 @@ class Presenter: ObservableObject {
 }
 ```
 
-ユースケースの実行結果で遷移する画面を変更したいため、ContetViewで保持していた currentViewプロパティ を `Presenter` に移植します。
+ユースケースの実行結果で遷移する画面を変更したいため、ContentViewで保持していた currentViewプロパティ を `Presenter` に移植します。
 
 
 ```Presenter.swift
