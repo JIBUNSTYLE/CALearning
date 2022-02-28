@@ -896,9 +896,9 @@ enum SystemErrors: Error {
 また、これら２種類のエラーを共通して処理できるようにラップするエラーも用意します。
 
 ```SystemErrors.swift
-enum ErrorWrapper<T>: Error {
-    case service(error: ServiceErrors, args: T?, causedBy: Error?)
-    case system(error: SystemErrors, args: T?, causedBy: Error?)
+enum ErrorWrapper: Error {
+    case service(error: ServiceErrors, args: [String:Any]?, causedBy: Error?)
+    case system(error: SystemErrors, args: [String:Any]?, causedBy: Error?)
 }
 ```
 
@@ -940,6 +940,8 @@ protocol Api {
     // サーバから戻ってきたJSONを専用の構造体に変更する
     func deserialize(_ json: Data) throws -> Entity
     func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse
+    // エラー発生時に問題解決の手掛かりにするなどのために、APIの情報をDictionaryで返します
+    func description() -> [String:Any]
 }
 
 extension Api {
@@ -955,6 +957,15 @@ extension Api {
         decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
         return try decoder.decode(ErrorResponse.self, from: json)
     }
+    
+    func description() -> [String:Any] {
+        return [
+            "method"    : self.method.rawValue
+            , "url"     : self.url
+            , "headers" : self.headers.debugDescription
+            , "params"  : self.params.debugDescription
+        ]
+    }
 }
 ```
 
@@ -967,7 +978,7 @@ System/Protocolsフォルダ以下に、ApiClient.swift の Swiftファイルを
 import Combine
 
 protocol ApiClient {
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api
 }
 ```
 
@@ -1036,10 +1047,10 @@ class AlamofireApiClient: ApiClient {
         self.reachabilityManager = reachabilityManager
     }
     
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
 
         return Deferred {
-            Future<T.Entity, ErrorWrapper<T>> { promise in
+            Future<T.Entity, ErrorWrapper> { promise in
                 
                 guard case .reachable(_) = self.reachablityStatus else {
                     // TODO: サービスエラー: ネットワーク接続不可
@@ -1130,14 +1141,14 @@ class AlamofireApiClient: ApiClient {
         ...
     }
     
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
 
         return Deferred {
-            Future<T.Entity, ErrorWrapper<T>> { promise in
+            Future<T.Entity, ErrorWrapper> { promise in
                 
                 guard case .reachable(_) = self.reachablityStatus else {
                     return promise(.failure(
-                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api, causedBy: nil)
+                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api.description(), causedBy: nil)
                     ))
                 }
                 
@@ -1165,16 +1176,16 @@ class AlamofireApiClient: ApiClient {
                                 do {
                                     let errorResponse = try api.deserializeErrorResponse(data)
                                     return promise(.failure(
-                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api, causedBy: error)
+                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api.description(), causedBy: error)
                                     )) 
                                 } catch {
                                     return promise(.failure(
-                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api, causedBy: error)
+                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api.description(), causedBy: error)
                                     ))
                                 }
                             }
                             promise(.failure(
-                                ErrorWrapper.system(error: SystemErrors.api(.その他のエラー(statusCode: response.response?.statusCode)), args: api, causedBy: error)
+                                ErrorWrapper.system(error: SystemErrors.api(.その他のエラー(statusCode: response.response?.statusCode)), args: api.description(), causedBy: error)
                             ))
                         }
                 }
@@ -1200,7 +1211,7 @@ struct MockApiClient<U> : ApiClient where U: Api {
     
     enum ApiResult<T> where T : Api {
         case success(entity: T.Entity)
-        case failure(by: ErrorWrapper<T>)
+        case failure(by: ErrorWrapper)
     }
 
     let stub: ApiResult<U>
@@ -1209,10 +1220,10 @@ struct MockApiClient<U> : ApiClient where U: Api {
         self.stub = stub
     }
     
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
 
         return Deferred {
-            Future<T.Entity, ErrorWrapper<T>> { promise in
+            Future<T.Entity, ErrorWrapper> { promise in
                 guard let _api = api as? U else {
                     // TODO: システムエラー: 準備されたAPIスタブが呼び出されたAPIと合致しません
                 }
@@ -1228,7 +1239,7 @@ struct MockApiClient<U> : ApiClient where U: Api {
                         // TODO: システムエラー: 準備されたAPIスタブのEncodeまたはDecodeに失敗
                     }
                 } else if case .failure(let errorWrapper) = self.stub {
-                    promise(.failure(errorWrapper as! ErrorWrapper<T>))
+                    promise(.failure(errorWrapper))
                 }
             }
         }
@@ -1398,7 +1409,7 @@ APIサーバーがまだない状況では、Backend実装をMockApiClientに差
 異常系を再現する場合にはstubを以下のように変更します。
 
 ```Presenter.swift
-        let apiClient = MockApiClient<Apis.Udid>(stub: .failure(by: ErrorWrapper<Apis.Udid>.service(error: .client(.ネットワーク接続不可), args: Apis.Udid(), causedBy: nil)))
+        let apiClient = MockApiClient<Apis.Udid>(stub: .failure(by: ErrorWrapper<Apis.Udid>.service(error: .client(.ネットワーク接続不可), args: Apis.Udid().description(), causedBy: nil)))
 ```
 
 ここまで実装したことで、エラーは消えていると思います。

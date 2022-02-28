@@ -38,7 +38,14 @@ class Presenter: ObservableObject {
                 if case .finished = completion {
                     print("boot は正常終了")
                 } else if case .failure(let error) = completion {
-                    print("boot が異常終了: \(error)")
+                    switch error {
+                    case let ErrorWrapper.service(error, args, causedBy):
+                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
+                    case let ErrorWrapper.system(error, args, causedBy):
+                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
+                    default:
+                        print("boot が異常終了: \(error)")
+                    }
                 }
             } receiveValue: { scenario in
                 print("usecase - boot: \(scenario)")

@@ -32,14 +32,14 @@ class AlamofireApiClient: ApiClient {
         print("● 初期段階の reachablityStatus: \(self.reachablityStatus)")
     }
     
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
 
         return Deferred {
-            Future<T.Entity, ErrorWrapper<T>> { promise in
+            Future<T.Entity, ErrorWrapper> { promise in
                 
                 guard case .reachable(_) = self.reachablityStatus else {
                     return promise(.failure(
-                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api, causedBy: nil)
+                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api.description(), causedBy: nil)
                     ))
                 }
                 
@@ -67,17 +67,17 @@ class AlamofireApiClient: ApiClient {
                                 do {
                                     let errorResponse = try api.deserializeErrorResponse(data)
                                     return promise(.failure(
-                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api, causedBy: error)
+                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api.description(), causedBy: error)
                                     ))
                                 } catch let error {
                                     return promise(.failure(
-                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api, causedBy: error)
+                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api.description(), causedBy: error)
                                     ))
                                 }
                             }
                             
                             promise(.failure(
-                                ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api, causedBy: error)
+                                ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api.description(), causedBy: error)
                             ))
                         }
                 }

@@ -14,7 +14,7 @@ struct MockApiClient<U> : ApiClient where U: Api {
     
     enum ApiResult<T> where T : Api {
         case success(entity: T.Entity)
-        case failure(by: ErrorWrapper<T>)
+        case failure(by: ErrorWrapper)
     }
     
     // ネットワークに接続されているか否か
@@ -30,19 +30,19 @@ struct MockApiClient<U> : ApiClient where U: Api {
         self.afterCall = afterCall
     }
     
-    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper<T>> where T: Api {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
 
         return Deferred {
-            Future<T.Entity, ErrorWrapper<T>> { promise in
+            Future<T.Entity, ErrorWrapper> { promise in
                 guard let _api = api as? U else {
                     return promise(.failure(
-                        ErrorWrapper.system(error: SystemErrors.test(.準備されたAPIスタブが呼び出されたAPIと合致しません(message: "mocking: \(U.self), called: \(type(of: api))")), args: api, causedBy: nil)
+                        ErrorWrapper.system(error: SystemErrors.test(.準備されたAPIスタブが呼び出されたAPIと合致しません(message: "mocking: \(U.self), called: \(type(of: api))")), args: api.description(), causedBy: nil)
                     ))
                 }
                 
                 guard self.isReachable else {
                     return promise(.failure(
-                        ErrorWrapper.service(error: .client(.ネットワーク接続不可), args: api, causedBy: nil)
+                        ErrorWrapper.service(error: .client(.ネットワーク接続不可), args: api.description(), causedBy: nil)
                     ))
                 }
                 
@@ -58,12 +58,12 @@ struct MockApiClient<U> : ApiClient where U: Api {
                         promise(.success(entity))
                     } catch let error {
                         promise(.failure(
-                            ErrorWrapper.system(error: SystemErrors.test(.準備されたAPIスタブのEncodeまたはDecodeに失敗(stub: "\(entity)")), args: api, causedBy: error)
+                            ErrorWrapper.system(error: SystemErrors.test(.準備されたAPIスタブのEncodeまたはDecodeに失敗(stub: "\(entity)")), args: api.description(), causedBy: error)
                             )
                         )
                     }
                 } else if case .failure(let errorWrapper) = self.stub {
-                    promise(.failure(errorWrapper as! ErrorWrapper<T>))
+                    promise(.failure(errorWrapper))
                 }
             }
         }
@@ -78,7 +78,7 @@ struct MockApiClient<U> : ApiClient where U: Api {
                     print("\(api) は正常終了")
                 } else if case .failure(let errorWrapper) = completion {
                     if let f = self.afterCall {
-                        f(.failure(by: errorWrapper as! ErrorWrapper<U>))
+                        f(.failure(by: errorWrapper))
                     }
                 }
             }

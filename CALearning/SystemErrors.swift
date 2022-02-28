@@ -11,9 +11,12 @@ import Foundation
 ///
 /// - service: サービスで予め想定しているエラー
 /// - system: サービスで想定していないエラー
-enum ErrorWrapper<T>: Error {
-    case service(error: ServiceErrors, args: T?, causedBy: Error?)
-    case system(error: SystemErrors, args: T?, causedBy: Error?)
+enum ErrorWrapper: Error {
+    // 当初、argsは args: T とジェネリクスにし、Apiを渡していたが、
+    // インフラ層のみが知るAPIの内容をドメイン層やアプリケーション層、プレゼンテーション層で
+    // 意識しなくてはいけなくなるためDictionaryにするようにした
+    case service(error: ServiceErrors, args: [String:Any]?, causedBy: Error?)
+    case system(error: SystemErrors, args: [String:Any]?, causedBy: Error?)
 }
 
 enum SystemErrors: Error {

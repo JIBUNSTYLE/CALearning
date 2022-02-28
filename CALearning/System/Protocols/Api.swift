@@ -25,6 +25,9 @@ protocol Api {
     // サーバから戻ってきたJSONを専用の構造体に変更する
     func deserialize(_ json: Data) throws -> Entity
     func deserializeErrorResponse(_ json: Data) throws -> ErrorResponse
+    
+    // エラー発生時に問題解決の手掛かりにするなどのために、APIの情報をDictionaryで返します
+    func description() -> [String:Any]
 }
 
 extension Api {
@@ -39,5 +42,14 @@ extension Api {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
         return try decoder.decode(ErrorResponse.self, from: json)
+    }
+    
+    func description() -> [String:Any] {
+        return [
+            "method"    : self.method.rawValue
+            , "url"     : self.url
+            , "headers" : self.headers.debugDescription
+            , "params"  : self.params.debugDescription
+        ]
     }
 }
