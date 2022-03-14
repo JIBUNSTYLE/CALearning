@@ -49,7 +49,7 @@ class AlamofireApiClient: ApiClient {
                     api.url
                     , method: api.method
                     , parameters: api.params
-                    , encoding: JSONEncoding.default
+                    , encoding: (api.method == .get) ? URLEncoding.default : JSONEncoding.default
                     , headers: api.headers
                 )
                     .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
