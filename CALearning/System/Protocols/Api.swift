@@ -20,7 +20,9 @@ protocol Api {
     var method: HTTPMethod { get }
     var url: String { get }
     var headers: HTTPHeaders? { get }
+    var encoding: ParameterEncoding { get }
     var params: [String: Any] { get }
+    var decoder: DataDecoder { get }
 
     // サーバから戻ってきたJSONを専用の構造体に変更する
     func deserialize(_ json: Data) throws -> Entity
@@ -31,6 +33,20 @@ protocol Api {
 }
 
 extension Api {
+    
+    var encoding: ParameterEncoding {
+        if case .get = self.method {
+            return URLEncoding.default
+        } else {
+            return JSONEncoding.default
+        }
+    }
+    
+    var decoder: DataDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // 日付のデコードする際の形式を指定
+        return decoder
+    }
     
     func deserialize(_ json: Data) throws -> Entity {
         let decoder = JSONDecoder()

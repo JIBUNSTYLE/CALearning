@@ -49,11 +49,11 @@ class AlamofireApiClient: ApiClient {
                     api.url
                     , method: api.method
                     , parameters: api.params
-                    , encoding: (api.method == .get) ? URLEncoding.default : JSONEncoding.default
+                    , encoding: api.encoding
                     , headers: api.headers
                 )
                     .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
-                    .responseDecodable(of: T.Entity.self) { response in
+                    .responseDecodable(of: T.Entity.self, decoder: api.decoder) { response in
                         
                         switch response.result {
                         case .success(let entity):
