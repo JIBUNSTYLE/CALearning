@@ -38,6 +38,8 @@
 		707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Presenter.swift */; };
 		70873E9A27E02F7D007EE181 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* Account.swift */; };
 		70873E9E27E0300B007EE181 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* Model.swift */; };
+		708A75F927E0C0A60047016B /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75F827E0C0A60047016B /* Actor.swift */; };
+		708A75FD27E0C4E70047016B /* Anyone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FC27E0C4E70047016B /* Anyone.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +92,8 @@
 		707CA996279FD1BA00EAFC66 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		70873E9927E02F7D007EE181 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		70873E9D27E0300B007EE181 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		708A75F827E0C0A60047016B /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
+		708A75FC27E0C4E70047016B /* Anyone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anyone.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +178,7 @@
 			children = (
 				707CA980279F8B6300EAFC66 /* Service */,
 				707CA98E279F932100EAFC66 /* System */,
+				708A75F827E0C0A60047016B /* Actor.swift */,
 				707CA955279F833700EAFC66 /* CALearningApp.swift */,
 				707CA957279F833700EAFC66 /* ContentView.swift */,
 				7077C9AA27A8F9830035E404 /* SystemErrors.swift */,
@@ -242,7 +247,8 @@
 		707CA98B279F8F6A00EAFC66 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				707CA98C279F8FA500EAFC66 /* Boot.swift */,
+				708A75FA27E0C4C50047016B /* Actors */,
+				708A75FB27E0C4D30047016B /* Usecases */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -284,6 +290,22 @@
 				70873E9927E02F7D007EE181 /* Account.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		708A75FA27E0C4C50047016B /* Actors */ = {
+			isa = PBXGroup;
+			children = (
+				708A75FC27E0C4E70047016B /* Anyone.swift */,
+			);
+			path = Actors;
+			sourceTree = "<group>";
+		};
+		708A75FB27E0C4D30047016B /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+				707CA98C279F8FA500EAFC66 /* Boot.swift */,
+			);
+			path = Usecases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,6 +452,7 @@
 			files = (
 				7077C9B627A906F90035E404 /* Api.swift in Sources */,
 				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
+				708A75FD27E0C4E70047016B /* Anyone.swift in Sources */,
 				7077C9BC27AB5C540035E404 /* Apis.swift in Sources */,
 				707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */,
 				7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */,
@@ -443,6 +466,7 @@
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
+				708A75F927E0C0A60047016B /* Actor.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,

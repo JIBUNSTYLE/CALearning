@@ -14,7 +14,7 @@ class Presenter: ObservableObject {
     
     private var cancellables = [AnyCancellable]()
     
-    func boot(from initialScene: Boot = Boot()) {
+    func boot() {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -32,8 +32,9 @@ class Presenter: ObservableObject {
 //
 //        Application().discardUdid()
 //
-        initialScene
-            .interact()
+        
+        Anyone()
+            .interact(in: Boot())
             .sink { completion in
                 if case .finished = completion {
                     print("boot は正常終了")

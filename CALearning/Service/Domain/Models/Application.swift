@@ -39,6 +39,19 @@ class Application {
         }
     }
     
+    func authorize<T: Actor, U: Usecase>(_ actor: T?, toInteractFrom initialScene: U) -> Bool {
+        switch initialScene {
+        case is Boot : do {
+//            if case .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる) = initialScene as! Boot {
+//
+//            }
+            return true
+        }
+        default:
+            return false
+        }
+    }
+    
     func publishUdid() -> AnyPublisher<String, Error> {
         return Dependencies.shared.backend.publishUdid()
     }
