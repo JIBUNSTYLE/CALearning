@@ -16,12 +16,16 @@ protocol Usecase {
     /// next関数の実装時、特にドメイン的な処理がSceneが続く場合に使います。
     func just(next: Self) -> AnyPublisher<Self, Error>
     
+    func authorize(actor: Account?) -> Bool
+    
     /// Usecaseに準拠するenumを引数に取り、再帰的にnext()を実行します。
     ///
     /// - Parameter contexts: ユースケースシナリオの（画面での分岐を除く）分岐をけcaseに持つenumのある要素
     /// - Returns: 引数のenumと同様のenumで、引数の分岐を処理した結果の要素
-    func interact() -> AnyPublisher<[Self], Error>
+    func interact(with actor: Account?) -> AnyPublisher<[Self], Error>
 }
+
+
 
 extension Usecase {
     
@@ -57,7 +61,15 @@ extension Usecase {
             .eraseToAnyPublisher()
     }
     
-    func interact() -> AnyPublisher<[Self], Error> {
+    func authorize(actor: Account?) -> Bool {
+        return AccountModel().authorize(actor, toInteract: self)
+    }
+    
+    func interact(with actor: Account? = nil) -> AnyPublisher<[Self], Error> {
+        guard self.authorize(actor: actor) else {
+            return Fail(error: ErrorWrapper.service(error: .client(.現在のアカウントには許可されていないユースケースが実行されました), args: ["actor": actor, "usecase": self], causedBy: nil))
+                .eraseToAnyPublisher()
+        }
         return self.recursive(contexts: [self])
     }
 }

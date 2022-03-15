@@ -10,6 +10,7 @@ import Foundation
 enum ServiceErrors: Error {
 
     enum Client: Error {
+        case 現在のアカウントには許可されていないユースケースが実行されました
         case ネットワーク接続不可
     }
 

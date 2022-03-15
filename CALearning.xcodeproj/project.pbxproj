@@ -36,6 +36,8 @@
 		707CA991279F933E00EAFC66 /* Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA990279F933E00EAFC66 /* Usecase.swift */; };
 		707CA995279FA89A00EAFC66 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA994279FA89A00EAFC66 /* Application.swift */; };
 		707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Presenter.swift */; };
+		70873E9A27E02F7D007EE181 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* Account.swift */; };
+		70873E9E27E0300B007EE181 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,8 @@
 		707CA990279F933E00EAFC66 /* Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecase.swift; sourceTree = "<group>"; };
 		707CA994279FA89A00EAFC66 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		707CA996279FD1BA00EAFC66 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		70873E9927E02F7D007EE181 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		70873E9D27E0300B007EE181 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +259,7 @@
 		707CA98F279F933000EAFC66 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				70873E9D27E0300B007EE181 /* Model.swift */,
 				707CA990279F933E00EAFC66 /* Usecase.swift */,
 				7077C9B527A906F90035E404 /* Api.swift */,
 				7077C9A827A8F9560035E404 /* ApiClient.swift */,
@@ -276,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				707CA994279FA89A00EAFC66 /* Application.swift */,
+				70873E9927E02F7D007EE181 /* Account.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -430,11 +436,13 @@
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
+				70873E9A27E02F7D007EE181 /* Account.swift in Sources */,
 				7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */,
 				7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
+				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
