@@ -9,12 +9,13 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var store: SplashViewStore
+    private let actionCreator = ActionCreator(dispatcher: .shared)
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.presenter.boot()
+                actionCreator.boot()
             }
     }
 }
@@ -22,6 +23,6 @@ struct Splash: View {
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Splash()
-            .environmentObject(Presenter())
+            .environmentObject(SplashViewStore.shared)
     }
 }
