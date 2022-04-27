@@ -24,6 +24,7 @@ enum SystemErrors: Error {
     enum Development: Error {
         case 未実装
         case キャストに失敗
+        case 権限未設定
     }
     
     enum Test: Error {

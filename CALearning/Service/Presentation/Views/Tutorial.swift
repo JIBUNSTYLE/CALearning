@@ -8,13 +8,24 @@
 import SwiftUI
 
 struct Tutorial: View {
+    @EnvironmentObject var sharedPresenter: SharedPresenter
+    
     var body: some View {
-        Text("Tutorial")
+        VStack {
+            Spacer()
+            Text("Tutorial!")
+            Spacer()
+            Button("→ Complete") {
+                self.sharedPresenter.dispach(CompleteTutorial.basic(scene: .ユーザはチュートリアルを閉じる))
+            }
+            Spacer()
+        }
     }
 }
 
 struct Tutorial_Previews: PreviewProvider {
     static var previews: some View {
         Tutorial()
+            .environmentObject(SharedPresenter())
     }
 }

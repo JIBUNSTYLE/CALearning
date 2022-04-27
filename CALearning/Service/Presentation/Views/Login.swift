@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct Login: View {
+    
+    let localPresenter: LoginPresenter
+    
     var body: some View {
         Text("Login")
     }
@@ -15,6 +18,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login()
+        Login(localPresenter: SharedPresenter().loginPresenter)
     }
 }

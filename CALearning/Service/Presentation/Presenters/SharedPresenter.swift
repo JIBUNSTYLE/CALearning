@@ -1,5 +1,5 @@
 //
-//  Presenter.swift
+//  SharedPresenter.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -8,13 +8,64 @@
 import Foundation
 import Combine
 
-class Presenter: ObservableObject {
+class SharedPresenter: ObservableObject {
     
-    @Published var currentView: Views = .splash
+    // ViewからはReadonlyとして扱う
+    @Published private(set) var currentView: Views = .splash
+    
+    private(set) var actor: Actor = Anyone()
+    
+    private var _login: LoginPresenter?
+    
+    var loginPresenter: LoginPresenter {
+        if let p = self._login {
+            return p
+            
+        } else {
+            let p = LoginPresenter(with: self)
+            self._login = p
+            return p
+        }
+    }
     
     private var cancellables = [AnyCancellable]()
     
-    func boot() {
+}
+
+// MARK: - setter
+extension SharedPresenter {
+    
+    func routing(to view: Views) {
+        DispatchQueue.main.async {
+            self.currentView = view
+        }
+    }
+    
+    func changeActor<T: Actor>(to actor: T) {
+        DispatchQueue.main.async {
+            self.actor = actor
+        }
+    }
+}
+    
+// MARK: - usecase dispatcher
+extension SharedPresenter {
+    
+    func dispach<T: Usecase>(_ initialScene: T) {
+        switch initialScene {
+        case let scene as Boot:
+            self.boot(from: scene)
+
+        case let scene as CompleteTutorial:
+            self.completeTutorial(from: scene)
+
+        default:
+            fatalError("未実装")
+        }
+    }
+    
+    
+    func boot(from: Boot) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -32,9 +83,8 @@ class Presenter: ObservableObject {
 //
 //        Application().discardUdid()
 //
-        
-        Anyone()
-            .interact(in: Boot())
+        from
+            .interacted(by: self.actor)
             .sink { completion in
                 if case .finished = completion {
                     print("boot は正常終了")
@@ -55,11 +105,32 @@ class Presenter: ObservableObject {
                     
                 switch goal {
                 case .チュートリアル完了の記録がある場合_アプリはログイン画面を表示:
-                    self.currentView = .login
+                    self.routing(to: .login)
                 case .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示:
-                    self.currentView = .tutorial
+                    self.routing(to: .tutorial)
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func completeTutorial(from: CompleteTutorial) {
+        from
+            .interacted(by: self.actor)
+            .sink { completion in
+                if case .finished = completion {
+                    print("completeTutorial は正常終了")
+                } else if case .failure(let error) = completion {
+                    print("completeTutorial が異常終了: \(error)")
+                }
+            } receiveValue: { scenario in
+                print("usecase - completeTutorial: \(scenario)")
+                
+                guard case .last(let goal) = scenario.last else { fatalError() }
+                
+                if case .アプリはログイン画面を表示する = goal {
+                    self.routing(to: .login)
+                }
+                
+            }.store(in: &cancellables)
     }
 }

@@ -15,8 +15,13 @@ protocol Usecase {
     /// 引数で渡されたSceneを次のSceneとして返します。
     /// next関数の実装時、特にドメイン的な処理がSceneが続く場合に使います。
     func just(next: Self) -> AnyPublisher<Self, Error>
+    
+    /// 引数で渡されたActorがこのユースケースを実行できるかを返します。
+    func authorize(_ actor: Actor) throws -> Bool
+    
+    /// Actorに準拠するクラスのインスタンスを引数に取り、再帰的にnext()を実行します。
+    func interacted(by actor: Actor) -> AnyPublisher<[Self], Error>
 }
-
 
 
 extension Usecase {
@@ -28,5 +33,47 @@ extension Usecase {
             }
         }
         .eraseToAnyPublisher()
+    }
+    
+    func authorize<T: Actor>(_ actor: T) throws -> Bool {
+        throw SystemErrors.development(SystemErrors.Development.権限未設定)
+    }
+    
+    private func recursive(_ actor: Actor, scenario: [Self]) -> AnyPublisher<[Self], Error> {
+        guard let lastScene = scenario.last else { fatalError() }
+        
+        // 終了条件
+        guard let future = lastScene.next() else {
+            return Deferred {
+                Future<[Self], Error> { promise in
+                    promise(.success(scenario))
+                }
+            }
+            .eraseToAnyPublisher()
+        }
+        
+        // 再帰呼び出し
+        return future
+            .flatMap { nextScene -> AnyPublisher<[Self], Error> in
+                var _scenario = scenario
+                _scenario.append(nextScene)
+                return self.recursive(actor, scenario: _scenario)
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func interacted(by actor: Actor) -> AnyPublisher<[Self], Error> {
+        // 権限確認
+        do {
+            guard try self.authorize(actor) else {
+                return Fail(error: ErrorWrapper.service(error: .client(.現在のアカウントには許可されていないユースケースが実行されました), args: ["actor": actor, "initialScene": self], causedBy: nil))
+                    .eraseToAnyPublisher()
+            }
+        } catch let error as SystemErrors {
+            return Fail(error: ErrorWrapper.system(error: error, args: ["actor": actor, "initialScene": self], causedBy: nil))
+                .eraseToAnyPublisher()
+        } catch { fatalError() }
+        
+        return self.recursive(actor, scenario: [self])
     }
 }

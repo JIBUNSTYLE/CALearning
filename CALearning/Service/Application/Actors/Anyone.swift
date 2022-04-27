@@ -8,6 +8,7 @@
 import Foundation
 
 struct Anyone : Actor {
+
     let user: Account?
     
     init() {

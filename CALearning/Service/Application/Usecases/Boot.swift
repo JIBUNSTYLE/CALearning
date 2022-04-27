@@ -12,6 +12,7 @@ import Combine
 enum Boot : Usecase {
     
     enum Basics {
+        case ユーザはアプリを起動する
         case アプリはサーバで発行したUDIDが保存されていないかを調べる
         case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
     }
@@ -33,8 +34,16 @@ enum Boot : Usecase {
         self = .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)
     }
     
-    func next() -> AnyPublisher<Boot, Error>? {
+    func authorize(_ actor: Actor) throws -> Bool {
+        // Actorが誰でも実行可能
+        return true
+    }
+    
+    func next() -> AnyPublisher<Self, Error>? {
         switch self {
+        case .basic(scene: .ユーザはアプリを起動する):
+            return self.just(next: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
+            
         case .basic(.アプリはサーバで発行したUDIDが保存されていないかを調べる):
             return self.checkUdid()
             
@@ -49,9 +58,9 @@ enum Boot : Usecase {
         }
     }
     
-    private func checkUdid() -> AnyPublisher<Boot, Error> {
+    private func checkUdid() -> AnyPublisher<Self, Error> {
         return Deferred {
-            Future<Boot, Error> { promise in
+            Future<Self, Error> { promise in
                 guard let udid = Application().udid else {
                     return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
                 }
@@ -61,11 +70,11 @@ enum Boot : Usecase {
         .eraseToAnyPublisher()
     }
     
-    private func detect() -> AnyPublisher<Boot, Error> {
+    private func detect() -> AnyPublisher<Self, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {
-            Future<Boot, Error> { promise in
+            Future<Self, Error> { promise in
                 // Futureが非同期になる場合、sinkする側ではcancellableをstoreしておかないと、
                 // 非同期処理が終わる前にsubsciptionはキャンセルされてしまうので注意
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
@@ -81,10 +90,10 @@ enum Boot : Usecase {
         .eraseToAnyPublisher()
     }
     
-    private func publishUdid() -> AnyPublisher<Boot, Error> {
+    private func publishUdid() -> AnyPublisher<Self, Error> {
         return Application()
             .publishUdid()
-            .map { udid -> Boot in
+            .map { udid -> Self in
                 Application().save(udid: udid)
                 return .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
             }

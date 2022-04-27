@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70167B6128196EA400C40F0E /* CompleteTutorial.swift */; };
 		7077C99327A007D70035E404 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99227A007D70035E404 /* Quick */; };
 		7077C99627A007EB0035E404 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99527A007EB0035E404 /* Nimble */; };
 		7077C99827A007FD0035E404 /* BootSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C99727A007FD0035E404 /* BootSpec.swift */; };
@@ -35,11 +36,14 @@
 		707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA98C279F8FA500EAFC66 /* Boot.swift */; };
 		707CA991279F933E00EAFC66 /* Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA990279F933E00EAFC66 /* Usecase.swift */; };
 		707CA995279FA89A00EAFC66 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA994279FA89A00EAFC66 /* Application.swift */; };
-		707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Presenter.swift */; };
+		707CA997279FD1BA00EAFC66 /* SharedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* SharedPresenter.swift */; };
 		70873E9A27E02F7D007EE181 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* Account.swift */; };
 		70873E9E27E0300B007EE181 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* Model.swift */; };
 		708A75F927E0C0A60047016B /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75F827E0C0A60047016B /* Actor.swift */; };
 		708A75FD27E0C4E70047016B /* Anyone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FC27E0C4E70047016B /* Anyone.swift */; };
+		708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FE27F46A970047016B /* KeyChainDataStore.swift */; };
+		708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A760227F48E7D0047016B /* GoogleMapApiClient.swift */; };
+		70D4DC5227FDDD5600C02521 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		70167B6128196EA400C40F0E /* CompleteTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTutorial.swift; sourceTree = "<group>"; };
 		7077C99727A007FD0035E404 /* BootSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootSpec.swift; sourceTree = "<group>"; };
 		7077C99A27A0D4760035E404 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsDataStore.swift; sourceTree = "<group>"; };
@@ -89,11 +94,14 @@
 		707CA98C279F8FA500EAFC66 /* Boot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boot.swift; sourceTree = "<group>"; };
 		707CA990279F933E00EAFC66 /* Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecase.swift; sourceTree = "<group>"; };
 		707CA994279FA89A00EAFC66 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
-		707CA996279FD1BA00EAFC66 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		707CA996279FD1BA00EAFC66 /* SharedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPresenter.swift; sourceTree = "<group>"; };
 		70873E9927E02F7D007EE181 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		70873E9D27E0300B007EE181 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		708A75F827E0C0A60047016B /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		708A75FC27E0C4E70047016B /* Anyone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anyone.swift; sourceTree = "<group>"; };
+		708A75FE27F46A970047016B /* KeyChainDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainDataStore.swift; sourceTree = "<group>"; };
+		708A760227F48E7D0047016B /* GoogleMapApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapApiClient.swift; sourceTree = "<group>"; };
+		70D4DC5127FDDD5600C02521 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +147,7 @@
 				7077C9BB27AB5C540035E404 /* Apis.swift */,
 				7077C9BF27AB7B280035E404 /* ApiBackend.swift */,
 				7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */,
+				708A75FE27F46A970047016B /* KeyChainDataStore.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -178,7 +187,6 @@
 			children = (
 				707CA980279F8B6300EAFC66 /* Service */,
 				707CA98E279F932100EAFC66 /* System */,
-				708A75F827E0C0A60047016B /* Actor.swift */,
 				707CA955279F833700EAFC66 /* CALearningApp.swift */,
 				707CA957279F833700EAFC66 /* ContentView.swift */,
 				7077C9AA27A8F9830035E404 /* SystemErrors.swift */,
@@ -228,8 +236,8 @@
 		707CA981279F8B6A00EAFC66 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				70D4DC5027FDDBF200C02521 /* Presenters */,
 				707CA982279F8BDE00EAFC66 /* Views */,
-				707CA996279FD1BA00EAFC66 /* Presenter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -266,9 +274,11 @@
 			isa = PBXGroup;
 			children = (
 				70873E9D27E0300B007EE181 /* Model.swift */,
+				708A75F827E0C0A60047016B /* Actor.swift */,
 				707CA990279F933E00EAFC66 /* Usecase.swift */,
 				7077C9B527A906F90035E404 /* Api.swift */,
 				7077C9A827A8F9560035E404 /* ApiClient.swift */,
+				708A760227F48E7D0047016B /* GoogleMapApiClient.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -304,8 +314,18 @@
 			isa = PBXGroup;
 			children = (
 				707CA98C279F8FA500EAFC66 /* Boot.swift */,
+				70167B6128196EA400C40F0E /* CompleteTutorial.swift */,
 			);
 			path = Usecases;
+			sourceTree = "<group>";
+		};
+		70D4DC5027FDDBF200C02521 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				707CA996279FD1BA00EAFC66 /* SharedPresenter.swift */,
+				70D4DC5127FDDD5600C02521 /* LoginPresenter.swift */,
+			);
+			path = Presenters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,8 +473,9 @@
 				7077C9B627A906F90035E404 /* Api.swift in Sources */,
 				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
 				708A75FD27E0C4E70047016B /* Anyone.swift in Sources */,
+				708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */,
 				7077C9BC27AB5C540035E404 /* Apis.swift in Sources */,
-				707CA997279FD1BA00EAFC66 /* Presenter.swift in Sources */,
+				707CA997279FD1BA00EAFC66 /* SharedPresenter.swift in Sources */,
 				7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */,
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */,
@@ -465,13 +486,16 @@
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
+				70D4DC5227FDDD5600C02521 /* LoginPresenter.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
 				708A75F927E0C0A60047016B /* Actor.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
+				708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
 				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
+				70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
 				707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */,
