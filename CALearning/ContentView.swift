@@ -13,16 +13,16 @@ enum Views {
 
 struct ContentView: View {
     
-    @EnvironmentObject var sharedPresenter: SharedPresenter
+    @EnvironmentObject var presenter: Presenter
 
     var body: some View {
-        switch self.sharedPresenter.currentView {
+        switch self.presenter.currentView {
         case .splash:
             Splash()
         case .tutorial:
             Tutorial()
         case .login:
-            Login(localPresenter: self.sharedPresenter.loginPresenter)
+            Login(localPresenter: self.presenter.loginPresenter)
         }
     }
 }
@@ -30,6 +30,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(SharedPresenter())
+            .environmentObject(Presenter())
     }
 }

@@ -9,15 +9,46 @@ import SwiftUI
 
 struct Login: View {
     
-    let localPresenter: LoginPresenter
+    let localStore: LoginStore
+    
+    @State var isPresentTermsOfService = false
     
     var body: some View {
-        Text("Login")
-    }
+            VStack {
+                ZStack {
+                    Color.yellow.edgesIgnoringSafeArea(.all)
+                    
+                    VStack {
+                        Spacer()
+                        Text("Login!")
+                        Spacer()
+                        Button("→ Login") {
+                            self.presenter.dispach(Login.ba)
+                        }
+                        Spacer()
+                        HStack {
+                            Button("→ Terms of Service") {
+                                self.isPresentTermsOfService.toggle()
+                            }
+                        }
+                        Spacer()
+                    }
+                }
+            }
+            .fullScreenCover(
+                isPresented: self.$isPresentTermsOfService
+                , onDismiss: {
+                    
+                }
+                , content: {
+                    TermsOfService()
+                }
+            )
+        }
 }
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(localPresenter: SharedPresenter().loginPresenter)
+        Login(localStore: Presenter().localStore)
     }
 }

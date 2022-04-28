@@ -1,5 +1,5 @@
 //
-//  SharedPresenter.swift
+//  Presenter.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -8,21 +8,21 @@
 import Foundation
 import Combine
 
-class SharedPresenter: ObservableObject {
+class Presenter: ObservableObject {
     
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
     
     private(set) var actor: Actor = Anyone()
     
-    private var _login: LoginPresenter?
+    private var _login: LoginStore?
     
-    var loginPresenter: LoginPresenter {
+    var loginStore: LoginStore {
         if let p = self._login {
             return p
             
         } else {
-            let p = LoginPresenter(with: self)
+            let p = LoginStore(with: self)
             self._login = p
             return p
         }
@@ -33,7 +33,7 @@ class SharedPresenter: ObservableObject {
 }
 
 // MARK: - setter
-extension SharedPresenter {
+extension Presenter {
     
     func routing(to view: Views) {
         DispatchQueue.main.async {
@@ -49,7 +49,7 @@ extension SharedPresenter {
 }
     
 // MARK: - usecase dispatcher
-extension SharedPresenter {
+extension Presenter {
     
     func dispach<T: Usecase>(_ initialScene: T) {
         switch initialScene {

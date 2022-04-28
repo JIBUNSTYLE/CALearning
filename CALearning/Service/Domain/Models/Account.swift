@@ -6,6 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
+
+enum LoginValidationResult {
+    case id(isRequired: ValidationResult<String>.IsRequired)
+    case password(isRequired: ValidationResult<String>.IsRequired)
+    case password(isTooShort: ValidationResult<String>.IsTooShort)
+}
 
 struct Account {
     let mailAddress: String
@@ -22,5 +29,10 @@ class AccountModel : Model {
         default:
             return false
         }
+    }
+    
+    
+    func validate(_ id: String, _ password: String) -> LoginValidationResult {
+        
     }
 }

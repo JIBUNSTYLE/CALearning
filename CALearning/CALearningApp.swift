@@ -10,12 +10,12 @@ import SwiftUI
 @main
 struct CALearningApp: App {
     
-    @StateObject var sharedPresenter = SharedPresenter()
+    @StateObject var presenter = Presenter()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(sharedPresenter)
+                .environmentObject(presenter)
         }
     }
 }

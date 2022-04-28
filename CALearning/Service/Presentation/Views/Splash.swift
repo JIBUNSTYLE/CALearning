@@ -9,12 +9,12 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var sharedPresenter: SharedPresenter
+    @EnvironmentObject var presenter: Presenter
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.sharedPresenter.dispach(Boot.basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
+                self.presenter.dispach(Boot.basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
             }
     }
 }
@@ -22,6 +22,6 @@ struct Splash: View {
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Splash()
-            .environmentObject(SharedPresenter())
+            .environmentObject(Presenter())
     }
 }
