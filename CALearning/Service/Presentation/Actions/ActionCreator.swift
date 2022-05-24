@@ -32,11 +32,8 @@ extension ActionCreator {
                 } receiveValue: { scenario in
                     print("usecase - boot: \(scenario)")
                     
-                    if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
-                        self.dispatcher.dispatch(.boot(currentView: .login))
-
-                    } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
-                        self.dispatcher.dispatch(.boot(currentView: .tutorial))
+                    if let last = scenario.last {
+                        self.dispatcher.dispatch(last)
                     }
                 }
                 .store(in: &cancellables)

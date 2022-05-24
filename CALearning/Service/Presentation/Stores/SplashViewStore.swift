@@ -8,19 +8,21 @@
 import Foundation
 import SwiftUI
 
-class SplashViewStore: Store {
-    static let shared = SplashViewStore(dispatcher: .shared)
+class SplashViewStore: ObservableObject {
+    static let shared = SplashViewStore()
     @Published var currentView: Views = .splash
     
     /// シングルトンにする
-    private override init(dispatcher: Dispatcher) {
-        super.init(dispatcher: dispatcher)
-    }
+    private init() {}
 
-    override func onDispatch(_ action: Action) {
+    func onDispatch(_ action: Boot) {
         switch action {
-        case .boot(let currentView):
-            self.currentView = currentView
+        case .goal(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
+            currentView = .login
+        case .goal(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
+            currentView = .tutorial
+        case .basic:
+            break
         }
     }
 }
