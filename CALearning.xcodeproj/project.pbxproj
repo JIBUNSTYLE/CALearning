@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		67A94CC0280FF28800EE1EAD /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A94CBF280FF28800EE1EAD /* Actions.swift */; };
 		67A94CC2280FF32F00EE1EAD /* ActionCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A94CC1280FF32F00EE1EAD /* ActionCreator.swift */; };
 		67A94CC4280FF39500EE1EAD /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A94CC3280FF39500EE1EAD /* Dispatcher.swift */; };
-		67A94CC6280FF3E300EE1EAD /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A94CC5280FF3E300EE1EAD /* Store.swift */; };
 		67A94CC8280FF44500EE1EAD /* SplashViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A94CC7280FF44500EE1EAD /* SplashViewStore.swift */; };
 		7077C99327A007D70035E404 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99227A007D70035E404 /* Quick */; };
 		7077C99627A007EB0035E404 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 7077C99527A007EB0035E404 /* Nimble */; };
@@ -50,10 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		67A94CBF280FF28800EE1EAD /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		67A94CC1280FF32F00EE1EAD /* ActionCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCreator.swift; sourceTree = "<group>"; };
 		67A94CC3280FF39500EE1EAD /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
-		67A94CC5280FF3E300EE1EAD /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		67A94CC7280FF44500EE1EAD /* SplashViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewStore.swift; sourceTree = "<group>"; };
 		7077C99727A007FD0035E404 /* BootSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BootSpec.swift; sourceTree = "<group>"; };
 		7077C99A27A0D4760035E404 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
@@ -107,7 +103,6 @@
 		67A4711F280FA78400B4E7A5 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				67A94CC5280FF3E300EE1EAD /* Store.swift */,
 				67A94CC7280FF44500EE1EAD /* SplashViewStore.swift */,
 			);
 			path = Stores;
@@ -116,7 +111,6 @@
 		67A47120280FCEE600B4E7A5 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
-				67A94CBF280FF28800EE1EAD /* Actions.swift */,
 				67A94CC1280FF32F00EE1EAD /* ActionCreator.swift */,
 			);
 			path = Actions;
@@ -419,7 +413,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67A94CC6280FF3E300EE1EAD /* Store.swift in Sources */,
 				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				67A94CC8280FF44500EE1EAD /* SplashViewStore.swift in Sources */,
@@ -431,7 +424,6 @@
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
-				67A94CC0280FF28800EE1EAD /* Actions.swift in Sources */,
 				67A94CC2280FF32F00EE1EAD /* ActionCreator.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
 				707CA98D279F8FA500EAFC66 /* Boot.swift in Sources */,
@@ -595,7 +587,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CALearning/Preview Content\"";
-				DEVELOPMENT_TEAM = X6UZ6GLW57;
+				DEVELOPMENT_TEAM = 726TFB42JL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -624,7 +616,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CALearning/Preview Content\"";
-				DEVELOPMENT_TEAM = X6UZ6GLW57;
+				DEVELOPMENT_TEAM = 726TFB42JL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
