@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Views {
-    case splash, tutorial, login
+    case splash, tutorial, login, home
 }
 
 struct ContentView: View {
@@ -22,7 +22,9 @@ struct ContentView: View {
         case .tutorial:
             Tutorial()
         case .login:
-            Login(localPresenter: self.presenter.loginPresenter)
+            Login(localStore: self.presenter.loginStore)
+        case .home:
+            TermsOfService()
         }
     }
 }

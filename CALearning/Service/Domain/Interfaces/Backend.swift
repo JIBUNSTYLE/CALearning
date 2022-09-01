@@ -13,4 +13,6 @@ protocol Backend {
     /// UDIDを発行します。
     func publishUdid() -> AnyPublisher<String, Error>
 
+    /// ログインします。
+    func login(with id: String, `and` password: String) -> AnyPublisher<Account, Error>
 }

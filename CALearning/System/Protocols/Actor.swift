@@ -6,8 +6,23 @@
 //
 
 import Foundation
-import Combine
+
+enum UserTypes {
+    case anyone
+    case signedIn
+}
 
 protocol Actor {
-    var user: Account? { get }
+    associatedtype User
+    var user: User? { get }
+    var userType: UserTypes { get }
+}
+
+extension Actor {
+    var userType: UserTypes {
+        guard let _ = self.user else {
+            return .anyone
+        }
+        return .signedIn
+    }
 }

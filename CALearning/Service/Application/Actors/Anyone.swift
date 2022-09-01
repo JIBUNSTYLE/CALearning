@@ -8,8 +8,8 @@
 import Foundation
 
 struct Anyone : Actor {
-
-    let user: Account?
+    typealias User = Account
+    let user: User?
     
     init() {
         self.user = nil

@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct Login: View {
+    @EnvironmentObject var presenter: Presenter
     
     let localStore: LoginStore
     
+    @State var id: String?
+    @State var password: String?
     @State var isPresentTermsOfService = false
     
     var body: some View {
@@ -23,7 +26,7 @@ struct Login: View {
                         Text("Login!")
                         Spacer()
                         Button("→ Login") {
-                            self.presenter.dispach(Login.ba)
+                            self.presenter.dispatch(Loggingin.basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password)))
                         }
                         Spacer()
                         HStack {
@@ -49,6 +52,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(localStore: Presenter().localStore)
+        Login(localStore: Presenter().loginStore)
     }
 }

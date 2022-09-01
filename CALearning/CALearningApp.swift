@@ -16,6 +16,17 @@ struct CALearningApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(presenter)
+                .alert(
+                    self.presenter.alertContent.title
+                    , isPresented: self.$presenter.isAlertPresented
+                    , actions: {
+                        Button("OK") {
+                        }
+                    }
+                    , message: {
+                        Text(self.presenter.alertContent.message)
+                    }
+                )
         }
     }
 }

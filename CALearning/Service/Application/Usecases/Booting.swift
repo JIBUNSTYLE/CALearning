@@ -1,75 +1,76 @@
 //
-//  Login.swift
+//  Booting.swift
 //  CALearning
 //
-//  Created by 斉藤  祐輔 on 2022/04/28.
+//  Created by 斉藤 祐輔 on 2022/01/25.
 //
 
 import Foundation
 import Combine
 
-/// ユースケース【ログインする】を実現します。
-enum Login : Usecase {
+/// ユースケース【アプリを起動する】を実現します。
+enum Booting : Usecase {
     
     enum Basics {
-        case ユーザはログインボタンを押下する(id: String, password: String)
-        case アプリは入力が正しいかを確認する(id: String, password: String)
-        case 入力が正しい場合_アプリはログインを試行する(id: String, password: String)
+        case ユーザはアプリを起動する
+        case アプリはサーバで発行したUDIDが保存されていないかを調べる
+        case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
     }
     
     enum Alternatives {
-//        case UDIDがない場合_アプリはUDIDを取得する
+        case UDIDがない場合_アプリはUDIDを取得する
     }
     
     enum Goals {
-        case 入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(error: ServiceErrors)
-        case ログイン認証に成功した場合_アプリはホーム画面を表示する(user: Account)
-        case ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: ServiceErrors)
+        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
+        case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
     }
     
     case basic(scene: Basics)
     case alternate(scene: Alternatives)
     case last(scene: Goals)
     
-    init(id: String, password: String) {
-        self = .basic(scene: .ユーザはログインボタンを押下する(id: id, password: password))
+    init() {
+        self = .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)
     }
     
-    func authorize(_ actor: Actor) throws -> Bool {
+    func authorize(_ actor: UserActor) throws -> Bool {
         // Actorが誰でも実行可能
         return true
     }
     
     func next() -> AnyPublisher<Self, Error>? {
         switch self {
-        case let .basic(scene: .ユーザはログインボタンを押下する(id, password)):
-            return self.just(next: .basic(scene: .アプリは入力が正しいかを確認する(id: id, password: password)))
+        case .basic(scene: .ユーザはアプリを起動する):
+            return self.just(next: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
             
-        case let .basic(.アプリは入力が正しいかを確認する(id, password)):
-            return self.check(id, password)
+        case .basic(.アプリはサーバで発行したUDIDが保存されていないかを調べる):
+            return self.checkUdid()
             
-        case let .basic(.入力が正しい場合_アプリはログインを試行する(id, password)):
-            return self.login(id, password)
+        case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
+            return self.detect()
 
-        
+        case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
+            return self.publishUdid()
             
         case .last:
             return nil
+        }
     }
     
-    private func check(_ id: String, _ password: String) -> AnyPublisher<Self, Error> {
+    private func checkUdid() -> AnyPublisher<Self, Error> {
         return Deferred {
             Future<Self, Error> { promise in
-                if AccountModel().validate(id, password) {
-                    return promise(.success(.basic(scene: .UDIDがない場合_アプリはUDIDを取得する)))
+                guard let udid = Application().udid else {
+                    return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
                 }
-                promise(.success(.last(scene: .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(udid: udid))))
+                promise(.success(.basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
             }
         }
         .eraseToAnyPublisher()
     }
     
-    private func login(_ id: String, _ password: String) -> AnyPublisher<Self, Error> {
+    private func detect() -> AnyPublisher<Self, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {

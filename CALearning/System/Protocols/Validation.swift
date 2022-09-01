@@ -10,35 +10,54 @@ import Foundation
 
 enum ValidationResult<T> {
     enum IsRequired {
-        case failed(item: T)
+        case isFailed(_: T)
     }
     enum IsTooShort {
-        case failed(item: T)
+        case isFailed(_: T, lessThan: Int)
     }
     enum IsTooLong {
-        case failed(item: T)
+        case isFailed(_: T, greaterThan: Int)
     }
     enum IsMalformed {
-        case failed(item: T)
+        case isFailed(_: T)
     }
 }
 
-struct Validator {
-
-    func isRequired(v: String?) -> ValidationResult {
-        guard let _ = v else { return .isRequired }
-        return .success
-    }
-}
 
 protocol Validation {
     associatedtype Input
-    associatedtype Result
-    
-    var input: Input? { get }
-    var isValid: Result { get }
 }
 
 extension Validation {
+
+    func validate(isRequired value: Input?) -> ValidationResult<Input?>.IsRequired? {
+        guard let _ = value else { return .isFailed(value) }
+        return nil
+    }
     
+    func validate(isEqualToOrGreaterThan value: String?, minLength: Int) -> ValidationResult<String?>.IsTooShort? {
+        guard let value = value else { return nil }
+        if value.count < minLength {
+            return .isFailed(value, lessThan: minLength)
+        }
+        return nil
+    }
+    
+    func validate(isEqualToOrLessThan value: String?, maxLength: Int) -> ValidationResult<String?>.IsTooLong? {
+        guard let value = value else { return nil }
+        if value.count > maxLength {
+            return .isFailed(value, greaterThan: maxLength)
+        }
+        return nil
+    }
+    
+    func validate(isMailAddress value: String?) -> ValidationResult<String?>.IsMalformed? {
+        guard let value = value else { return nil }
+        let pattern = "^[\\w\\.\\-_]+@[\\w\\.\\-_]+\\.[a-zA-Z]+$"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { fatalError() }
+        guard regex.matches(in: value, range: NSRange(location: 0, length: value.count)).count == 1 else {
+            return .isFailed(value)
+        }
+        return nil
+    }
 }

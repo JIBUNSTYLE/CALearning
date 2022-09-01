@@ -41,7 +41,7 @@ class Application {
     
     func authorize<T: Actor, U: Usecase>(_ actor: T, toInteractFrom initialScene: U) -> Bool {
         switch initialScene {
-        case is Boot : do {
+        case is Booting : do {
 //            if case .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる) = initialScene as! Boot {
 //
 //            }

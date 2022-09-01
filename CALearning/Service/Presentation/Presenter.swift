@@ -8,12 +8,19 @@
 import Foundation
 import Combine
 
+struct AlertContent {
+    let title: String
+    let message: String
+}
+
 class Presenter: ObservableObject {
-    
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
+    @Published var isAlertPresented = false
     
-    private(set) var actor: Actor = Anyone()
+    var alertContent = AlertContent(title: "お知らせ", message: "ほげほげ")
+    
+    private(set) var actor: UserActor = UserActor()
     
     private var _login: LoginStore?
     
@@ -41,23 +48,24 @@ extension Presenter {
         }
     }
     
-    func changeActor<T: Actor>(to actor: T) {
-        DispatchQueue.main.async {
-            self.actor = actor
-        }
+    func changeActor(to actor: UserActor) {
+        self.actor = actor
     }
 }
     
 // MARK: - usecase dispatcher
 extension Presenter {
     
-    func dispach<T: Usecase>(_ initialScene: T) {
+    func dispatch<T: Usecase>(_ initialScene: T) {
         switch initialScene {
-        case let scene as Boot:
+        case let scene as Booting:
             self.boot(from: scene)
 
         case let scene as CompleteTutorial:
             self.completeTutorial(from: scene)
+            
+        case let scene as Loggingin:
+            self.loginStore.login(from: scene)
 
         default:
             fatalError("未実装")
@@ -65,7 +73,7 @@ extension Presenter {
     }
     
     
-    func boot(from: Boot) {
+    func boot(from: Booting) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))

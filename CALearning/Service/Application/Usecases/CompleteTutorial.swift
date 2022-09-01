@@ -31,7 +31,7 @@ enum CompleteTutorial : Usecase {
         self = .basic(scene: .ユーザはチュートリアルを閉じる)
     }
     
-    func authorize(_ actor: Actor) throws -> Bool {
+    func authorize(_ actor: UserActor) throws -> Bool {
         // Actorが誰でも実行可能
         return true
     }

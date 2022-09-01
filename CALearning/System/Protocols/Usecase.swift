@@ -17,10 +17,10 @@ protocol Usecase {
     func just(next: Self) -> AnyPublisher<Self, Error>
     
     /// 引数で渡されたActorがこのユースケースを実行できるかを返します。
-    func authorize(_ actor: Actor) throws -> Bool
+    func authorize<T>(_ actor: T) throws -> Bool where T : Actor
     
     /// Actorに準拠するクラスのインスタンスを引数に取り、再帰的にnext()を実行します。
-    func interacted(by actor: Actor) -> AnyPublisher<[Self], Error>
+    func interacted<T>(by actor: T) -> AnyPublisher<[Self], Error> where T : Actor
 }
 
 
@@ -39,7 +39,7 @@ extension Usecase {
         throw SystemErrors.development(SystemErrors.Development.権限未設定)
     }
     
-    private func recursive(_ actor: Actor, scenario: [Self]) -> AnyPublisher<[Self], Error> {
+    private func recursive<T>(_ actor: T, scenario: [Self]) -> AnyPublisher<[Self], Error> where T : Actor {
         guard let lastScene = scenario.last else { fatalError() }
         
         // 終了条件
@@ -62,7 +62,7 @@ extension Usecase {
             .eraseToAnyPublisher()
     }
     
-    func interacted(by actor: Actor) -> AnyPublisher<[Self], Error> {
+    func interacted<T: Actor>(by actor: T) -> AnyPublisher<[Self], Error> {
         // 権限確認
         do {
             guard try self.authorize(actor) else {

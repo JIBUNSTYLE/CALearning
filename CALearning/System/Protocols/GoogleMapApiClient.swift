@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import Combine
+
+protocol GoogleMapApiClient {
+    func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api
+}
