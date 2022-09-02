@@ -50,6 +50,9 @@ extension LoginStore {
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
                     self.presenter.isAlertPresented = true
+                    
+                case .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: let error):
+                    print(error)
                 }
             }
             .store(in: &cancellables)

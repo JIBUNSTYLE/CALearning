@@ -24,7 +24,7 @@ enum SystemErrors: Error {
     enum Development: Error {
         case 未実装
         case キャストに失敗
-        case 権限未設定
+        case authorizeが未実装です_サービス側でオーバーライドして下さい
     }
     
     enum Test: Error {

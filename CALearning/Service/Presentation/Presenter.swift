@@ -116,6 +116,11 @@ extension Presenter {
                     self.routing(to: .login)
                 case .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示:
                     self.routing(to: .tutorial)
+                case let .UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error):
+                    self.alertContent = AlertContent(title: "システムエラー", message: "UDIDの発行に失敗しました")
+                    // TODO: リトライ
+                    // TODO: システムエラーと文言をenum化
+                    self.isAlertPresented = true
                 }
             }
             .store(in: &cancellables)

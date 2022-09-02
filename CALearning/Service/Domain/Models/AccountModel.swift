@@ -122,7 +122,7 @@ class AccountModel : Model {
         }
     }
     
-    func login(with id: String, `and` password: String) -> AnyPublisher<Account, Error> {
+    func login(with id: String, `and` password: String) -> AnyPublisher<Account, ErrorWrapper> {
         return Dependencies.shared.backend.login(with: id, and: password)
     }
 

@@ -22,6 +22,7 @@ enum Booting : Usecase {
     }
     
     enum Goals {
+        case UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error: SystemErrors)
         case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
         case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
     }
@@ -96,6 +97,15 @@ enum Booting : Usecase {
             .map { udid -> Self in
                 Application().save(udid: udid)
                 return .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
+            }
+            .catch { errorWrapper -> AnyPublisher<Self, Error> in
+                switch (errorWrapper) {
+                case .service(_, _, _):
+                    fatalError()
+
+                case let .system(error, _, _):
+                    return self.just(next: .last(scene: .UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error: error)))
+                }
             }
             .eraseToAnyPublisher()
     }

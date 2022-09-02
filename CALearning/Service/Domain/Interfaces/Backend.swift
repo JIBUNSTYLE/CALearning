@@ -11,8 +11,8 @@ import Combine
 protocol Backend {
 
     /// UDIDを発行します。
-    func publishUdid() -> AnyPublisher<String, Error>
+    func publishUdid() -> AnyPublisher<String, ErrorWrapper>
 
     /// ログインします。
-    func login(with id: String, `and` password: String) -> AnyPublisher<Account, Error>
+    func login(with id: String, `and` password: String) -> AnyPublisher<Account, ErrorWrapper>
 }

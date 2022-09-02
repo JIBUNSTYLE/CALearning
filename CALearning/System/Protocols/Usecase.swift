@@ -35,10 +35,6 @@ extension Usecase {
         .eraseToAnyPublisher()
     }
     
-    func authorize<T: Actor>(_ actor: T) throws -> Bool {
-        throw SystemErrors.development(SystemErrors.Development.権限未設定)
-    }
-    
     private func recursive<T>(_ actor: T, scenario: [Self]) -> AnyPublisher<[Self], Error> where T : Actor {
         guard let lastScene = scenario.last else { fatalError() }
         

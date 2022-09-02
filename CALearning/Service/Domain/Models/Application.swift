@@ -55,7 +55,7 @@ class Application {
         }
     }
     
-    func publishUdid() -> AnyPublisher<String, Error> {
+    func publishUdid() -> AnyPublisher<String, ErrorWrapper> {
         return Dependencies.shared.backend.publishUdid()
     }
     

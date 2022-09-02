@@ -22,20 +22,17 @@ struct ApiBackend : Backend {
         self.apiClient = apiClient
     }
     
-    func publishUdid() -> AnyPublisher<String, Error> {
+    func publishUdid() -> AnyPublisher<String, ErrorWrapper> {
         self.apiClient.call(api: Apis.Udid())
             .map { response in
                 return response.udid
             }
-            .mapError { errorWrapper in
-                return errorWrapper
-            }
             .eraseToAnyPublisher()
     }
     
-    func login(with id: String, and password: String) -> AnyPublisher<Account, Error> {
+    func login(with id: String, and password: String) -> AnyPublisher<Account, ErrorWrapper> {
         return Just(Account(mailAddress: "hoge"))
-            .setFailureType(to: Error.self)
+            .setFailureType(to: ErrorWrapper.self)
             .eraseToAnyPublisher()
     }
 }

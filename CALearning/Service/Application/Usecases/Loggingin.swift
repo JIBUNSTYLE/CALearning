@@ -25,6 +25,7 @@ enum Loggingin : Usecase {
         case 入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result: LoginValidationResult)
         case ログイン認証に成功した場合_アプリはホーム画面を表示する(user: Account)
         case ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: ServiceErrors)
+        case 予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: SystemErrors)
     }
     
     case basic(scene: Basics)
@@ -77,6 +78,14 @@ enum Loggingin : Usecase {
             .map { account in
                 return .last(scene: .ログイン認証に成功した場合_アプリはホーム画面を表示する(user: account))
             }
-        .eraseToAnyPublisher()
+            .catch { errorWrapper -> AnyPublisher<Self, Error> in
+                switch (errorWrapper) {
+                case let .service(error, _, _):
+                    return self.just(next: .last(scene: .ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: error)))
+                case let .system(error, _, _):
+                    return self.just(next: .last(scene: .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: error)))
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }
