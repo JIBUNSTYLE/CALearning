@@ -9,36 +9,7 @@ import Foundation
 import Combine
 
 /// ユースケース【アプリを起動する】を実現します。
-enum Booting : Usecase {
-    
-    enum Basics {
-        case ユーザはアプリを起動する
-        case アプリはサーバで発行したUDIDが保存されていないかを調べる
-        case アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: String)
-    }
-    
-    enum Alternatives {
-        case UDIDがない場合_アプリはUDIDを取得する
-    }
-    
-    enum Goals {
-        case UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error: SystemErrors)
-        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
-        case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
-    }
-    
-    case basic(scene: Basics)
-    case alternate(scene: Alternatives)
-    case last(scene: Goals)
-    
-    init() {
-        self = .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)
-    }
-    
-    func authorize(_ actor: UserActor) throws -> Bool {
-        // Actorが誰でも実行可能
-        return true
-    }
+extension Usecases.Booting {
     
     func next() -> AnyPublisher<Self, Error>? {
         switch self {
@@ -48,8 +19,8 @@ enum Booting : Usecase {
         case .basic(.アプリはサーバで発行したUDIDが保存されていないかを調べる):
             return self.checkUdid()
             
-        case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
-            return self.detect()
+        case let .basic(.UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid)):
+            return self.detect(udid: udid)
 
         case .alternate(.UDIDがない場合_アプリはUDIDを取得する):
             return self.publishUdid()
@@ -65,13 +36,13 @@ enum Booting : Usecase {
                 guard let udid = Application().udid else {
                     return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
                 }
-                promise(.success(.basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
+                promise(.success(.basic(scene: .UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
             }
         }
         .eraseToAnyPublisher()
     }
     
-    private func detect() -> AnyPublisher<Self, Error> {
+    private func detect(udid: String) -> AnyPublisher<Self, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {
@@ -81,9 +52,9 @@ enum Booting : Usecase {
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                     if Application().hasCompletedTutorial {
-                        promise(.success(.last(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示)))
+                        promise(.success(.last(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid: udid))))
                     } else {
-                        promise(.success(.last(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示)))
+                        promise(.success(.last(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid: udid))))
                     }
                 }
             }
@@ -96,7 +67,7 @@ enum Booting : Usecase {
             .publishUdid()
             .map { udid -> Self in
                 Application().save(udid: udid)
-                return .basic(scene: .アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
+                return .basic(scene: .UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
             }
             .catch { errorWrapper -> AnyPublisher<Self, Error> in
                 switch (errorWrapper) {

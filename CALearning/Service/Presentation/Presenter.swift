@@ -18,9 +18,14 @@ class Presenter: ObservableObject {
     @Published private(set) var currentView: Views = .splash
     @Published var isAlertPresented = false
     
+    // 二度押し防止でボタンなどを制御するため、ユースケース実行状態を管理
+    private(set) var usecaseStatus: UsecaseStatus = .idle
+    
     var alertContent = AlertContent(title: "お知らせ", message: "ほげほげ")
     
+    private(set) var udid: String?
     private(set) var actor: UserActor = UserActor()
+    
     
     private var _login: LoginStore?
     
@@ -51,21 +56,27 @@ extension Presenter {
     func changeActor(to actor: UserActor) {
         self.actor = actor
     }
+    
+    func resetUsecaseState() {
+        self.usecaseStatus = .idle
+    }
 }
     
 // MARK: - usecase dispatcher
 extension Presenter {
     
-    func dispatch<T: Usecase>(_ initialScene: T) {
-        switch initialScene {
-        case let scene as Booting:
-            self.boot(from: scene)
+    func dispatch(_ from: Usecases) {
+        self.usecaseStatus = .executing(usecase: from)
 
-        case let scene as CompleteTutorial:
-            self.completeTutorial(from: scene)
+        switch from {
+        case let .booting(from):
+            self.boot(from)
+
+        case let .completeTutorial(from):
+            self.completeTutorial(from)
             
-        case let scene as Loggingin:
-            self.loginStore.login(from: scene)
+        case let .loggingIn(from):
+            self.loginStore.login(from)
 
         default:
             fatalError("未実装")
@@ -73,7 +84,7 @@ extension Presenter {
     }
     
     
-    func boot(from: Booting) {
+    private func boot(_ from: Usecases.Booting) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -94,28 +105,27 @@ extension Presenter {
         from
             .interacted(by: self.actor)
             .sink { completion in
+                self.resetUsecaseState()
+                
                 if case .finished = completion {
-                    print("boot は正常終了")
-                } else if case .failure(let error) = completion {
-                    switch error {
-                    case let ErrorWrapper.service(error, args, causedBy):
-                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
-                    case let ErrorWrapper.system(error, args, causedBy):
-                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
-                    default:
-                        print("boot が異常終了: \(error)")
-                    }
+                    print("\(#function) は正常終了")
+                } else if case let .failure(error) = completion {
+                    print("\(#function) が異常終了: \(error)")
                 }
             } receiveValue: { scenario in
-                print("usecase - boot: \(scenario)")
+                print("usecase - \(#function): \(scenario)")
                 
                 guard case .last(let goal) = scenario.last else { fatalError() }
                     
                 switch goal {
-                case .チュートリアル完了の記録がある場合_アプリはログイン画面を表示:
+                case let .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid):
+                    self.udid = udid
                     self.routing(to: .login)
-                case .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示:
+
+                case let .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid):
+                    self.udid = udid
                     self.routing(to: .tutorial)
+
                 case let .UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error):
                     self.alertContent = AlertContent(title: "システムエラー", message: "UDIDの発行に失敗しました")
                     // TODO: リトライ
@@ -126,17 +136,19 @@ extension Presenter {
             .store(in: &cancellables)
     }
     
-    func completeTutorial(from: CompleteTutorial) {
+    private func completeTutorial(_ from: Usecases.CompleteTutorial) {
         from
             .interacted(by: self.actor)
             .sink { completion in
+                self.resetUsecaseState()
+                
                 if case .finished = completion {
-                    print("completeTutorial は正常終了")
+                    print("\(#function) は正常終了")
                 } else if case .failure(let error) = completion {
-                    print("completeTutorial が異常終了: \(error)")
+                    print("\(#function) が異常終了: \(error)")
                 }
             } receiveValue: { scenario in
-                print("usecase - completeTutorial: \(scenario)")
+                print("usecase - \(#function): \(scenario)")
                 
                 guard case .last(let goal) = scenario.last else { fatalError() }
                 

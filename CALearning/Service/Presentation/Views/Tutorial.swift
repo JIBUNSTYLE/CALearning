@@ -16,7 +16,7 @@ struct Tutorial: View {
             Text("Tutorial!")
             Spacer()
             Button("→ Complete") {
-                self.presenter.dispatch(CompleteTutorial.basic(scene: .ユーザはチュートリアルを閉じる))
+                self.presenter.dispatch(.completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる)))
             }
             Spacer()
         }

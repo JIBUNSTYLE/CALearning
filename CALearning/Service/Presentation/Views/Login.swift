@@ -26,8 +26,9 @@ struct Login: View {
                         Text("Login!")
                         Spacer()
                         Button("→ Login") {
-                            self.presenter.dispatch(Loggingin.basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password)))
+                            self.presenter.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
                         }
+                        .disabled(self.presenter.usecaseStatus.isExecuting)
                         Spacer()
                         HStack {
                             Button("→ Terms of Service") {

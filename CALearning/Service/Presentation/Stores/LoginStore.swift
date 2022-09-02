@@ -20,24 +20,18 @@ class LoginStore: ObservableObject {
 
 extension LoginStore {
     
-    func login(from: Loggingin) {
+    func login(_ from: Usecases.LoggingIn) {
         from
             .interacted(by: self.presenter.actor)
             .sink { completion in
+                self.presenter.resetUsecaseState()
                 if case .finished = completion {
-                    print("login は正常終了")
+                    print("\(#function) は正常終了")
                 } else if case .failure(let error) = completion {
-                    switch error {
-                    case let ErrorWrapper.service(error, args, causedBy):
-                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
-                    case let ErrorWrapper.system(error, args, causedBy):
-                        print("サービスエラー発生:\(error), args:\(String(describing: args)), causedBy: \(String(describing: causedBy))")
-                    default:
-                        print("boot が異常終了: \(error)")
-                    }
+                    print("\(#function) が異常終了: \(error)")
                 }
             } receiveValue: { scenario in
-                print("usecase - login: \(scenario)")
+                print("usecase - \(#function): \(scenario)")
                 
                 guard case .last(let goal) = scenario.last else { fatalError() }
                 

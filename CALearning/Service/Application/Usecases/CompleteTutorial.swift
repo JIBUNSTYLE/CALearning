@@ -9,32 +9,7 @@ import Foundation
 import Combine
 
 /// ユースケース【チュートリアルを完了する】を実現します。
-enum CompleteTutorial : Usecase {
-    
-    enum Basics {
-        case ユーザはチュートリアルを閉じる
-        case アプリはチュートリアル完了を記録する
-    }
-    
-    enum Alternatives {
-    }
-    
-    enum Goals {
-        case アプリはログイン画面を表示する
-    }
-    
-    case basic(scene: Basics)
-    case alternate(scene: Alternatives)
-    case last(scene: Goals)
-    
-    init() {
-        self = .basic(scene: .ユーザはチュートリアルを閉じる)
-    }
-    
-    func authorize(_ actor: UserActor) throws -> Bool {
-        // Actorが誰でも実行可能
-        return true
-    }
+extension Usecases.CompleteTutorial {
     
     func next() -> AnyPublisher<Self, Error>? {
         switch self {

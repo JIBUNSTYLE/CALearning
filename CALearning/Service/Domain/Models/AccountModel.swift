@@ -89,11 +89,13 @@ class AccountModel : Model {
     
     func authorize<T: Usecase>(_ actor: UserActor, toInteract usecase: T) -> Bool {
         switch usecase {
-        case is Booting, is CompleteTutorial : do {
+        case is Usecases.Booting
+            , is Usecases.CompleteTutorial
+            : do {
             // Actorが誰でも実行可能
             return true
         }
-        case is Loggingin : do {
+        case is Usecases.LoggingIn : do {
             guard case .anyone = actor.userType else {
                 return false
             }
