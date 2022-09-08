@@ -9,13 +9,32 @@ import Foundation
 
 enum UsecaseStatus {
     case idle
-    case executing(usecase: Usecases)
+    case executing(usecase: Usecases, startAt: Date)
     
     var isExecuting: Bool {
         if case .idle = self {
             return false
         }
         return true
+    }
+    
+    var elapsedTime: TimeInterval {
+        guard case let .executing(_, startAt) = self else {
+            return -1
+        }
+        // 開始からの経過秒数を取得する
+        return Date().timeIntervalSince(startAt)
+    }
+    
+    func printElapsedTime() {
+        guard case let .executing(usecase, startAt) = self else {
+            print("no usecase is executed.")
+            return
+        }
+        // 開始からの経過秒数を取得する
+        let elapsedTime = Date().timeIntervalSince(startAt)
+        
+        print("usecase \(usecase) takes \(elapsedTime) seconds.")
     }
 }
 

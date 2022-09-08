@@ -58,6 +58,7 @@ extension Controller {
     }
     
     func resetUsecaseState() {
+        self.usecaseStatus.printElapsedTime()
         self.usecaseStatus = .idle
     }
 }
@@ -66,7 +67,7 @@ extension Controller {
 extension Controller {
     
     func dispatch(_ from: Usecases) {
-        self.usecaseStatus = .executing(usecase: from)
+        self.usecaseStatus = .executing(usecase: from, startAt: Date())
 
         switch from {
         case let .booting(from):
@@ -77,9 +78,6 @@ extension Controller {
             
         case let .loggingIn(from):
             self.loginStore.login(from)
-
-        default:
-            fatalError("未実装")
         }
     }
     
