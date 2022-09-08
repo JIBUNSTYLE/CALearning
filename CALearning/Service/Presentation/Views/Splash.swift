@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var presenter: Controller
     
     var body: some View {
         Text("Slash")
@@ -22,6 +22,6 @@ struct Splash: View {
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Splash()
-            .environmentObject(Presenter())
+            .environmentObject(Controller())
     }
 }

@@ -14,7 +14,7 @@ import Nimble
 class BootSpec: QuickSpec {
 
     override func spec() {
-        let presenter = Presenter()
+        let presenter = Controller()
         
         describe("アプリを起動する") {
             context("UDIDがない場合") {

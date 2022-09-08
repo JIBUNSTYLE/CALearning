@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Tutorial: View {
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var presenter: Controller
     
     var body: some View {
         VStack {
@@ -26,6 +26,6 @@ struct Tutorial: View {
 struct Tutorial_Previews: PreviewProvider {
     static var previews: some View {
         Tutorial()
-            .environmentObject(Presenter())
+            .environmentObject(Controller())
     }
 }

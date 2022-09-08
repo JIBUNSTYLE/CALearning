@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Login: View {
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var presenter: Controller
     
     let localStore: LoginStore
     
@@ -53,6 +53,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(localStore: Presenter().loginStore)
+        Login(localStore: Controller().loginStore)
     }
 }

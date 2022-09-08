@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 class LoginStore: ObservableObject {
-    private let presenter: Presenter
+    private let presenter: Controller
     
     private var cancellables = [AnyCancellable]()
     
-    init(with presenter: Presenter) {
+    init(with presenter: Controller) {
         self.presenter = presenter
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct CALearningApp: App {
     
-    @StateObject var presenter = Presenter()
+    @StateObject var presenter = Controller()
     
     var body: some Scene {
         WindowGroup {

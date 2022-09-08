@@ -13,7 +13,7 @@ enum Views {
 
 struct ContentView: View {
     
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var presenter: Controller
 
     var body: some View {
         switch self.presenter.currentView {
@@ -32,6 +32,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(Presenter())
+            .environmentObject(Controller())
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Presenter.swift
+//  Controller.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -13,7 +13,7 @@ struct AlertContent {
     let message: String
 }
 
-class Presenter: ObservableObject {
+class Controller: ObservableObject {
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
     @Published var isAlertPresented = false
@@ -45,7 +45,7 @@ class Presenter: ObservableObject {
 }
 
 // MARK: - setter
-extension Presenter {
+extension Controller {
     
     func routing(to view: Views) {
         DispatchQueue.main.async {
@@ -63,7 +63,7 @@ extension Presenter {
 }
     
 // MARK: - usecase dispatcher
-extension Presenter {
+extension Controller {
     
     func dispatch(_ from: Usecases) {
         self.usecaseStatus = .executing(usecase: from)
