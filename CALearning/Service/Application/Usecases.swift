@@ -9,7 +9,7 @@ import Foundation
 
 enum UsecaseStatus {
     case idle
-    case executing(usecase: Usecases, startAt: Date)
+    case executing(usecase: Usecases, file: String, line: Int, function: String, startAt: Date)
     
     var isExecuting: Bool {
         if case .idle = self {
@@ -19,22 +19,32 @@ enum UsecaseStatus {
     }
     
     var elapsedTime: TimeInterval {
-        guard case let .executing(_, startAt) = self else {
+        guard case let .executing(_, _, _, _, startAt) = self else {
             return -1
         }
         // 開始からの経過秒数を取得する
         return Date().timeIntervalSince(startAt)
     }
     
-    func printElapsedTime() {
-        guard case let .executing(usecase, startAt) = self else {
+    func printElapsedTime(_ msg: String? = nil, efile: String = #file, eline: Int = #line, efunction: String = #function) {
+        guard case let .executing(usecase, sfile, sline, sfunction, startAt) = self else {
             print("no usecase is executed.")
             return
         }
-        // 開始からの経過秒数を取得する
-        let elapsedTime = Date().timeIntervalSince(startAt)
         
-        print("usecase \(usecase) takes \(elapsedTime) seconds.")
+        guard let _f = sfile.components(separatedBy: "/").last else { return }
+        let sf = _f.replacingOccurrences(of: ".swift", with: "")
+        
+        guard let _f = efile.components(separatedBy: "/").last else { return }
+        let ef = _f.replacingOccurrences(of: ".swift", with: "")
+        // 開始からの経過をミリ秒で取得する
+        let elapsedTime = String.init(format: "%9.4f", (Date().timeIntervalSince(startAt) * 1000000) / 1000)
+        
+        if let msg = msg {
+            print("usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)] \(msg)")
+        } else {
+            print("usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)]")
+        }
     }
 }
 
