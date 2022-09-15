@@ -57,8 +57,8 @@ extension Controller {
         self.actor = actor
     }
     
-    func resetUsecaseState() {
-        self.usecaseStatus.printElapsedTime()
+    func resetUsecaseState(_ msg: String? = nil, file: String = #file, line: Int = #line, function: String = #function) {
+        self.usecaseStatus.printElapsedTime(msg, efile: file, eline: line, efunction: function)
         self.usecaseStatus = .idle
     }
 }
@@ -66,8 +66,8 @@ extension Controller {
 // MARK: - usecase dispatcher
 extension Controller {
     
-    func dispatch(_ from: Usecases) {
-        self.usecaseStatus = .executing(usecase: from, startAt: Date())
+    func dispatch(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) {
+        self.usecaseStatus = .executing(usecase: from, file: file, line: line, function: function, startAt: Date())
 
         switch from {
         case let .booting(from):
