@@ -11,6 +11,8 @@ import Combine
 class LoginStore: ObservableObject {
     private let controller: Controller
     
+    @Published var loginValidationResult: LoginValidationResult?
+    
     private var cancellables = [AnyCancellable]()
     
     init(with controller: Controller) {
@@ -43,6 +45,7 @@ extension LoginStore {
                     self.controller.routing(to: .home)
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
+                    self.loginValidationResult = result
                     self.controller.isAlertPresented = true
                     
                 case .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: let error):

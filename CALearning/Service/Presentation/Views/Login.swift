@@ -10,7 +10,7 @@ import SwiftUI
 struct Login: View {
     @EnvironmentObject var presenter: Controller
     
-    let localStore: LoginStore
+    @StateObject var store: LoginStore
     
     @State var id: String?
     @State var password: String?
@@ -29,6 +29,29 @@ struct Login: View {
                             self.presenter.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
                         }
                         .disabled(self.presenter.usecaseStatus.isExecuting)
+                        if let result = self.store.loginValidationResult
+                            , case let .failed(idValidationResult, passwordValidationResult) = result {
+                            switch idValidationResult {
+                            case .isValid:
+                                Text("")
+                            case .isRequired:
+                                Text("id: isRequired")
+                            case .isMalformed:
+                                Text("id: isMalformed")
+                            }
+                            switch passwordValidationResult {
+                            case .isValid:
+                                Text("")
+                            case .isRequired:
+                                Text("pw: isRequired")
+                            case .isTooShort:
+                                Text("pw: isTooShort")
+                            case .isTooLong:
+                                Text("pw: isTooLong")
+                            }
+                        } else {
+                            Text("")
+                        }
                         Spacer()
                         HStack {
                             Button("→ Terms of Service") {
@@ -53,6 +76,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(localStore: Controller().loginStore)
+        Login(store: Controller().loginStore)
     }
 }

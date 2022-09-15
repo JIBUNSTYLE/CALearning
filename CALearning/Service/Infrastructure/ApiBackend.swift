@@ -23,10 +23,13 @@ struct ApiBackend : Backend {
     }
     
     func publishUdid() -> AnyPublisher<String, ErrorWrapper> {
-        self.apiClient.call(api: Apis.Udid())
-            .map { response in
-                return response.udid
-            }
+//        self.apiClient.call(api: Apis.Udid())
+//            .map { response in
+//                return response.udid
+//            }
+//            .eraseToAnyPublisher()
+        return Just("dummy-udid")
+            .setFailureType(to: ErrorWrapper.self)
             .eraseToAnyPublisher()
     }
     

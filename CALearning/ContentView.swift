@@ -13,16 +13,16 @@ enum Views {
 
 struct ContentView: View {
     
-    @EnvironmentObject var presenter: Controller
+    @EnvironmentObject var controller: Controller
 
     var body: some View {
-        switch self.presenter.currentView {
+        switch self.controller.currentView {
         case .splash:
             Splash()
         case .tutorial:
             Tutorial()
         case .login:
-            Login(localStore: self.presenter.loginStore)
+            Login(store: self.controller.loginStore)
         case .home:
             TermsOfService()
         }
