@@ -10,21 +10,21 @@ import SwiftUI
 @main
 struct CALearningApp: App {
     
-    @StateObject var presenter = Controller()
+    @StateObject var controller = Controller()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(presenter)
+                .environmentObject(controller)
                 .alert(
-                    self.presenter.alertContent.title
-                    , isPresented: self.$presenter.isAlertPresented
+                    self.controller.alertContent.title
+                    , isPresented: self.$controller.isAlertPresented
                     , actions: {
                         Button("OK") {
                         }
                     }
                     , message: {
-                        Text(self.presenter.alertContent.message)
+                        Text(self.controller.alertContent.message)
                     }
                 )
         }
