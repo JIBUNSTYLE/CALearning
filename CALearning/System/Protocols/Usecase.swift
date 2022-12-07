@@ -45,6 +45,7 @@ extension Usecase {
                     promise(.success(scenario))
                 }
             }
+            .receive(on: DispatchQueue.main) // sink後の処理はメインスレッドで行われるようにする
             .eraseToAnyPublisher()
         }
         
