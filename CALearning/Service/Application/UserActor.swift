@@ -10,10 +10,19 @@ import Foundation
 struct UserActor : Actor {
     typealias User = Account
     
-    var user: User?
+    let udid: String?
+    let user: User? // nil の場合はアノニマス
+    
+    func update(udid: String? = nil, user: User? = nil) -> Self {
+        return UserActor(
+            udid: udid ?? self.udid
+            , user: user ?? self.user
+        )
+    }
 }
 
 extension Usecase {
+
     func authorize<T: Actor>(_ actor: T) throws -> Bool {
         guard let userActor = actor as? UserActor else {
             fatalError()

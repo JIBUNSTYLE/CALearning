@@ -1,5 +1,5 @@
 //
-//  LoginStore.swift
+//  LoginBehavior.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/04/06.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class LoginStore: ObservableObject {
+class LoginBehavior: ObservableObject {
     private let controller: Controller
     
     @Published var loginValidationResult: LoginValidationResult?
@@ -20,11 +20,11 @@ class LoginStore: ObservableObject {
     }
 }
 
-extension LoginStore {
+extension LoginBehavior {
     
-    func login(_ from: Usecases.LoggingIn) {
+    func login(_ from: Usecases.LoggingIn, with actor: UserActor) {
         from
-            .interacted(by: self.controller.actor)
+            .interacted(by: actor)
             .sink { completion in
                 self.controller.resetUsecaseState()
                 if case .finished = completion {
@@ -53,5 +53,28 @@ extension LoginStore {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    func completeTutorial(_ from: Usecases.CompleteTutorial, with actor: UserActor) {
+        from
+            .interacted(by: actor)
+            .sink { completion in
+                self.controller.resetUsecaseState()
+                
+                if case .finished = completion {
+                    print("\(#function) は正常終了")
+                } else if case .failure(let error) = completion {
+                    print("\(#function) が異常終了: \(error)")
+                }
+            } receiveValue: { scenario in
+                print("usecase - \(#function): \(scenario)")
+                
+                guard case .last(let goal) = scenario.last else { fatalError() }
+                
+                if case .アプリはログイン画面を表示する = goal {
+                    self.controller.routing(to: .login)
+                }
+                
+            }.store(in: &cancellables)
     }
 }

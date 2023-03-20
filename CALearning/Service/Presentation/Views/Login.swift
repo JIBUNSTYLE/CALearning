@@ -10,7 +10,7 @@ import SwiftUI
 struct Login: View {
     @EnvironmentObject var presenter: Controller
     
-    @StateObject var store: LoginStore
+    @StateObject var store: LoginBehavior
     
     @State var id: String?
     @State var password: String?
@@ -76,6 +76,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(store: Controller().loginStore)
+        Login(store: Controller().loginBehavior)
     }
 }

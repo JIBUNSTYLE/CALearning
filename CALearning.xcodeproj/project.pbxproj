@@ -24,6 +24,7 @@
 		7077C9BC27AB5C540035E404 /* Apis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BB27AB5C540035E404 /* Apis.swift */; };
 		7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BD27AB7ABD0035E404 /* Backend.swift */; };
 		7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077C9BF27AB7B280035E404 /* ApiBackend.swift */; };
+		7077F51229C7F5E6006233CB /* ApplicationBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7077F51129C7F5E6006233CB /* ApplicationBehavior.swift */; };
 		707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA955279F833700EAFC66 /* CALearningApp.swift */; };
 		707CA958279F833700EAFC66 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA957279F833700EAFC66 /* ContentView.swift */; };
 		707CA95A279F833900EAFC66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 707CA959279F833900EAFC66 /* Assets.xcassets */; };
@@ -41,11 +42,10 @@
 		70873E9A27E02F7D007EE181 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* AccountModel.swift */; };
 		70873E9E27E0300B007EE181 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* Model.swift */; };
 		708A75F927E0C0A60047016B /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75F827E0C0A60047016B /* Actor.swift */; };
-		708A75FD27E0C4E70047016B /* Anyone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FC27E0C4E70047016B /* Anyone.swift */; };
 		708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FE27F46A970047016B /* KeyChainDataStore.swift */; };
 		708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A760227F48E7D0047016B /* GoogleMapApiClient.swift */; };
 		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
-		70D4DC5227FDDD5600C02521 /* LoginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginStore.swift */; };
+		70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
 		70F57A7D281A32920036EE53 /* Loggingin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7C281A32920036EE53 /* Loggingin.swift */; };
 		70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7E281A5A4A0036EE53 /* Validation.swift */; };
@@ -83,6 +83,7 @@
 		7077C9BB27AB5C540035E404 /* Apis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apis.swift; sourceTree = "<group>"; };
 		7077C9BD27AB7ABD0035E404 /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		7077C9BF27AB7B280035E404 /* ApiBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiBackend.swift; sourceTree = "<group>"; };
+		7077F51129C7F5E6006233CB /* ApplicationBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBehavior.swift; sourceTree = "<group>"; };
 		707CA952279F833700EAFC66 /* CALearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CALearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		707CA955279F833700EAFC66 /* CALearningApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALearningApp.swift; sourceTree = "<group>"; };
 		707CA957279F833700EAFC66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,11 +105,10 @@
 		70873E9927E02F7D007EE181 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		70873E9D27E0300B007EE181 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		708A75F827E0C0A60047016B /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
-		708A75FC27E0C4E70047016B /* Anyone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anyone.swift; sourceTree = "<group>"; };
 		708A75FE27F46A970047016B /* KeyChainDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainDataStore.swift; sourceTree = "<group>"; };
 		708A760227F48E7D0047016B /* GoogleMapApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapApiClient.swift; sourceTree = "<group>"; };
 		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
-		70D4DC5127FDDD5600C02521 /* LoginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStore.swift; sourceTree = "<group>"; };
+		70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBehavior.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		70F57A7C281A32920036EE53 /* Loggingin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggingin.swift; sourceTree = "<group>"; };
 		70F57A7E281A5A4A0036EE53 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
@@ -234,9 +234,9 @@
 		707CA980279F8B6300EAFC66 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				7077C99C27A0D58D0035E404 /* Infrastructure */,
 				707CA992279FA87800EAFC66 /* Domain */,
 				707CA98B279F8F6A00EAFC66 /* Application */,
-				7077C99C27A0D58D0035E404 /* Infrastructure */,
 				707CA981279F8B6A00EAFC66 /* Presentation */,
 				7077C9AC27A8F9BD0035E404 /* ServiceErrors.swift */,
 			);
@@ -246,8 +246,6 @@
 		707CA981279F8B6A00EAFC66 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				707CA996279FD1BA00EAFC66 /* Controller.swift */,
-				70D4DC5027FDDBF200C02521 /* Stores */,
 				707CA982279F8BDE00EAFC66 /* Views */,
 			);
 			path = Presentation;
@@ -267,9 +265,10 @@
 		707CA98B279F8F6A00EAFC66 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				707CA996279FD1BA00EAFC66 /* Controller.swift */,
 				708415C2283524BB00BAED01 /* UserActor.swift */,
 				70BEB7F628C22F05004538EB /* Usecases.swift */,
-				708A75FA27E0C4C50047016B /* Actors */,
+				70D4DC5027FDDBF200C02521 /* Behoviors */,
 				708A75FB27E0C4D30047016B /* Usecases */,
 			);
 			path = Application;
@@ -317,14 +316,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		708A75FA27E0C4C50047016B /* Actors */ = {
-			isa = PBXGroup;
-			children = (
-				708A75FC27E0C4E70047016B /* Anyone.swift */,
-			);
-			path = Actors;
-			sourceTree = "<group>";
-		};
 		708A75FB27E0C4D30047016B /* Usecases */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,12 +326,13 @@
 			path = Usecases;
 			sourceTree = "<group>";
 		};
-		70D4DC5027FDDBF200C02521 /* Stores */ = {
+		70D4DC5027FDDBF200C02521 /* Behoviors */ = {
 			isa = PBXGroup;
 			children = (
-				70D4DC5127FDDD5600C02521 /* LoginStore.swift */,
+				7077F51129C7F5E6006233CB /* ApplicationBehavior.swift */,
+				70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */,
 			);
-			path = Stores;
+			path = Behoviors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -488,7 +480,6 @@
 				70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */,
 				7077C9B627A906F90035E404 /* Api.swift in Sources */,
 				7077C99E27A0D5A70035E404 /* UserDefaultsDataStore.swift in Sources */,
-				708A75FD27E0C4E70047016B /* Anyone.swift in Sources */,
 				708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */,
 				7077C9BC27AB5C540035E404 /* Apis.swift in Sources */,
 				707CA997279FD1BA00EAFC66 /* Controller.swift in Sources */,
@@ -503,7 +494,7 @@
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
-				70D4DC5227FDDD5600C02521 /* LoginStore.swift in Sources */,
+				70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
 				708A75F927E0C0A60047016B /* Actor.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
@@ -515,6 +506,7 @@
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
 				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
 				70BEB7F728C22F05004538EB /* Usecases.swift in Sources */,
+				7077F51229C7F5E6006233CB /* ApplicationBehavior.swift in Sources */,
 				70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
