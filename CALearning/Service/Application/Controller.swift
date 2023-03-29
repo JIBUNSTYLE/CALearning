@@ -58,7 +58,7 @@ extension Controller {
         }
     }
     
-    func changeActor(to actor: UserActor) {
+    func change(actor: UserActor) {
         self.actor = actor
     }
     

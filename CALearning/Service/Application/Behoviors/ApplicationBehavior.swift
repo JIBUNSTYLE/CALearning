@@ -55,11 +55,11 @@ extension ApplicationBehavior {
                     
                 switch goal {
                 case let .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid):
-                    self.controller.changeActor(to: self.controller.actor.update(udid: udid))
+                    self.controller.change(actor: actor.update(udid: udid))
                     self.controller.routing(to: .login)
 
                 case let .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid):
-                    self.controller.changeActor(to: self.controller.actor.update(udid: udid))
+                    self.controller.change(actor: actor.update(udid: udid))
                     self.controller.routing(to: .tutorial)
 
                 case let .UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error):
