@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RobustiveSwift
 
 enum UsecaseStatus {
     case idle

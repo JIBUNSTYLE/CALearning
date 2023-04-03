@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RobustiveSwift
 
 class ApplicationBehavior : ObservableObject {
     private let controller: Controller

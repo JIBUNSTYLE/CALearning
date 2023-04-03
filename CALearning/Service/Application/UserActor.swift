@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RobustiveSwift
 
 struct UserActor : Actor {
     typealias User = Account

@@ -35,15 +35,14 @@
 		707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA987279F8C3D00EAFC66 /* Tutorial.swift */; };
 		707CA98A279F8C5600EAFC66 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA989279F8C5600EAFC66 /* Login.swift */; };
 		707CA98D279F8FA500EAFC66 /* Booting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA98C279F8FA500EAFC66 /* Booting.swift */; };
-		707CA991279F933E00EAFC66 /* Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA990279F933E00EAFC66 /* Usecase.swift */; };
 		707CA995279FA89A00EAFC66 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA994279FA89A00EAFC66 /* Application.swift */; };
 		707CA997279FD1BA00EAFC66 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Controller.swift */; };
 		708415C3283524BB00BAED01 /* UserActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708415C2283524BB00BAED01 /* UserActor.swift */; };
 		70873E9A27E02F7D007EE181 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* AccountModel.swift */; };
 		70873E9E27E0300B007EE181 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* Model.swift */; };
-		708A75F927E0C0A60047016B /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75F827E0C0A60047016B /* Actor.swift */; };
 		708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FE27F46A970047016B /* KeyChainDataStore.swift */; };
 		708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A760227F48E7D0047016B /* GoogleMapApiClient.swift */; };
+		708CA92C29DAC8E000BCFD49 /* RobustiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 708CA92B29DAC8E000BCFD49 /* RobustiveSwift */; };
 		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
 		70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
@@ -98,15 +97,14 @@
 		707CA987279F8C3D00EAFC66 /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
 		707CA989279F8C5600EAFC66 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		707CA98C279F8FA500EAFC66 /* Booting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Booting.swift; sourceTree = "<group>"; };
-		707CA990279F933E00EAFC66 /* Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecase.swift; sourceTree = "<group>"; };
 		707CA994279FA89A00EAFC66 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		707CA996279FD1BA00EAFC66 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		708415C2283524BB00BAED01 /* UserActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActor.swift; sourceTree = "<group>"; };
 		70873E9927E02F7D007EE181 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		70873E9D27E0300B007EE181 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		708A75F827E0C0A60047016B /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		708A75FE27F46A970047016B /* KeyChainDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainDataStore.swift; sourceTree = "<group>"; };
 		708A760227F48E7D0047016B /* GoogleMapApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapApiClient.swift; sourceTree = "<group>"; };
+		708CA92729DAC5C100BCFD49 /* RobustiveSwift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RobustiveSwift; path = ../RobustiveSwift; sourceTree = "<group>"; };
 		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
 		70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBehavior.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
@@ -119,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				708CA92C29DAC8E000BCFD49 /* RobustiveSwift in Frameworks */,
 				7077C9A527A8F36C0035E404 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,11 +173,13 @@
 		707CA949279F833700EAFC66 = {
 			isa = PBXGroup;
 			children = (
+				708CA92729DAC5C100BCFD49 /* RobustiveSwift */,
 				707CA97F279F83B600EAFC66 /* README.md */,
 				707CA954279F833700EAFC66 /* CALearning */,
 				707CA965279F833900EAFC66 /* CALearningTests */,
 				707CA96F279F833900EAFC66 /* CALearningUITests */,
 				707CA953279F833700EAFC66 /* Products */,
+				708CA92A29DAC89700BCFD49 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -287,8 +288,6 @@
 			isa = PBXGroup;
 			children = (
 				70873E9D27E0300B007EE181 /* Model.swift */,
-				708A75F827E0C0A60047016B /* Actor.swift */,
-				707CA990279F933E00EAFC66 /* Usecase.swift */,
 				7077C9B527A906F90035E404 /* Api.swift */,
 				7077C9A827A8F9560035E404 /* ApiClient.swift */,
 				708A760227F48E7D0047016B /* GoogleMapApiClient.swift */,
@@ -326,6 +325,13 @@
 			path = Usecases;
 			sourceTree = "<group>";
 		};
+		708CA92A29DAC89700BCFD49 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		70D4DC5027FDDBF200C02521 /* Behoviors */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +359,7 @@
 			name = CALearning;
 			packageProductDependencies = (
 				7077C9A427A8F36C0035E404 /* Alamofire */,
+				708CA92B29DAC8E000BCFD49 /* RobustiveSwift */,
 			);
 			productName = CALearning;
 			productReference = 707CA952279F833700EAFC66 /* CALearning.app */;
@@ -405,7 +412,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					707CA951279F833700EAFC66 = {
@@ -496,13 +503,11 @@
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
-				708A75F927E0C0A60047016B /* Actor.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */,
 				70F57A7D281A32920036EE53 /* Loggingin.swift in Sources */,
 				708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */,
-				707CA991279F933E00EAFC66 /* Usecase.swift in Sources */,
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
 				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
 				70BEB7F728C22F05004538EB /* Usecases.swift in Sources */,
@@ -880,6 +885,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7077C9A327A8F36C0035E404 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		708CA92B29DAC8E000BCFD49 /* RobustiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RobustiveSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
