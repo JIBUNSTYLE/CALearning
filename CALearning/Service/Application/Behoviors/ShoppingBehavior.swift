@@ -12,6 +12,8 @@ import RobustiveSwift
 class ShoppingBehavior: ObservableObject {
     private let controller: Controller
     
+    @Published var isConfirming = false
+    
     private var cancellables = [AnyCancellable]()
     
     init(with controller: Controller) {
@@ -45,7 +47,7 @@ extension ShoppingBehavior {
                 
                 switch goal {
                 case .アプリは購入確認画面を表示する:
-                    break
+                    self.isConfirming = true
                 }
             }
             .store(in: &cancellables)

@@ -60,14 +60,16 @@ struct Login: View {
                         } else {
                             Text("")
                         }
-                        Spacer()
-                        HStack {
-                            Button("→ ログインしないで使う") {
-                                self.controller.dispatch(.trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する)))
-                            }
+                        if !self.controller.isLoginModalPresented {
                             Spacer()
-                            Button("→ Terms of Service") {
-                                self.isPresentTermsOfService.toggle()
+                            HStack {
+                                Button("→ ログインしないで使う") {
+                                    self.controller.dispatch(.trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する)))
+                                }
+                                Spacer()
+                                Button("→ Terms of Service") {
+                                    self.isPresentTermsOfService.toggle()
+                                }
                             }
                         }
                         Spacer()
@@ -88,6 +90,8 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(loginBehavior: Controller().loginBehavior)
+        let controller = Controller()
+        Login(loginBehavior: controller.loginBehavior)
+            .environmentObject(controller)
     }
 }

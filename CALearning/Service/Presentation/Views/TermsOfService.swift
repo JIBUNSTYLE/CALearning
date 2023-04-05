@@ -13,11 +13,7 @@ struct TermsOfService: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Actor: \(self.controller.actor.description)")
-            Spacer()
-            Button("→ Purchase") {
-                self.controller.dispatch(.purchase(from: .basic(scene: .ユーザは購入ボタンを押下する)))
-            }
+            Text("Hello World!")
             Spacer()
         }
     }

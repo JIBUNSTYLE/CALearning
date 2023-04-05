@@ -27,6 +27,10 @@ struct CALearningApp: App {
                         Text(self.controller.alertContent.message)
                     }
                 )
+                .sheet(isPresented: self.$controller.isLoginModalPresented, onDismiss: {}) {
+                    Login(loginBehavior: self.controller.loginBehavior)
+                        .environmentObject(controller)
+                }
         }
     }
 }
