@@ -22,7 +22,7 @@ struct ContentView: View {
         case .tutorial:
             Tutorial()
         case .login:
-            Login(store: self.controller.loginBehavior)
+            Login(loginBehavior: self.controller.loginBehavior)
         case .home:
             TermsOfService()
         }

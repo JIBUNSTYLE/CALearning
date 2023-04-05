@@ -10,7 +10,7 @@ import SwiftUI
 struct Login: View {
     @EnvironmentObject var presenter: Controller
     
-    @StateObject var store: LoginBehavior
+    @StateObject var loginBehavior: LoginBehavior
     
     @State var id: String?
     @State var password: String?
@@ -29,7 +29,7 @@ struct Login: View {
                             self.presenter.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
                         }
                         .disabled(self.presenter.usecaseStatus.isExecuting)
-                        if let result = self.store.loginValidationResult
+                        if let result = self.loginBehavior.loginValidationResult
                             , case let .failed(idValidationResult, passwordValidationResult) = result {
                             switch idValidationResult {
                             case .isValid:
@@ -76,6 +76,6 @@ struct Login: View {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login(store: Controller().loginBehavior)
+        Login(loginBehavior: Controller().loginBehavior)
     }
 }
