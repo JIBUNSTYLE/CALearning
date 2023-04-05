@@ -42,7 +42,13 @@ extension LoginBehavior {
                     self.controller.isAlertPresented = true
 
                 case let .ログイン認証に成功した場合_アプリはホーム画面を表示する(user):
+                    let usecaseToResume = actor.usecaseToResume
+                    self.controller.change(actor: actor.update(user: user))
                     self.controller.routing(to: .home)
+                    self.controller.isLoginModalPresented = false
+                    
+                    guard let usecase = usecaseToResume else { return }
+                    self.controller.dispatch(usecase)
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
                     self.loginValidationResult = result
@@ -50,6 +56,29 @@ extension LoginBehavior {
                     
                 case .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: let error):
                     print(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+ 
+    func trial(_ from: Usecases.TrialUsing, with actor: UserActor) {
+        from
+            .interacted(by: actor)
+            .sink { completion in
+                self.controller.resetUsecaseState()
+                if case .finished = completion {
+                    print("\(#function) は正常終了")
+                } else if case .failure(let error) = completion {
+                    print("\(#function) が異常終了: \(error)")
+                }
+            } receiveValue: { scenario in
+                print("usecase - \(#function): \(scenario)")
+                
+                guard case .last(let goal) = scenario.last else { fatalError() }
+                
+                switch goal {
+                case .アプリはホーム画面を表示する:
+                    self.controller.routing(to: .home)
                 }
             }
             .store(in: &cancellables)

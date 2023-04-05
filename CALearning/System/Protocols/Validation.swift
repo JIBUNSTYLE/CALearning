@@ -13,10 +13,10 @@ enum ValidationResult<T> {
         case isFailed(_: T)
     }
     enum IsTooShort {
-        case isFailed(_: T, lessThan: Int)
+        case isFailed(_: T, lessThan: Int, actual: Int)
     }
     enum IsTooLong {
-        case isFailed(_: T, greaterThan: Int)
+        case isFailed(_: T, greaterThan: Int, actual: Int)
     }
     enum IsMalformed {
         case isFailed(_: T)
@@ -38,7 +38,7 @@ extension Validation {
     func validate(isEqualToOrGreaterThan value: String?, minLength: Int) -> ValidationResult<String?>.IsTooShort? {
         guard let value = value else { return nil }
         if value.count < minLength {
-            return .isFailed(value, lessThan: minLength)
+            return .isFailed(value, lessThan: minLength, actual: value.count)
         }
         return nil
     }
@@ -46,7 +46,7 @@ extension Validation {
     func validate(isEqualToOrLessThan value: String?, maxLength: Int) -> ValidationResult<String?>.IsTooLong? {
         guard let value = value else { return nil }
         if value.count > maxLength {
-            return .isFailed(value, greaterThan: maxLength)
+            return .isFailed(value, greaterThan: maxLength, actual: value.count)
         }
         return nil
     }

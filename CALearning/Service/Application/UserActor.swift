@@ -8,16 +8,22 @@
 import Foundation
 import RobustiveSwift
 
-struct UserActor : Actor {
+struct UserActor : Actor, CustomStringConvertible {
     typealias User = Account
     
     let udid: String?
     let user: User? // nil の場合はアノニマス
+    let usecaseToResume: Usecases?
     
-    func update(udid: String? = nil, user: User? = nil) -> Self {
+    var description: String {
+        "udid: \(self.udid ?? "-"), user: \(self.user?.mailAddress ?? "-")"
+    }
+    
+    func update(udid: String? = nil, user: User? = nil, usecaseToResume: Usecases? = nil) -> Self {
         return UserActor(
             udid: udid ?? self.udid
             , user: user ?? self.user
+            , usecaseToResume: usecaseToResume ?? self.usecaseToResume
         )
     }
 }

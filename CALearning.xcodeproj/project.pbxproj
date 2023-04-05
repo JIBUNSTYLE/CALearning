@@ -43,6 +43,9 @@
 		708A75FF27F46A970047016B /* KeyChainDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A75FE27F46A970047016B /* KeyChainDataStore.swift */; };
 		708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A760227F48E7D0047016B /* GoogleMapApiClient.swift */; };
 		708CA92C29DAC8E000BCFD49 /* RobustiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 708CA92B29DAC8E000BCFD49 /* RobustiveSwift */; };
+		70A945F529DD3A1F00AFC6B9 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945F429DD3A1F00AFC6B9 /* Purchase.swift */; };
+		70A945F729DD3A9400AFC6B9 /* ShoppingBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945F629DD3A9400AFC6B9 /* ShoppingBehavior.swift */; };
+		70A945F929DD4EB500AFC6B9 /* TrialUsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */; };
 		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
 		70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
@@ -105,6 +108,9 @@
 		708A75FE27F46A970047016B /* KeyChainDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainDataStore.swift; sourceTree = "<group>"; };
 		708A760227F48E7D0047016B /* GoogleMapApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapApiClient.swift; sourceTree = "<group>"; };
 		708CA92729DAC5C100BCFD49 /* RobustiveSwift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RobustiveSwift; path = ../RobustiveSwift; sourceTree = "<group>"; };
+		70A945F429DD3A1F00AFC6B9 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
+		70A945F629DD3A9400AFC6B9 /* ShoppingBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingBehavior.swift; sourceTree = "<group>"; };
+		70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialUsing.swift; sourceTree = "<group>"; };
 		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
 		70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBehavior.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
@@ -321,6 +327,8 @@
 				707CA98C279F8FA500EAFC66 /* Booting.swift */,
 				70167B6128196EA400C40F0E /* CompleteTutorial.swift */,
 				70F57A7C281A32920036EE53 /* Loggingin.swift */,
+				70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */,
+				70A945F429DD3A1F00AFC6B9 /* Purchase.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -337,6 +345,7 @@
 			children = (
 				7077F51129C7F5E6006233CB /* ApplicationBehavior.swift */,
 				70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */,
+				70A945F629DD3A9400AFC6B9 /* ShoppingBehavior.swift */,
 			);
 			path = Behoviors;
 			sourceTree = "<group>";
@@ -493,13 +502,16 @@
 				7077C9BE27AB7ABD0035E404 /* Backend.swift in Sources */,
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */,
+				70A945F729DD3A9400AFC6B9 /* ShoppingBehavior.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
 				70873E9A27E02F7D007EE181 /* AccountModel.swift in Sources */,
+				70A945F529DD3A1F00AFC6B9 /* Purchase.swift in Sources */,
 				7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */,
 				7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */,
 				708415C3283524BB00BAED01 /* UserActor.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
+				70A945F929DD4EB500AFC6B9 /* TrialUsing.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,

@@ -96,10 +96,16 @@ class AccountModel : Model {
             // Actorが誰でも実行可能
             return true
         }
-        case is Usecases.LoggingIn : do {
-            guard case .anyone = actor.userType else {
-                return false
-            }
+        case is Usecases.LoggingIn
+            , is Usecases.TrialUsing : do {
+            // 未サインインユーザのみ実行可能
+            guard case .anyone = actor.userType else { return false }
+            return true
+        }
+            
+        case is Usecases.Purchase : do {
+            // サインイン済みユーザのみ実行可能
+            guard case .signedIn = actor.userType else { return false }
             return true
         }
 
@@ -113,7 +119,7 @@ class AccountModel : Model {
             .isRequired()
             .isMalformed()
         
-        let passwordValidationResult = PasswordValidation(password: id)
+        let passwordValidationResult = PasswordValidation(password: password)
             .isRequired()
             .isTooShort()
             .IsTooLong()

@@ -17,16 +17,18 @@ class Controller: ObservableObject {
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
     @Published var isAlertPresented = false
+    @Published var isLoginModalPresented = false
     
     // 二度押し防止でボタンなどを制御するため、ユースケース実行状態を管理
     private(set) var usecaseStatus: UsecaseStatus = .idle
     
     var alertContent = AlertContent(title: "お知らせ", message: "ほげほげ")
     
-    private(set) var actor: UserActor = UserActor(udid: nil, user: nil)
+    private(set) var actor: UserActor = UserActor(udid: nil, user: nil, usecaseToResume: nil)
     
     private var _application: ApplicationBehavior?
     private var _login: LoginBehavior?
+    private var _shopping: ShoppingBehavior?
 
     var applicationBehavior: ApplicationBehavior {
         if let b = self._application {
@@ -44,6 +46,16 @@ class Controller: ObservableObject {
         } else {
             let b = LoginBehavior(with: self)
             self._login = b
+            return b
+        }
+    }
+    
+    var shoppingBehavior: ShoppingBehavior {
+        if let b = self._shopping {
+            return b
+        } else {
+            let b = ShoppingBehavior(with: self)
+            self._shopping = b
             return b
         }
     }
@@ -83,6 +95,15 @@ extension Controller {
             
         case let .loggingIn(from):
             self.loginBehavior.login(from, with: self.actor)
+            
+        case let .trialUsing(from):
+            self.loginBehavior.trial(from, with: self.actor)
+            
+        case let .purchase(from):
+            self.shoppingBehavior.purchase(from, with: self.actor)
         }
+        
+    
+        
     }
 }

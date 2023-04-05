@@ -28,13 +28,13 @@ struct ApiBackend : Backend {
 //                return response.udid
 //            }
 //            .eraseToAnyPublisher()
-        return Just("dummy-udid")
+        return Just("return-from-api-dummy-udid")
             .setFailureType(to: ErrorWrapper.self)
             .eraseToAnyPublisher()
     }
     
     func login(with id: String, and password: String) -> AnyPublisher<Account, ErrorWrapper> {
-        return Just(Account(mailAddress: "hoge"))
+        return Just(Account(mailAddress: "returnFromApi@dummy.com"))
             .setFailureType(to: ErrorWrapper.self)
             .eraseToAnyPublisher()
     }

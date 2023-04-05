@@ -12,8 +12,8 @@ struct Login: View {
     
     @StateObject var loginBehavior: LoginBehavior
     
-    @State var id: String?
-    @State var password: String?
+    @State var id: String = ""
+    @State var password: String = ""
     @State var isPresentTermsOfService = false
     
     var body: some View {
@@ -25,8 +25,16 @@ struct Login: View {
                         Spacer()
                         Text("Login!")
                         Spacer()
+                        HStack {
+                            Text("ID")
+                            TextField("Input your mail address", text: $id)
+                        }
+                        HStack {
+                            Text("Password")
+                            TextField("Input your password", text: $password)
+                        }
                         Button("→ Login") {
-                            self.controller.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
+                            self.controller.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id.isEmpty ? nil : self.id , password: self.password.isEmpty ? nil : self.password))))
                         }
                         .disabled(self.controller.usecaseStatus.isExecuting)
                         if let result = self.loginBehavior.loginValidationResult
@@ -54,6 +62,10 @@ struct Login: View {
                         }
                         Spacer()
                         HStack {
+                            Button("→ ログインしないで使う") {
+                                self.controller.dispatch(.trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する)))
+                            }
+                            Spacer()
                             Button("→ Terms of Service") {
                                 self.isPresentTermsOfService.toggle()
                             }

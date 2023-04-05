@@ -92,7 +92,6 @@ enum Usecases {
         case basic(scene: Basics)
         case alternate(scene: Alternatives)
         case last(scene: Goals)
-        
     }
     
     /// ユースケース【ログインする】を実現します。
@@ -120,7 +119,43 @@ enum Usecases {
         case last(scene: Goals)
     }
     
+    /// ユースケース【お試し利用する】を実現します。
+    enum TrialUsing : Usecase {
+        enum Basics {
+            case ユーザはログインしないで使うボタンを押下する
+        }
+        
+        enum Alternatives {}
+        
+        enum Goals {
+            case アプリはホーム画面を表示する
+        }
+        
+        case basic(scene: Basics)
+        case alternate(scene: Alternatives)
+        case last(scene: Goals)
+    }
+    
+    /// ユースケース【購入する】を実現します。
+    enum Purchase : Usecase {
+        enum Basics {
+            case ユーザは購入ボタンを押下する
+        }
+        
+        enum Alternatives {}
+        
+        enum Goals {
+            case アプリは購入確認画面を表示する
+        }
+        
+        case basic(scene: Basics)
+        case alternate(scene: Alternatives)
+        case last(scene: Goals)
+    }
+    
     case booting(from: Booting)
     case completeTutorial(from: CompleteTutorial)
     case loggingIn(from: LoggingIn)
+    case trialUsing(from: TrialUsing)
+    case purchase(from: Purchase)
 }

@@ -16,15 +16,20 @@ struct ContentView: View {
     @EnvironmentObject var controller: Controller
 
     var body: some View {
-        switch self.controller.currentView {
-        case .splash:
-            Splash()
-        case .tutorial:
-            Tutorial()
-        case .login:
+        Group {
+            switch self.controller.currentView {
+            case .splash:
+                Splash()
+            case .tutorial:
+                Tutorial()
+            case .login:
+                Login(loginBehavior: self.controller.loginBehavior)
+            case .home:
+                TermsOfService()
+            }
+        }
+        .sheet(isPresented: self.$controller.isLoginModalPresented, onDismiss: {}) {
             Login(loginBehavior: self.controller.loginBehavior)
-        case .home:
-            TermsOfService()
         }
     }
 }

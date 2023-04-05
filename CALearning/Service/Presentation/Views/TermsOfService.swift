@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct TermsOfService: View {
+    @EnvironmentObject var controller: Controller
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Spacer()
+            Text("Actor: \(self.controller.actor.description)")
+            Spacer()
+            Button("→ Purchase") {
+                self.controller.dispatch(.purchase(from: .basic(scene: .ユーザは購入ボタンを押下する)))
+            }
+            Spacer()
+        }
     }
 }
 
