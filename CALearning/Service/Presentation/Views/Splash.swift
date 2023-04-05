@@ -9,12 +9,12 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var presenter: Controller
+    @EnvironmentObject var controller: Controller
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.presenter.dispatch(Usecases.booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)))
+                self.controller.dispatch(Usecases.booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)))
             }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Tutorial: View {
-    @EnvironmentObject var presenter: Controller
+    @EnvironmentObject var controller: Controller
     
     var body: some View {
         VStack {
@@ -16,7 +16,7 @@ struct Tutorial: View {
             Text("Tutorial!")
             Spacer()
             Button("→ Complete") {
-                self.presenter.dispatch(.completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる)))
+                self.controller.dispatch(.completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる)))
             }
             Spacer()
         }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Login: View {
-    @EnvironmentObject var presenter: Controller
+    @EnvironmentObject var controller: Controller
     
     @StateObject var loginBehavior: LoginBehavior
     
@@ -26,9 +26,9 @@ struct Login: View {
                         Text("Login!")
                         Spacer()
                         Button("→ Login") {
-                            self.presenter.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
+                            self.controller.dispatch(.loggingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id, password: self.password))))
                         }
-                        .disabled(self.presenter.usecaseStatus.isExecuting)
+                        .disabled(self.controller.usecaseStatus.isExecuting)
                         if let result = self.loginBehavior.loginValidationResult
                             , case let .failed(idValidationResult, passwordValidationResult) = result {
                             switch idValidationResult {
