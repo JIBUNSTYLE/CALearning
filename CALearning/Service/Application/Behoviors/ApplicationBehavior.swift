@@ -41,18 +41,10 @@ extension ApplicationBehavior {
 //
         from
             .interacted(by: actor)
-            .sink { completion in
-                self.controller.resetUsecaseState()
-                
-                if case .finished = completion {
-                    print("\(#function) は正常終了")
-                } else if case let .failure(error) = completion {
-                    print("\(#function) が異常終了: \(error)")
-                }
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
             } receiveValue: { scenario in
-                print("usecase - \(#function): \(scenario)")
-                
-                guard case .last(let goal) = scenario.last else { fatalError() }
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
                     
                 switch goal {
                 case let .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid):
@@ -67,7 +59,22 @@ extension ApplicationBehavior {
                     self.controller.alertContent = AlertContent(title: "システムエラー", message: "UDIDの発行に失敗しました")
                     // TODO: リトライ
                     // TODO: システムエラーと文言をenum化
-                    self.controller.isAlertPresented = true
+                    self.controller.set(isAlertPresented: true)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func closeDialog(_ from: Usecases.CloseDialog, with actor: UserActor) {
+        from
+            .interacted(by: actor)
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
+            } receiveValue: { scenario in
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
+                    
+                if case .アプリはダイアログを閉じる = goal {
+                    self.controller.set(isAlertPresented: false)
                 }
             }
             .store(in: &cancellables)

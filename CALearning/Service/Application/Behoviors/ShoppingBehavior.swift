@@ -27,23 +27,17 @@ extension ShoppingBehavior {
         from
             .interacted(by: actor)
             .sink { completion in
-                self.controller.resetUsecaseState()
-                if case .finished = completion {
-                    print("\(#function) は正常終了")
-                } else if case .failure(let error) = completion {
-                    print("\(#function) が異常終了: \(error)")
-                    if case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error {
-                        // 再開したいユースケースを保存
-                        self.controller.change(actor: actor.update(usecaseToResume: .purchase(from: from)))
-                        
-                        // ログインを促す
-                        self.controller.isLoginModalPresented = true
-                    }
-                }
-            } receiveValue: { scenario in
-                print("usecase - \(#function): \(scenario)")
+                self.controller.commonCompletionProcess(with: completion)
                 
-                guard case .last(let goal) = scenario.last else { fatalError() }
+                guard case let .failure(error) = completion
+                    , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
+                // 再開したいユースケースを保存
+                self.controller.change(actor: actor.update(usecaseToResume: .purchase(from: from)))
+                // ログインを促す
+                self.controller.set(isLoginModalPresented: true)
+                
+            } receiveValue: { scenario in
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
                 
                 switch goal {
                 case .アプリは購入確認画面を表示する:

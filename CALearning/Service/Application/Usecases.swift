@@ -119,6 +119,23 @@ enum Usecases {
         case last(scene: Goals)
     }
     
+    /// ユースケース【ログインをやめる】を実現します。
+    enum StopLoggingIn : Usecase {
+        enum Basics {
+            case ユーザはキャンセルボタンを押下する
+       }
+        
+        enum Alternatives {}
+        
+        enum Goals {
+            case アプリはログインモーダルを閉じる
+        }
+        
+        case basic(scene: Basics)
+        case alternate(scene: Alternatives)
+        case last(scene: Goals)
+    }
+    
     /// ユースケース【お試し利用する】を実現します。
     enum TrialUsing : Usecase {
         enum Basics {
@@ -153,9 +170,28 @@ enum Usecases {
         case last(scene: Goals)
     }
     
+    /// ユースケース【ダイアログを閉じる】を実現します。
+    enum CloseDialog : Usecase {
+        enum Basics {
+            case ユーザはOKボタンを押下する
+        }
+        
+        enum Alternatives {}
+        
+        enum Goals {
+            case アプリはダイアログを閉じる
+        }
+        
+        case basic(scene: Basics)
+        case alternate(scene: Alternatives)
+        case last(scene: Goals)
+    }
+    
     case booting(from: Booting)
     case completeTutorial(from: CompleteTutorial)
     case loggingIn(from: LoggingIn)
+    case stopLoggingIn(from: StopLoggingIn)
     case trialUsing(from: TrialUsing)
     case purchase(from: Purchase)
+    case closeDialog(from: CloseDialog)
 }

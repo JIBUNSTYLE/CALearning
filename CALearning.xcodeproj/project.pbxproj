@@ -47,6 +47,8 @@
 		70A945F729DD3A9400AFC6B9 /* ShoppingBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945F629DD3A9400AFC6B9 /* ShoppingBehavior.swift */; };
 		70A945F929DD4EB500AFC6B9 /* TrialUsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */; };
 		70A945FD29DD54CA00AFC6B9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FC29DD54CA00AFC6B9 /* Home.swift */; };
+		70A945FF29DE448B00AFC6B9 /* StopLoggingIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FE29DE448B00AFC6B9 /* StopLoggingIn.swift */; };
+		70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A9460029DE557000AFC6B9 /* CloseDialog.swift */; };
 		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
 		70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
@@ -113,6 +115,8 @@
 		70A945F629DD3A9400AFC6B9 /* ShoppingBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingBehavior.swift; sourceTree = "<group>"; };
 		70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialUsing.swift; sourceTree = "<group>"; };
 		70A945FC29DD54CA00AFC6B9 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		70A945FE29DE448B00AFC6B9 /* StopLoggingIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopLoggingIn.swift; sourceTree = "<group>"; };
+		70A9460029DE557000AFC6B9 /* CloseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseDialog.swift; sourceTree = "<group>"; };
 		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
 		70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBehavior.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
@@ -330,8 +334,10 @@
 				707CA98C279F8FA500EAFC66 /* Booting.swift */,
 				70167B6128196EA400C40F0E /* CompleteTutorial.swift */,
 				70F57A7C281A32920036EE53 /* Loggingin.swift */,
+				70A945FE29DE448B00AFC6B9 /* StopLoggingIn.swift */,
 				70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */,
 				70A945F429DD3A1F00AFC6B9 /* Purchase.swift */,
+				70A9460029DE557000AFC6B9 /* CloseDialog.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -506,6 +512,7 @@
 				707CA995279FA89A00EAFC66 /* Application.swift in Sources */,
 				7077C9AB27A8F9830035E404 /* SystemErrors.swift in Sources */,
 				70A945F729DD3A9400AFC6B9 /* ShoppingBehavior.swift in Sources */,
+				70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
 				70873E9A27E02F7D007EE181 /* AccountModel.swift in Sources */,
 				70A945F529DD3A1F00AFC6B9 /* Purchase.swift in Sources */,
@@ -518,6 +525,7 @@
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */,
 				70873E9E27E0300B007EE181 /* Model.swift in Sources */,
+				70A945FF29DE448B00AFC6B9 /* StopLoggingIn.swift in Sources */,
 				70A945FD29DD54CA00AFC6B9 /* Home.swift in Sources */,
 				707CA98A279F8C5600EAFC66 /* Login.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,

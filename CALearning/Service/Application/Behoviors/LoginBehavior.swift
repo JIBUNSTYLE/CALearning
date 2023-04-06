@@ -25,34 +25,27 @@ extension LoginBehavior {
     func login(_ from: Usecases.LoggingIn, with actor: UserActor) {
         from
             .interacted(by: actor)
-            .sink { completion in
-                self.controller.resetUsecaseState()
-                if case .finished = completion {
-                    print("\(#function) は正常終了")
-                } else if case .failure(let error) = completion {
-                    print("\(#function) が異常終了: \(error)")
-                }
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
             } receiveValue: { scenario in
-                print("usecase - \(#function): \(scenario)")
-                
-                guard case .last(let goal) = scenario.last else { fatalError() }
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
                 
                 switch goal {
                 case let .ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error):
-                    self.controller.isAlertPresented = true
+                    self.controller.set(isAlertPresented: true)
 
                 case let .ログイン認証に成功した場合_アプリはホーム画面を表示する(user):
                     let usecaseToResume = actor.usecaseToResume
                     self.controller.change(actor: actor.update(user: user))
                     self.controller.routing(to: .home)
-                    self.controller.isLoginModalPresented = false
+                    self.controller.set(isLoginModalPresented: false)
                     
                     guard let usecase = usecaseToResume else { return }
                     self.controller.dispatch(usecase)
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
                     self.loginValidationResult = result
-                    self.controller.isAlertPresented = true
+                    self.controller.set(isAlertPresented: true)
                     
                 case .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: let error):
                     print(error)
@@ -60,24 +53,32 @@ extension LoginBehavior {
             }
             .store(in: &cancellables)
     }
- 
-    func trial(_ from: Usecases.TrialUsing, with actor: UserActor) {
+    
+    func stopLoggingIn(_ from: Usecases.StopLoggingIn, with actor: UserActor) {
         from
             .interacted(by: actor)
-            .sink { completion in
-                self.controller.resetUsecaseState()
-                if case .finished = completion {
-                    print("\(#function) は正常終了")
-                } else if case .failure(let error) = completion {
-                    print("\(#function) が異常終了: \(error)")
-                }
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
             } receiveValue: { scenario in
-                print("usecase - \(#function): \(scenario)")
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
+                if case .アプリはログインモーダルを閉じる = goal {
+                    self.loginValidationResult = nil
+                    self.controller.set(isLoginModalPresented: false)
+                }
+            }
+            .store(in: &cancellables)
+    }
+ 
+    func trial(_ from: Usecases.TrialUsing, with actor: UserActor) {
+        self.loginValidationResult = nil
+        from
+            .interacted(by: actor)
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
+            } receiveValue: { scenario in
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
                 
-                guard case .last(let goal) = scenario.last else { fatalError() }
-                
-                switch goal {
-                case .アプリはホーム画面を表示する:
+                if case .アプリはホーム画面を表示する = goal {
                     self.controller.routing(to: .home)
                 }
             }
@@ -87,18 +88,10 @@ extension LoginBehavior {
     func completeTutorial(_ from: Usecases.CompleteTutorial, with actor: UserActor) {
         from
             .interacted(by: actor)
-            .sink { completion in
-                self.controller.resetUsecaseState()
-                
-                if case .finished = completion {
-                    print("\(#function) は正常終了")
-                } else if case .failure(let error) = completion {
-                    print("\(#function) が異常終了: \(error)")
-                }
+            .sink {
+                self.controller.commonCompletionProcess(with: $0)
             } receiveValue: { scenario in
-                print("usecase - \(#function): \(scenario)")
-                
-                guard case .last(let goal) = scenario.last else { fatalError() }
+                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
                 
                 if case .アプリはログイン画面を表示する = goal {
                     self.controller.routing(to: .login)

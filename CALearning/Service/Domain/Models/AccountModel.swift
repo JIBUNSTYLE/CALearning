@@ -92,11 +92,13 @@ class AccountModel : Model {
         switch usecase {
         case is Usecases.Booting
             , is Usecases.CompleteTutorial
+            , is Usecases.CloseDialog
             : do {
             // Actorが誰でも実行可能
             return true
         }
         case is Usecases.LoggingIn
+            , is Usecases.StopLoggingIn
             , is Usecases.TrialUsing : do {
             // 未サインインユーザのみ実行可能
             guard case .anyone = actor.userType else { return false }

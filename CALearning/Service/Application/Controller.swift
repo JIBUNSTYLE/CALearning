@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RobustiveSwift
 
 struct AlertContent {
     let title: String
@@ -16,8 +17,8 @@ struct AlertContent {
 class Controller: ObservableObject {
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
-    @Published var isAlertPresented = false
-    @Published var isLoginModalPresented = false
+    @Published private(set) var isAlertPresented = false
+    @Published private(set) var isLoginModalPresented = false
     
     // 二度押し防止でボタンなどを制御するため、ユースケース実行状態を管理
     private(set) var usecaseStatus: UsecaseStatus = .idle
@@ -78,10 +79,33 @@ extension Controller {
         self.usecaseStatus.printElapsedTime(msg, efile: file, eline: line, efunction: function)
         self.usecaseStatus = .idle
     }
+    
+    func set(isAlertPresented: Bool) {
+        self.isAlertPresented = isAlertPresented
+    }
+    
+    func set(isLoginModalPresented: Bool) {
+        self.isLoginModalPresented = isLoginModalPresented
+    }
 }
     
 // MARK: - usecase dispatcher
 extension Controller {
+    
+    func commonCompletionProcess<T>(with completion: Subscribers.Completion<T>, for behavior: String? = #function) {
+        self.resetUsecaseState()
+        
+        if case .finished = completion {
+            print("\(behavior ?? "unknown") は正常終了")
+        } else if case .failure(let error) = completion {
+            print("\(behavior ?? "unknown") が異常終了: \(error)")
+        }
+    }
+    
+    func commonReceiveProcess<T: Usecase>(with scenario: [T], for behavior: String? = #function) -> T? {
+        print("usecase - \(behavior ?? "unknown"): \(scenario)")
+        return scenario.last
+    }
     
     func dispatch(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) {
         self.usecaseStatus = .executing(usecase: from, file: file, line: line, function: function, startAt: Date())
@@ -96,14 +120,17 @@ extension Controller {
         case let .loggingIn(from):
             self.loginBehavior.login(from, with: self.actor)
             
+        case let .stopLoggingIn(from):
+            self.loginBehavior.stopLoggingIn(from, with: self.actor)
+            
         case let .trialUsing(from):
             self.loginBehavior.trial(from, with: self.actor)
             
         case let .purchase(from):
             self.shoppingBehavior.purchase(from, with: self.actor)
+            
+        case let .closeDialog(from):
+            self.applicationBehavior.closeDialog(from, with: self.actor)
         }
-        
-    
-        
     }
 }
