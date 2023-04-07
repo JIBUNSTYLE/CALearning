@@ -15,17 +15,21 @@ struct CALearningApp: App {
     private var isAlertPresented: Binding<Bool> {
         Binding {
             self.controller.isAlertPresented
-        } set: { newValue in
-           self.controller.dispatch(.closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する)))
-        }
+        } set: { _ in }
     }
     
     private var isLoginModalPresented: Binding<Bool> {
-        Binding {
+        Binding( get: {
             self.controller.isLoginModalPresented
-        } set: { newValue in
-            self.controller.dispatch(.stopLoggingIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する)))
-        }
+        }, set: { newValue in
+            guard newValue == false else { return }
+            if self.controller.isLoginModalPresented {
+                print("スワイプで閉じる")
+                self.controller.dispatch(.stopLoggingIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する)))
+            } else {
+                print("ユースケース完了で閉じる")
+            }
+        })
     }
     
     var body: some Scene {
@@ -37,6 +41,7 @@ struct CALearningApp: App {
                     , isPresented: self.isAlertPresented
                     , actions: {
                         Button("OK") {
+                            self.controller.dispatch(.closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する)))
                         }
                     }
                     , message: {
