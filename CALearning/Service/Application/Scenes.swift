@@ -1,5 +1,5 @@
 //
-//  Usecases.swift
+//  Scenes.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/09/02.
@@ -42,18 +42,17 @@ enum UsecaseStatus {
         let elapsedTime = String.init(format: "%9.4f", (Date().timeIntervalSince(startAt) * 1000000) / 1000)
         
         if let msg = msg {
-            print("usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)] \(msg)")
+            print("Usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)] \(msg)")
         } else {
-            print("usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)]")
+            print("Usecase \(usecase) takes \(elapsedTime) msecs from \(sf):L\(sline) [\(sfunction)] to \(ef):L\(eline) [\(efunction)]")
         }
     }
 }
-
-enum Usecases {
     
+enum Usecases {
     /// ユースケース【アプリを起動する】を実現します。
-    enum Booting : Usecase {
-        
+    struct Booting : Scenes {
+
         enum Basics {
             case ユーザはアプリを起動する
             case アプリはサーバで発行したUDIDが保存されていないかを調べる
@@ -69,14 +68,10 @@ enum Usecases {
             case チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid: String)
             case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid: String)
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【チュートリアルを完了する】を実現します。
-    enum CompleteTutorial : Usecase {
+    struct CompleteTutorial : Scenes {
         
         enum Basics {
             case ユーザはチュートリアルを閉じる
@@ -88,14 +83,10 @@ enum Usecases {
         enum Goals {
             case アプリはログイン画面を表示する
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【ログインする】を実現します。
-    enum LoggingIn : Usecase {
+    struct LoggingIn : Scenes {
         
         enum Basics {
             case ユーザはログインボタンを押下する(id: String?, password: String?)
@@ -113,14 +104,10 @@ enum Usecases {
             case ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: ServiceErrors)
             case 予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: SystemErrors)
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【ログインをやめる】を実現します。
-    enum StopLoggingIn : Usecase {
+    struct StopLoggingIn : Scenes {
         enum Basics {
             case ユーザはキャンセルボタンを押下する
        }
@@ -130,14 +117,10 @@ enum Usecases {
         enum Goals {
             case アプリはログインモーダルを閉じる
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【お試し利用する】を実現します。
-    enum TrialUsing : Usecase {
+    struct TrialUsing : Scenes {
         enum Basics {
             case ユーザはログインしないで使うボタンを押下する
         }
@@ -147,14 +130,10 @@ enum Usecases {
         enum Goals {
             case アプリはホーム画面を表示する
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【購入する】を実現します。
-    enum Purchase : Usecase {
+    struct Purchase : Scenes {
         enum Basics {
             case ユーザは購入ボタンを押下する
         }
@@ -164,14 +143,10 @@ enum Usecases {
         enum Goals {
             case アプリは購入確認画面を表示する
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
+
     /// ユースケース【ダイアログを閉じる】を実現します。
-    enum CloseDialog : Usecase {
+    struct CloseDialog : Scenes {
         enum Basics {
             case ユーザはOKボタンを押下する
         }
@@ -181,17 +156,13 @@ enum Usecases {
         enum Goals {
             case アプリはダイアログを閉じる
         }
-        
-        case basic(scene: Basics)
-        case alternate(scene: Alternatives)
-        case last(scene: Goals)
     }
-    
-    case booting(from: Booting)
-    case completeTutorial(from: CompleteTutorial)
-    case loggingIn(from: LoggingIn)
-    case stopLoggingIn(from: StopLoggingIn)
-    case trialUsing(from: TrialUsing)
-    case purchase(from: Purchase)
-    case closeDialog(from: CloseDialog)
+
+    case booting(from: Usecase<Booting>)
+    case completeTutorial(from: Usecase<CompleteTutorial>)
+    case loggingIn(from: Usecase<LoggingIn>)
+    case stopLoggingIn(from: Usecase<StopLoggingIn>)
+    case trialUsing(from: Usecase<TrialUsing>)
+    case purchase(from: Usecase<Purchase>)
+    case closeDialog(from: Usecase<CloseDialog>)
 }

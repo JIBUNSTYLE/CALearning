@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import RobustiveSwift
 
 class LoginBehavior: ObservableObject {
     private let controller: Controller
@@ -22,14 +23,14 @@ class LoginBehavior: ObservableObject {
 
 extension LoginBehavior {
     
-    func login(_ from: Usecases.LoggingIn, with actor: UserActor) {
+    func login(_ from: Usecase<Usecases.LoggingIn>, with actor: UserActor) {
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, _) in
                 switch goal {
                 case let .ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error):
                     self.controller.set(isAlertPresented: true)
@@ -41,7 +42,12 @@ extension LoginBehavior {
                     self.controller.set(isLoginModalPresented: false)
                     
                     guard let usecase = usecaseToResume else { return }
-                    self.controller.dispatch(usecase)
+                    DispatchQueue.main.async {
+                        // receiveValueのクロージャが終わってからreceiveCompletionが呼ばれるため
+                        // ここでdispatchするとreceiveCompletionでresetUsecaseStateが走り、
+                        // resumeしたユースケースの実行時間が測れないためmainスレッドから実行している
+                        self.controller.dispatch(usecase)
+                    }
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
                     self.loginValidationResult = result
@@ -54,13 +60,14 @@ extension LoginBehavior {
             .store(in: &cancellables)
     }
     
-    func stopLoggingIn(_ from: Usecases.StopLoggingIn, with actor: UserActor) {
+    func stopLoggingIn(_ from: Usecase<Usecases.StopLoggingIn>, with actor: UserActor) {
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, _) in
                 if case .アプリはログインモーダルを閉じる = goal {
                     self.loginValidationResult = nil
                     self.controller.set(isLoginModalPresented: false)
@@ -69,15 +76,15 @@ extension LoginBehavior {
             .store(in: &cancellables)
     }
  
-    func trial(_ from: Usecases.TrialUsing, with actor: UserActor) {
+    func trial(_ from: Usecase<Usecases.TrialUsing>, with actor: UserActor) {
         self.loginValidationResult = nil
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, _) in
                 if case .アプリはホーム画面を表示する = goal {
                     self.controller.routing(to: .home)
                 }
@@ -85,14 +92,14 @@ extension LoginBehavior {
             .store(in: &cancellables)
     }
     
-    func completeTutorial(_ from: Usecases.CompleteTutorial, with actor: UserActor) {
+    func completeTutorial(_ from: Usecase<Usecases.CompleteTutorial>, with actor: UserActor) {
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, _) in
                 if case .アプリはログイン画面を表示する = goal {
                     self.controller.routing(to: .login)
                 }

@@ -7,12 +7,13 @@
 
 import Foundation
 import Combine
+import RobustiveSwift
 
 /// ユースケース【アプリを起動する】を実現します。
-extension Usecases.Booting {
+extension Usecases.Booting : Scenario {
     
-    func next() -> AnyPublisher<Self, Error>? {
-        switch self {
+    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+        switch currentScene {
         case .basic(scene: .ユーザはアプリを起動する):
             return self.just(next: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
             
@@ -30,9 +31,9 @@ extension Usecases.Booting {
         }
     }
     
-    private func checkUdid() -> AnyPublisher<Self, Error> {
+    private func checkUdid() -> AnyPublisher<Usecase<Self>, Error> {
         return Deferred {
-            Future<Self, Error> { promise in
+            Future<Usecase<Self>, Error> { promise in
                 guard let udid = Application().udid else {
                     return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
                 }
@@ -42,11 +43,11 @@ extension Usecases.Booting {
         .eraseToAnyPublisher()
     }
     
-    private func detect(udid: String) -> AnyPublisher<Self, Error> {
+    private func detect(udid: String) -> AnyPublisher<Usecase<Self>, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {
-            Future<Self, Error> { promise in
+            Future<Usecase<Self>, Error> { promise in
                 // Futureが非同期になる場合、sinkする側ではcancellableをstoreしておかないと、
                 // 非同期処理が終わる前にsubsciptionはキャンセルされてしまうので注意
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
@@ -62,14 +63,14 @@ extension Usecases.Booting {
         .eraseToAnyPublisher()
     }
     
-    private func publishUdid() -> AnyPublisher<Self, Error> {
+    private func publishUdid() -> AnyPublisher<Usecase<Self>, Error> {
         return Application()
             .publishUdid()
-            .map { udid -> Self in
+            .map { udid -> Usecase<Self> in
                 Application().save(udid: udid)
                 return .basic(scene: .UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))
             }
-            .catch { errorWrapper -> AnyPublisher<Self, Error> in
+            .catch { errorWrapper -> AnyPublisher<Usecase<Self>, Error> in
                 switch (errorWrapper) {
                 case .service(_, _, _):
                     fatalError()

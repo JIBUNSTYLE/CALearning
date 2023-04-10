@@ -23,22 +23,21 @@ class ShoppingBehavior: ObservableObject {
 
 extension ShoppingBehavior {
     
-    func purchase(_ from: Usecases.Purchase, with actor: UserActor) {
+    func purchase(_ from: Usecase<Usecases.Purchase>, with actor: UserActor) {
         from
-            .interacted(by: actor)
-            .sink { completion in
-                self.controller.commonCompletionProcess(with: completion)
-                
-                guard case let .failure(error) = completion
-                    , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
-                // 再開したいユースケースを保存
-                self.controller.change(actor: actor.update(usecaseToResume: .purchase(from: from)))
-                // ログインを促す
-                self.controller.set(isLoginModalPresented: true)
-                
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                
+            .interacted(
+                by: actor
+                , receiveCompletion: { completion in
+                    self.controller.commonCompletionProcess(with: completion)
+                    
+                    guard case let .failure(error) = completion
+                        , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
+                    // 再開したいユースケースを保存
+                    self.controller.change(actor: actor.update(usecaseToResume: .purchase(from: from)))
+                    // ログインを促す
+                    self.controller.set(isLoginModalPresented: true)
+                }
+            ) { (goal, scenario) in
                 switch goal {
                 case .アプリは購入確認画面を表示する:
                     self.isConfirming = true

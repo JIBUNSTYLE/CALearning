@@ -28,12 +28,12 @@ struct UserActor : Actor, CustomStringConvertible {
     }
 }
 
-extension Usecase {
+extension Scenario {
 
-    func authorize<T: Actor>(_ actor: T) throws -> Bool {
+    func authorize<T: Actor>(_ actor: T, toInteract usease: Usecase<Self>) throws -> Bool {
         guard let userActor = actor as? UserActor else {
             fatalError()
         }
-        return AccountModel().authorize(userActor, toInteract: self)
+        return AccountModel().authorize(userActor, toInteract: usease)
     }
 }

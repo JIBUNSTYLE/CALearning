@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import RobustiveSwift
+import SystemConfiguration
 
 
 enum IdValidation : Validation {
@@ -88,24 +89,24 @@ struct Account {
 class AccountModel : Model {
     typealias Entity = Account
     
-    func authorize<T: Usecase>(_ actor: UserActor, toInteract usecase: T) -> Bool {
-        switch usecase {
-        case is Usecases.Booting
-            , is Usecases.CompleteTutorial
-            , is Usecases.CloseDialog
+    func authorize<T: Scenario>(_ actor: UserActor, toInteract usecase: Usecase<T>) -> Bool {
+        switch T.self {
+        case is Usecases.Booting.Type
+            , is Usecases.CompleteTutorial.Type
+            , is Usecases.CloseDialog.Type
             : do {
             // Actorが誰でも実行可能
             return true
         }
-        case is Usecases.LoggingIn
-            , is Usecases.StopLoggingIn
-            , is Usecases.TrialUsing : do {
+        case is Usecases.LoggingIn.Type
+            , is Usecases.StopLoggingIn.Type
+            , is Usecases.TrialUsing.Type : do {
             // 未サインインユーザのみ実行可能
             guard case .anyone = actor.userType else { return false }
             return true
         }
             
-        case is Usecases.Purchase : do {
+        case is Usecases.Purchase.Type : do {
             // サインイン済みユーザのみ実行可能
             guard case .signedIn = actor.userType else { return false }
             return true

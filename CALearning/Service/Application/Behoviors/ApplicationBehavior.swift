@@ -21,7 +21,7 @@ class ApplicationBehavior : ObservableObject {
 
 extension ApplicationBehavior {
     
-    func boot(_ from: Usecases.Booting, with actor: UserActor) {
+    func boot(_ from: Usecase<Usecases.Booting>, with actor: UserActor) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -40,12 +40,12 @@ extension ApplicationBehavior {
 //        Application().discardUdid()
 //
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                    
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, scenario) in
                 switch goal {
                 case let .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid):
                     self.controller.change(actor: actor.update(udid: udid))
@@ -65,14 +65,14 @@ extension ApplicationBehavior {
             .store(in: &cancellables)
     }
     
-    func closeDialog(_ from: Usecases.CloseDialog, with actor: UserActor) {
+    func closeDialog(_ from: Usecase<Usecases.CloseDialog>, with actor: UserActor) {
         from
-            .interacted(by: actor)
-            .sink {
-                self.controller.commonCompletionProcess(with: $0)
-            } receiveValue: { scenario in
-                guard case let .last(goal) = self.controller.commonReceiveProcess(with: scenario) else { fatalError() }
-                    
+            .interacted(
+                by: actor
+                , receiveCompletion: {
+                    self.controller.commonCompletionProcess(with: $0)
+                }
+            ) { (goal, _) in
                 if case .アプリはダイアログを閉じる = goal {
                     self.controller.set(isAlertPresented: false)
                 }

@@ -94,20 +94,9 @@ extension Controller {
     
     func commonCompletionProcess<T>(with completion: Subscribers.Completion<T>, for behavior: String? = #function) {
         self.resetUsecaseState()
-        
-        if case .finished = completion {
-            print("\(behavior ?? "unknown") は正常終了")
-        } else if case .failure(let error) = completion {
-            print("\(behavior ?? "unknown") が異常終了: \(error)")
-        }
     }
     
-    func commonReceiveProcess<T: Usecase>(with scenario: [T], for behavior: String? = #function) -> T? {
-        print("usecase - \(behavior ?? "unknown"): \(scenario)")
-        return scenario.last
-    }
-    
-    func dispatch(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) {
+    func dispatch(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         self.usecaseStatus = .executing(usecase: from, file: file, line: line, function: function, startAt: Date())
 
         switch from {

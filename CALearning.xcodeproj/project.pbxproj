@@ -49,7 +49,7 @@
 		70A945FD29DD54CA00AFC6B9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FC29DD54CA00AFC6B9 /* Home.swift */; };
 		70A945FF29DE448B00AFC6B9 /* StopLoggingIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FE29DE448B00AFC6B9 /* StopLoggingIn.swift */; };
 		70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A9460029DE557000AFC6B9 /* CloseDialog.swift */; };
-		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
+		70BEB7F728C22F05004538EB /* Scenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Scenes.swift */; };
 		70D4DC5227FDDD5600C02521 /* LoginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
 		70F57A7D281A32920036EE53 /* Loggingin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7C281A32920036EE53 /* Loggingin.swift */; };
@@ -117,7 +117,7 @@
 		70A945FC29DD54CA00AFC6B9 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		70A945FE29DE448B00AFC6B9 /* StopLoggingIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopLoggingIn.swift; sourceTree = "<group>"; };
 		70A9460029DE557000AFC6B9 /* CloseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseDialog.swift; sourceTree = "<group>"; };
-		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
+		70BEB7F628C22F05004538EB /* Scenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenes.swift; sourceTree = "<group>"; };
 		70D4DC5127FDDD5600C02521 /* LoginBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBehavior.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		70F57A7C281A32920036EE53 /* Loggingin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggingin.swift; sourceTree = "<group>"; };
@@ -281,9 +281,9 @@
 			children = (
 				707CA996279FD1BA00EAFC66 /* Controller.swift */,
 				708415C2283524BB00BAED01 /* UserActor.swift */,
-				70BEB7F628C22F05004538EB /* Usecases.swift */,
+				70BEB7F628C22F05004538EB /* Scenes.swift */,
+				708A75FB27E0C4D30047016B /* Scenarios */,
 				70D4DC5027FDDBF200C02521 /* Behoviors */,
-				708A75FB27E0C4D30047016B /* Usecases */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -328,7 +328,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		708A75FB27E0C4D30047016B /* Usecases */ = {
+		708A75FB27E0C4D30047016B /* Scenarios */ = {
 			isa = PBXGroup;
 			children = (
 				707CA98C279F8FA500EAFC66 /* Booting.swift */,
@@ -339,7 +339,7 @@
 				70A945F429DD3A1F00AFC6B9 /* Purchase.swift */,
 				70A9460029DE557000AFC6B9 /* CloseDialog.swift */,
 			);
-			path = Usecases;
+			path = Scenarios;
 			sourceTree = "<group>";
 		};
 		708CA92A29DAC89700BCFD49 /* Frameworks */ = {
@@ -534,7 +534,7 @@
 				708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */,
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
 				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
-				70BEB7F728C22F05004538EB /* Usecases.swift in Sources */,
+				70BEB7F728C22F05004538EB /* Scenes.swift in Sources */,
 				7077F51229C7F5E6006233CB /* ApplicationBehavior.swift in Sources */,
 				70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,

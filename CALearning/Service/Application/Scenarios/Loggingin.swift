@@ -7,12 +7,13 @@
 
 import Foundation
 import Combine
+import RobustiveSwift
 
 /// ユースケース【ログインする】を実現します。
-extension Usecases.LoggingIn {
+extension Usecases.LoggingIn : Scenario {
     
-    func next() -> AnyPublisher<Self, Error>? {
-        switch self {
+    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+        switch currentScene {
         case let .basic(scene: .ユーザはログインボタンを押下する(id, password)):
             return self.just(next: .basic(scene: .アプリは入力が正しいかを確認する(id: id, password: password)))
             
@@ -28,9 +29,9 @@ extension Usecases.LoggingIn {
         
     }
     
-    private func validate(_ id: String?, _ password: String?) -> AnyPublisher<Self, Error> {
+    private func validate(_ id: String?, _ password: String?) -> AnyPublisher<Usecase<Self>, Error> {
         return Deferred {
-            Future<Self, Error> { promise in
+            Future<Usecase<Self>, Error> { promise in
                 let result = AccountModel().validate(id, password)
                 switch result {
                 case let .success(id, password):
@@ -43,13 +44,13 @@ extension Usecases.LoggingIn {
         .eraseToAnyPublisher()
     }
     
-    private func login(_ id: String, _ password: String) -> AnyPublisher<Self, Error> {
+    private func login(_ id: String, _ password: String) -> AnyPublisher<Usecase<Self>, Error> {
         return AccountModel()
             .login(with: id, and: password)
             .map { account in
                 return .last(scene: .ログイン認証に成功した場合_アプリはホーム画面を表示する(user: account))
             }
-            .catch { errorWrapper -> AnyPublisher<Self, Error> in
+            .catch { errorWrapper -> AnyPublisher<Usecase<Self>, Error> in
                 switch (errorWrapper) {
                 case let .service(error, _, _):
                     return self.just(next: .last(scene: .ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: error)))
