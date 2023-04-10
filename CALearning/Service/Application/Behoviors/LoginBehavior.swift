@@ -42,12 +42,10 @@ extension LoginBehavior {
                     self.controller.set(isLoginModalPresented: false)
                     
                     guard let usecase = usecaseToResume else { return }
-                    DispatchQueue.main.async {
-                        // receiveValueのクロージャが終わってからreceiveCompletionが呼ばれるため
-                        // ここでdispatchするとreceiveCompletionでresetUsecaseStateが走り、
-                        // resumeしたユースケースの実行時間が測れないためmainスレッドから実行している
-                        self.controller.dispatch(usecase)
-                    }
+                    // receiveValueのクロージャが終わってからreceiveCompletionが呼ばれるため
+                    // ここでdispatchするとreceiveCompletionでresetUsecaseStateが走り、
+                    // resumeしたユースケースの実行時間が測れないためmainスレッドから実行している
+                    self.controller.dispatchMainAsync(usecase)
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
                     self.loginValidationResult = result

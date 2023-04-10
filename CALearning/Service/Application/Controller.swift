@@ -122,4 +122,10 @@ extension Controller {
             self.applicationBehavior.closeDialog(from, with: self.actor)
         }
     }
+    
+    func dispatchMainAsync(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+        DispatchQueue.main.async {
+            self.dispatch(from, file: file, line: line, function: function)
+        }
+    }
 }
