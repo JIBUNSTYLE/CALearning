@@ -8,23 +8,22 @@
 import SwiftUI
 
 enum Views {
-    case splash, tutorial, login, home
+    case splash, tutorial, signIn, home
 }
 
 struct ContentView: View {
-    
-    @EnvironmentObject var controller: Controller
+    @EnvironmentObject var dispatcher: Dispatcher
 
     var body: some View {
-        switch self.controller.currentView {
+        switch self.dispatcher.currentView {
         case .splash:
             Splash()
         case .tutorial:
             Tutorial()
-        case .login:
-            Login(loginBehavior: self.controller.loginBehavior)
+        case .signIn:
+            SignIn(signInStore: self.dispatcher.signInStore)
         case .home:
-            Home(shoppingBehavior: self.controller.shoppingBehavior)
+            Home(shoppingStore: self.dispatcher.shoppingStore)
         }
     }
 }
@@ -32,6 +31,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(Controller())
+            .environmentObject(Dispatcher())
     }
 }

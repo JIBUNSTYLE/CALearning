@@ -1,5 +1,5 @@
 //
-//  Scenes.swift
+//  Usecases.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/09/02.
@@ -86,7 +86,7 @@ enum Usecases {
     }
 
     /// ユースケース【ログインする】を実現します。
-    struct LoggingIn : Scenes {
+    struct SigningIn : Scenes {
         
         enum Basics {
             case ユーザはログインボタンを押下する(id: String?, password: String?)
@@ -99,7 +99,7 @@ enum Usecases {
         }
         
         enum Goals {
-            case 入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result: LoginValidationResult)
+            case 入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result: SignInValidationResult)
             case ログイン認証に成功した場合_アプリはホーム画面を表示する(user: Account)
             case ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error: ServiceErrors)
             case 予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: SystemErrors)
@@ -107,7 +107,7 @@ enum Usecases {
     }
 
     /// ユースケース【ログインをやめる】を実現します。
-    struct StopLoggingIn : Scenes {
+    struct StopSigningIn : Scenes {
         enum Basics {
             case ユーザはキャンセルボタンを押下する
        }
@@ -160,8 +160,8 @@ enum Usecases {
 
     case booting(from: Usecase<Booting>)
     case completeTutorial(from: Usecase<CompleteTutorial>)
-    case loggingIn(from: Usecase<LoggingIn>)
-    case stopLoggingIn(from: Usecase<StopLoggingIn>)
+    case signingIn(from: Usecase<SigningIn>)
+    case stopSigningIn(from: Usecase<StopSigningIn>)
     case trialUsing(from: Usecase<TrialUsing>)
     case purchase(from: Usecase<Purchase>)
     case closeDialog(from: Usecase<CloseDialog>)

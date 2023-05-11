@@ -1,5 +1,5 @@
 //
-//  Controller.swift
+//  Dispatcher.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -14,12 +14,12 @@ struct AlertContent {
     let message: String
 }
 
-class Controller: ObservableObject {
+class Dispatcher : ObservableObject {
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
     @Published private(set) var isAlertPresented = false
-    @Published private(set) var isLoginModalPresented = false
-    
+    @Published private(set) var isSignInModalPresented = false
+
     // 二度押し防止でボタンなどを制御するため、ユースケース実行状態を管理
     private(set) var usecaseStatus: UsecaseStatus = .idle
     
@@ -27,43 +27,53 @@ class Controller: ObservableObject {
     
     private(set) var actor: UserActor = UserActor(udid: nil, user: nil, usecaseToResume: nil)
     
-    private var _application: ApplicationBehavior?
-    private var _login: LoginBehavior?
-    private var _shopping: ShoppingBehavior?
+    var cancellables = [AnyCancellable]()
+    
+    private var _application: ApplicationPerformer?
+    private var _signIn: SignInPerformer?
+    private var _shopping: ShoppingPerformer?
 
-    var applicationBehavior: ApplicationBehavior {
-        if let b = self._application {
-            return b
+    private var applicationPerformer: ApplicationPerformer {
+        if let performer = self._application {
+            return performer
         } else {
-            let b = ApplicationBehavior(with: self)
-            self._application = b
-            return b
+            let performer = ApplicationPerformer(with: self)
+            self._application = performer
+            return performer
         }
     }
     
-    var loginBehavior: LoginBehavior {
-        if let b = self._login {
-            return b
+    private var signInPerformer: SignInPerformer {
+        if let performer = self._signIn {
+            return performer
         } else {
-            let b = LoginBehavior(with: self)
-            self._login = b
-            return b
+            let performer = SignInPerformer(with: self)
+            self._signIn = performer
+            return performer
         }
     }
     
-    var shoppingBehavior: ShoppingBehavior {
-        if let b = self._shopping {
-            return b
+    private var shoppingPerformer: ShoppingPerformer {
+        if let performer = self._shopping {
+            return performer
         } else {
-            let b = ShoppingBehavior(with: self)
-            self._shopping = b
-            return b
+            let performer = ShoppingPerformer(with: self)
+            self._shopping = performer
+            return performer
         }
+    }
+    
+    var signInStore: SignInStore {
+        self.signInPerformer.store
+    }
+    
+    var shoppingStore: ShoppingStore {
+        self.shoppingPerformer.store
     }
 }
 
 // MARK: - setter
-extension Controller {
+extension Dispatcher {
     
     func routing(to view: Views) {
         DispatchQueue.main.async {
@@ -84,13 +94,13 @@ extension Controller {
         self.isAlertPresented = isAlertPresented
     }
     
-    func set(isLoginModalPresented: Bool) {
-        self.isLoginModalPresented = isLoginModalPresented
+    func set(isSignInModalPresented: Bool) {
+        self.isSignInModalPresented = isSignInModalPresented
     }
 }
     
 // MARK: - usecase dispatcher
-extension Controller {
+extension Dispatcher {
     
     func commonCompletionProcess<T>(with completion: Subscribers.Completion<T>, for behavior: String? = #function) {
         self.resetUsecaseState()
@@ -101,25 +111,25 @@ extension Controller {
 
         switch from {
         case let .booting(from):
-            self.applicationBehavior.boot(from, with: self.actor)
+            self.applicationPerformer.boot(from, with: self.actor)
 
         case let .completeTutorial(from):
-            self.loginBehavior.completeTutorial(from, with: self.actor)
+            self.signInPerformer.completeTutorial(from, with: self.actor)
             
-        case let .loggingIn(from):
-            self.loginBehavior.login(from, with: self.actor)
+        case let .signingIn(from):
+            self.signInPerformer.signIn(from, with: self.actor)
             
-        case let .stopLoggingIn(from):
-            self.loginBehavior.stopLoggingIn(from, with: self.actor)
+        case let .stopSigningIn(from):
+            self.signInPerformer.stopSigningIn(from, with: self.actor)
             
         case let .trialUsing(from):
-            self.loginBehavior.trial(from, with: self.actor)
+            self.signInPerformer.trial(from, with: self.actor)
             
         case let .purchase(from):
-            self.shoppingBehavior.purchase(from, with: self.actor)
+            self.shoppingPerformer.purchase(from, with: self.actor)
             
         case let .closeDialog(from):
-            self.applicationBehavior.closeDialog(from, with: self.actor)
+            self.applicationPerformer.closeDialog(from, with: self.actor)
         }
     }
     

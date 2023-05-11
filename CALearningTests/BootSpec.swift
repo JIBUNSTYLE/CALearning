@@ -14,12 +14,12 @@ import Nimble
 class BootSpec: QuickSpec {
 
     override func spec() {
-        let presenter = Controller()
+        let dispatcher = Dispatcher()
         
         describe("アプリを起動する") {
             context("UDIDがない場合") {
                 beforeEach {
-                    presenter.currentView = .splash
+                    dispatcher.currentView = .splash
                     Application().discardUdid()
                 }
                 it("アプリはUDIDを取得する") {
@@ -43,21 +43,21 @@ class BootSpec: QuickSpec {
                         let backend = ApiBackend(apiClient: mockApiClient)
                         Dependencies.shared.set(backend: backend)
                         
-                        presenter.boot()
+                        dispatcher.boot()
                     }
                 }
             }
             context("チュートリアル完了の記録がある場合") {
                 beforeEach {
-                    presenter.currentView = .splash
+                    dispatcher.currentView = .splash
                     Application().save(udid: "hogehoge")
                     Application().hasCompletedTutorial = true
                 }
                 it("アプリはログイン画面を表示") {
-                    presenter.boot()
+                    dispatcher.boot()
                     
-                    expect(presenter.currentView)
-                        .toEventually(equal(Views.login), timeout: .seconds(2))
+                    expect(dispatcher.currentView)
+                        .toEventually(equal(Views.signIn), timeout: .seconds(2))
                         
                 }
             }

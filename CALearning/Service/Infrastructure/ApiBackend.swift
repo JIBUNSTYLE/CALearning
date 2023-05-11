@@ -33,7 +33,7 @@ struct ApiBackend : Backend {
             .eraseToAnyPublisher()
     }
     
-    func login(with id: String, and password: String) -> AnyPublisher<Account, ErrorWrapper> {
+    func signIn(with id: String, and password: String) -> AnyPublisher<Account, ErrorWrapper> {
         return Just(Account(mailAddress: "returnFromApi@dummy.com"))
             .setFailureType(to: ErrorWrapper.self)
             .eraseToAnyPublisher()

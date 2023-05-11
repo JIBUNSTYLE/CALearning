@@ -1,5 +1,5 @@
 //
-//  Loggingin.swift
+//  SigningIn.swift
 //  CALearning
 //
 //  Created by 斉藤  祐輔 on 2022/04/28.
@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【ログインする】を実現します。
-extension Usecases.LoggingIn : Scenario {
+extension Usecases.SigningIn : Scenario {
     
     func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
         switch currentScene {
@@ -21,7 +21,7 @@ extension Usecases.LoggingIn : Scenario {
             return self.validate(id, password)
             
         case let .basic(.入力が正しい場合_アプリはログインを試行する(id, password)):
-            return self.login(id, password)
+            return self.signIn(id, password)
             
         case .last:
             return nil
@@ -44,9 +44,9 @@ extension Usecases.LoggingIn : Scenario {
         .eraseToAnyPublisher()
     }
     
-    private func login(_ id: String, _ password: String) -> AnyPublisher<Usecase<Self>, Error> {
+    private func signIn(_ id: String, _ password: String) -> AnyPublisher<Usecase<Self>, Error> {
         return AccountModel()
-            .login(with: id, and: password)
+            .signIn(with: id, and: password)
             .map { account in
                 return .last(scene: .ログイン認証に成功した場合_アプリはホーム画面を表示する(user: account))
             }

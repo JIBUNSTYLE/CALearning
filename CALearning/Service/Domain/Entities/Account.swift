@@ -1,5 +1,5 @@
 //
-//  AccountModel.swift
+//  Account.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/03/15.
@@ -77,7 +77,7 @@ enum PasswordValidation : Validation {
 }
 
 
-enum LoginValidationResult {
+enum SignInValidationResult {
     case success(id: String, password: String)
     case failed(idValidationResult: IdValidation, passwordValidationResult: PasswordValidation)
 }
@@ -86,8 +86,8 @@ struct Account {
     let mailAddress: String
 }
 
-class AccountModel : Model {
-    typealias Entity = Account
+class AccountModel : Entity {
+    typealias Properties = Account
     
     func authorize<T: Scenario>(_ actor: UserActor, toInteract usecase: Usecase<T>) -> Bool {
         switch T.self {
@@ -98,8 +98,8 @@ class AccountModel : Model {
             // Actorが誰でも実行可能
             return true
         }
-        case is Usecases.LoggingIn.Type
-            , is Usecases.StopLoggingIn.Type
+        case is Usecases.SigningIn.Type
+            , is Usecases.StopSigningIn.Type
             , is Usecases.TrialUsing.Type : do {
             // 未サインインユーザのみ実行可能
             guard case .anyone = actor.userType else { return false }
@@ -117,7 +117,7 @@ class AccountModel : Model {
         }
     }
     
-    func validate(_ id: String?, _ password: String?) -> LoginValidationResult {
+    func validate(_ id: String?, _ password: String?) -> SignInValidationResult {
         let idValidationResult = IdValidation(id: id)
             .isRequired()
             .isMalformed()
@@ -133,9 +133,14 @@ class AccountModel : Model {
             return .failed(idValidationResult: idValidationResult, passwordValidationResult: passwordValidationResult)
         }
     }
-    
-    func login(with id: String, `and` password: String) -> AnyPublisher<Account, ErrorWrapper> {
-        return Dependencies.shared.backend.login(with: id, and: password)
-    }
 
+}
+
+// MARK: - Requirements
+extension AccountModel {
+    
+    /// ユーザはサービスに登録されているアカウントにサインインできること
+    func signIn(with id: String, `and` password: String) -> AnyPublisher<Properties, ErrorWrapper> {
+        return Dependencies.shared.backend.signIn(with: id, and: password)
+    }
 }

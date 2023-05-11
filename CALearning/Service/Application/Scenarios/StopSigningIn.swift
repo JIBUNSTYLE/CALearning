@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【ログインをやめる】を実現します。
-extension Usecases.StopLoggingIn : Scenario {
+extension Usecases.StopSigningIn : Scenario {
     
     func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
         switch currentScene {

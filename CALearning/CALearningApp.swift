@@ -9,23 +9,22 @@ import SwiftUI
 
 @main
 struct CALearningApp: App {
-    
-    @StateObject var controller = Controller()
+    @StateObject var dispatcher = Dispatcher()
     
     private var isAlertPresented: Binding<Bool> {
         Binding {
-            self.controller.isAlertPresented
+            self.dispatcher.isAlertPresented
         } set: { _ in }
     }
     
-    private var isLoginModalPresented: Binding<Bool> {
+    private var isSignInModalPresented: Binding<Bool> {
         Binding( get: {
-            self.controller.isLoginModalPresented
+            self.dispatcher.isSignInModalPresented
         }, set: { newValue in
             guard newValue == false else { return }
-            if self.controller.isLoginModalPresented {
+            if self.dispatcher.isSignInModalPresented {
                 print("スワイプで閉じる")
-                self.controller.dispatch(.stopLoggingIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する)))
+                self.dispatcher.dispatch(.stopSigningIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する)))
             } else {
                 print("ユースケース完了で閉じる")
             }
@@ -35,33 +34,33 @@ struct CALearningApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(controller)
+                .environmentObject(dispatcher)
                 .alert(
-                    self.controller.alertContent.title
+                    self.dispatcher.alertContent.title
                     , isPresented: self.isAlertPresented
                     , actions: {
                         Button("OK") {
-                            self.controller.dispatch(.closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する)))
+                            self.dispatcher.dispatch(.closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する)))
                         }
                     }
                     , message: {
-                        Text(self.controller.alertContent.message)
+                        Text(self.dispatcher.alertContent.message)
                     }
                 )
-                .sheet(isPresented: self.isLoginModalPresented) {
-                    Login(loginBehavior: self.controller.loginBehavior)
+                .sheet(isPresented: self.isSignInModalPresented) {
+                    SignIn(signInStore: self.dispatcher.signInStore)
                         .alert(
-                            self.controller.alertContent.title
+                            self.dispatcher.alertContent.title
                             , isPresented: self.isAlertPresented
                             , actions: {
                                 Button("OK") {
                                 }
                             }
                             , message: {
-                                Text(self.controller.alertContent.message)
+                                Text(self.dispatcher.alertContent.message)
                             }
                         )
-                        .environmentObject(controller)
+                        .environmentObject(dispatcher)
                 }
         }
     }

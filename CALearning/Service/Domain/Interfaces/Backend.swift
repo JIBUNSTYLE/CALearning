@@ -14,5 +14,5 @@ protocol Backend {
     func publishUdid() -> AnyPublisher<String, ErrorWrapper>
 
     /// ログインします。
-    func login(with id: String, `and` password: String) -> AnyPublisher<Account, ErrorWrapper>
+    func signIn(with id: String, `and` password: String) -> AnyPublisher<Account, ErrorWrapper>
 }

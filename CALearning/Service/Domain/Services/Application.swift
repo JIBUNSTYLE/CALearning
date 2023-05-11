@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class Application {
+class Application : Service {
     
     var hasCompletedTutorial: Bool {
         get {
