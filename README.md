@@ -14,6 +14,8 @@ CALearning
 
 このチュートリアルでは、ドメイン駆動設計の流れを汲んだレイヤードアーキテクチャを実践しながら学びます。
 
+実装の前提として、ここでは割愛しますが、業務あるいはサービスの要求定義を行い、ドメインモデルの検討および、アクター毎のユースケースを一覧化し、それぞれのユースケースについて、ロバストネス分析を行っているものとします。
+
 このチュートリアルでは、アプリケーションを「ドメイン層」「アプリケーション層」「インタフェース層」の3つに分けて設計、実装していきます。
 
 <dl>
@@ -28,8 +30,6 @@ CALearning
 
 ![アーキテクチャ](./README/architecture.drawio.png)
 
-
-
 <dl>
 <dt>Entity／エンティティ</dt><dd>概念として、取り扱いに同一性を意識する必要があるもの。例としてはユーザーアカウントやブログ記事などが挙げられる。連続性を意識する必要があり、トランザクション管理や時には履歴管理が必要な概念。</dd>
 <dt>Value Object／バリューオブジェクト</dt><dd>概念として、取り扱いに同一性を意識する必要がないもの。</dd>
@@ -41,15 +41,20 @@ CALearning
 <dt>View／ビュー</dt><dd>画面表示の意。MVCパターンなど、多くのアーキテクチャで使われるViewの概念に等しい。Viewは値（アプリの状態＝Store）を書き換えることでリアクティブに表示が変わるテンプレートとして実装します。Storeの他、各Viewは自身特有の状態をStateとして保持します。</dd>
 </dl>
 
-Clean Architecture では、`Domain` と `Application` とその他（`Infrastructure`／`Presentation`）をレイヤーとして明確に分けます。ここでは、`Domain`／`Application`／`Infrastructure`／`Presentation` を Service 以下に、下記のように配置します。
+# プロジェクトの新規作成
+
+Xcodeを開き、Create a new Xcode project を選択して、新規プロジェクトを作成します。
+次のテンプレート選択ダイアログでは、iOSタブからAppを選択します。
+
+このチュートリアルのアーキテクチャでは前述の通り、`ドメイン層` と `アプリケーション層` と`インタフェース層`（UIやシステム間インタフェース、テストとのインタフェース）をレイヤーとして明確に分けます。ここでは、具体的に`Domain`／`Application`／`Infrastructure`／`Presentation` を Service 以下に、下記のように配置します。
 
 ```
 CALearning
   ├─ Service
   │    ├─ Domain
   │    ├─ Application
-  │    ├─ Infrastructure
-  │    └─ Presentation
+  │    ├─ Infrastructure（システム間インタフェースの実装）
+  │    └─ Presentation（UIの実装）
   ├─ System
   ├─ CALearningApp 
   └─ ContentView
@@ -61,24 +66,24 @@ CALearning
 
 新規プロジェクト作成時点で、`View` として ContentView.swift が作られます。 ContentView はアプリの実体である CALearningApp から呼ばれています。
 
-ここでは、ContentView はサービスの `View` の表示を制御するものとして利用することにし、`Viewコンテナ` と呼びます。
+ここでは、ContentView はサービスの `View` の表示を制御するものとして利用することにします。
 
-具体的には、アプリの状態に基づいてサービスの `View`、例えば splash／tutorial／login を出し分ける（＝遷移させる）ようにします。
+具体的には、アプリの状態に基づいてサービスの `View`、例えば splash／tutorial／signIn 画面を出し分ける（＝遷移させる）ようにします。
 
 
 ## 1.1 Viewを作成する
 
-Service/Presentation/Viewsフォルダを作成し、Splash.swift／Tutorial.swift／Login.swift の3つの SwiftUI View ファイルを新規作成します。
+Service/Presentation/Viewsフォルダを作成し、Splash.swift／Tutorial.swift／SignIn.swift の3つの SwiftUIによる `View` ファイルを新規作成します。
 "Hello, World!"の替わりに"Splash"など、画面が分かる文言を表示するようにしましょう。
  
 ## 1.2 ルーティングを実装する
 
-ContentViewが状態として、表示したいViewに対応するenumを保持するようにします。
+ContentViewが状態として、表示したい `View` に対応するenumを保持するようにします。
 
 ```ContentView.swift
 
 enum Views {
-    case splash, tutorial, login
+    case splash, tutorial, signIn
 }
 
 struct ContentView: View {
@@ -90,22 +95,47 @@ struct ContentView: View {
             Splash()
         case .tutorial:
             Tutorial()
-        case .login:
-            Login()
+        case .signIn:
+            SignIn()
         }
     }
 }
 ```
 
 previewを表示させて、Splashが表示されていることを確認します。
-currentViewの値を変えることで、TutorialやLoginが表示されていることを確認します。
+currentViewの値を変えることで、TutorialやSignInが表示されていることを確認します。
 
 
 # 3. ユースケースのコードによる表現
 
 ここではユースケースをenumで表現します。例としてユースケース【アプリを起動する】を実装します。
+ここでは以下のようなロバストネス図を作成していることを前提とします。
 
-## 3.1 ユースケースシナリオの記述
+![アプリを起動する](./README/usecase_boot.drawio.png)
+
+## 3.1 ユースケースのシーンを記述
+
+Service/Application 以下に Usecases.swiftファイルを新規作成します。このファイルにすべてのユースケースをenumで定義し、各ユースケースのすべてのシーンを。
+
+```Usecases.swift
+/// ユースケース【アプリを起動する】を実現します。
+enum Boot {
+    enum Basics {
+        case アプリはユーザがチュートリアル完了の記録がないかを調べる
+    }
+    
+    enum Alternatives {
+    }
+    
+    enum Goals {
+        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
+        case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
+    }
+    
+    case basic(scene: Basics)
+    case alternate(scene: Alternatives)
+    case last(scene: Goals)
+```
 
 Service/Application/Usecasesフォルダを作成し、Boot.swift の Swift ファイルを新規作成します。
 
