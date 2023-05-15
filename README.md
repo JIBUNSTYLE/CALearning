@@ -1,26 +1,33 @@
 CALearning
 ==========
 
-1. フォルダ構成
-2. Viewの表示
-3. ユースケースのコードによる表現
-4. ドメインモデルの実装
-5. プレゼンテーション層でのユースケース呼び出し
-6. インフラ層と依存性逆転の原則
-7. 振る舞い駆動開発
+1. アーキテクチャ概要
+2. フォルダ構成
+3. Viewの表示
+4. ユースケースのコードによる表現
+5. ドメインモデルの実装
+6. プレゼンテーション層でのユースケース呼び出し
+7. インフラ層と依存性逆転の原則
+8. 振る舞いのテスト
+
+# 1. アーキテクチャ概要
+
+このチュートリアルでは、ドメイン駆動設計の流れを汲んだレイヤードアーキテクチャを実践しながら学びます。
+
+> 実装の前提として、ここでは割愛しますが、業務あるいはサービスの要求定義を行い、ドメインモデルの検討および、アクター毎のユースケースを一覧化し、それぞれのユースケースについて、ロバストネス分析を行っているものとします。
 
 
-# 1. フォルダ構成
+# 2. フォルダ構成
 
-Clean Architecture では、`Domain` と `Application` とその他（`Infrastructure`／`Presentation`）をレイヤーとして明確に分けます。ここでは、`Domain`／`Application`／`Infrastructure`／`Presentation` を Service 以下に、下記のように配置します。
+このチュートリアルのアーキテクチャでは前述の通り、`ドメイン層` と `アプリケーション層` と `インタフェース層`（UIやシステム間インタフェース、テストとのインタフェース）をレイヤーとして明確に分けます。ここでは、具体的に`Domain`、`Application`、`Infrastructure`、`Presentation` を Service 以下に、下記のように配置します。
 
 ```
 CALearning
   ├─ Service
   │    ├─ Domain
   │    ├─ Application
-  │    ├─ Infrastructure
-  │    └─ Presentation
+  │    ├─ Infrastructure（システム間インタフェースの実装）
+  │    └─ Presentation（UIの実装）
   ├─ System
   ├─ CALearningApp 
   └─ ContentView
@@ -28,21 +35,21 @@ CALearning
 
 その他、アーキテクチャの実装に必要なprotocolなどをまとめるためにSystemフォルダを用意しておきます。
 
-# 2. Viewの表示
+# 3. Viewの表示
 
 新規プロジェクト作成時点で、`View` として ContetView.swift が作られます。 ContetView はアプリの実体である CALearningApp から呼ばれています。
 
-ここでは、ContentView はサービスの `View` の表示を制御するものとして利用することにし、`Viewコンテナ` と呼びます。
+ここでは、ContentView はサービスの `View` の表示を制御するものとして利用することにします。
 
 具体的には、アプリの状態に基づいてサービスの `View`、例えば splash／tutorial／login を出し分ける（＝遷移させる）ようにします。
 
 
-## 1.1 Viewを作成する
+## 3.1 Viewを作成する
 
 Service/Presentation/Viewsフォルダを作成し、Splash.swift／Tutorial.swift／Login.swift の3つの SwiftUI View ファイルを新規作成します。
 "Hello, World!"の替わりに"Splash"など、画面が分かる文言を表示するようにしましょう。
  
-## 1.2 ルーティングを実装する
+## 3.2 ルーティングを実装する
 
 ContentViewが状態として、表示したいViewに対応するenumを保持するようにします。
 
@@ -72,46 +79,51 @@ previewを表示させて、Splashが表示されていることを確認しま�
 currentViewの値を変えることで、TutorialやLoginが表示されていることを確認します。
 
 
-# 3. ユースケースのコードによる表現
+# 4. ユースケースのコードによる表現
 
 ここではユースケースをenumで表現します。
 
-## 3.1 ユースケースシナリオの記述
+## 4.1 ユースケースのシーンを定義
 
 Service/Application/Useasesフォルダを作成し、Boot.swift の Swiftファイルを新規作成します。
+ここでは以下のようなユースケースを考えます。
 
-ユースケースシナリオの基本コース／代替コースを以下のようにenumの入れ子で表現します。
-デフォルト値としシナリオの初めの状態をinit関数で定義します。
+![ユーザはアプリを起動する](./README/usecase_boot.drawio.png)
+
+ユースケースのシナリオとなる、基本コース／代替コースの各シーンを以下のようにenumの入れ子で表現します。
 
 
 ```Boot.swift
 /// ユースケース【アプリを起動する】を実現します。
 enum Boot {
     enum Basics {
-        case アプリはユーザがチュートリアル完了の記録がないかを調べる
-        case チュートリアル完了の記録がある場合_アプリはログイン画面を表示
+        case ユーザはHome画面でアイコンを選択する
+        case アプリはチュートリアル完了済かを確認する
     }
     
-    enum Alternatives {
-        case チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示
+    enum Alternatives {}
+
+    enum Goals {
+        case 完了済の場合_アプリはログイン画面を表示する
+        case 完了済でない場合_アプリはチュートリアル画面を表示する
     }
     
     case basic(scene: Basics)
     case alternate(scene: Alternatives)
-    
-    init() {
-        self = .basic(scene: .アプリはユーザがチュートリアル完了の記録がないかを調べる)
-    }
+    case last(scene: Goals)
 }
 ```
 
 Swift の enum はとても強力で、入れ子にできたり、associated valueを持つことができたり、関数を持たせることができます。
-@see: https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html
 
-## 3.2 ユースケースの実装
+> @see: https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html
 
-enumで定義したユースケースのシナリオを実行可能にします。
-具体的には再起呼び出しを使って、シナリオの一つひとつ（ここではシーンと呼ぶことにします）を処理していくようにします。
+## 4.2 ユースケースのシナリオを実装
+
+enumで定義したユースケースの各シーンを繋いだシナリオを実行可能にします。
+具体的には再起呼び出しを使って、一つひとつのシーンでの処理を連続して行うようにします。
+非同期処理を逐次実行するために、各処理にはCombineのPublisherを使います。
+
 
 System/Protocolsフォルダを作成し、Usecase.swift の Swiftファイルを新規作成します。
 
@@ -130,7 +142,7 @@ protocol Usecase {
     ///
     /// - Parameter contexts: ユースケースシナリオの（画面での分岐を除く）分岐をけcaseに持つenumのある要素
     /// - Returns: 引数のenumと同様のenumで、引数の分岐を処理した結果の要素
-    func interact() -> AnyPublisher<[Self], Error>
+    func interacted() -> AnyPublisher<[Self], Error>
 }
 
 extension Usecase {
@@ -144,87 +156,88 @@ extension Usecase {
         .eraseToAnyPublisher()
     }
     
-    private func recursive(contexts: [Self]) -> AnyPublisher<[Self], Error> {
-        guard let context = contexts.last else { fatalError() }
+    private func recursive(scenario: [Self]) -> AnyPublisher<[Self], Error> {
+        guard let context = scenario.last else { fatalError() }
         
         // 終了条件
         guard let future = context.next() else {
             return Deferred {
                 Future<[Self], Error> { promise in
-                    promise(.success(contexts))
+                    promise(.success(scenario))
                 }
             }
+            .receive(on: DispatchQueue.main) // sink後の処理はメインスレッドで行われるようにする
             .eraseToAnyPublisher()
         }
         
         // 再帰呼び出し
         return future
-            .flatMap { nextContext -> AnyPublisher<[Self], Error> in
-                var _contexts = contexts
-                _contexts.append(nextContext)
-                return self.recursive(contexts: _contexts)
+            .flatMap { nextScene -> AnyPublisher<[Self], Error> in
+                var _scenario = scenario
+                _scenario.append(nextScene)
+                return self.recursive(scenario: _scenario)
             }
             .eraseToAnyPublisher()
     }
     
-    func interact() -> AnyPublisher<[Self], Error> {
-        return self.recursive(contexts: [self])
+    func interacted() -> AnyPublisher<[Self], Error> {
+        return self.recursive(scenario: [self])
     }
 }
 ```
 
 CombineはReactiveX（RxSwift）のApple版で、非同期処理によるデータの変更を別の処理に伝播させるといった Reactiveプログラミングを実現するフレームワークです。
-@see: https://developer.apple.com/documentation/combine
+
+> @see: https://developer.apple.com/documentation/combine
 
 
-BootをUsecaseプロトコルを準拠するようにし、next関数を実装します。
-next関数は、自身が表すシーンの次のシーンを返すように実装します。処理終了の場合には nil を返すようにします。
+BootをUsecaseプロトコルを準拠するようにし、next関数を実装します。Swiftのextention機能を使えば、enumの定義とは切り離して実装することができます。
+next関数は、自身が表すシーンの次のシーンを返すように実装します（戻り値の型にはBootの代わりにSelfが使えます）。処理終了の場合には nil を返すようにします。
 
 ```Boot.swift
-enum Boot : Usecase {
-    ...
-    
-    func next() -> AnyPublisher<Boot, Error>? {
+extension Boot : Usecase {
+    func next() -> AnyPublisher<Self, Error>? {
         switch self {
-        case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
+        case .basic(scene: .ユーザはHome画面でアイコンを選択する)
             // TODO
-        case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
+        case .basic(scene: .アプリはチュートリアル完了済かを確認する):
             // TODO
-        case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
-            // TODO
+        case .last:
+            return nil
         }
     }
+}
 ```
 
 例えば以下のようにし、detect関数の中でチュートリアルの完了記録があるか否かを調べることとします。
 
 ```Boot.swift
-    func next() -> AnyPublisher<Boot, Error>? {
+    func next() -> AnyPublisher<Self, Error>? {
         switch self {
-        case .basic(.アプリはユーザがチュートリアルを完了した記録がないかを調べる):
+        case .basic(scene: .ユーザはHome画面でアイコンを選択する)
+            return self.just(next: .basic(.アプリはチュートリアル完了済かを確認する))
+        case .basic(scene: .アプリはチュートリアル完了済かを確認する):
             return self.detect()
-        case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示):
-            return nil
-        case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示):
+        case .last:
             return nil
         }
     }
 ```
 
 ```Boot.swift
-    private func detect() -> AnyPublisher<Boot, Error> {
+    private func detect() -> AnyPublisher<Self, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {
-            Future<Boot, Error> { promise in
+            Future<Self, Error> { promise in
                 // Futureが非同期になる場合、sinkする側ではcancellableをstoreしておかないと、
                 // 非同期処理が終わる前にsubsciptionはキャンセルされてしまうので注意
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                     if /* TODO: ドメインモデルが持つメソッドが結果を返すようにする */ {
-                        promise(.success(.basic(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示)))
+                        promise(.success(.last(scene: .完了済の場合_アプリはログイン画面を表示する)))
                     } else {
-                        promise(.success(.alternate(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示)))
+                        promise(.success(.last(scene: .完了済でない場合_アプリはチュートリアル画面を表示する)))
                     }
                 }
             }
@@ -235,18 +248,20 @@ enum Boot : Usecase {
 
 ここではSplashを2秒表示させるものとして実装しています。
 
-# 4. ドメインモデルの実装
+# 5. ドメインモデルの実装
 
-一旦、ユースケースの実装は置いておいて、ドメインモデルを作成します。
+一旦ユースケースの実装は置いておいて、ドメインモデルを作成します。
 
-## 4.1 ドメインモデルを作成する
+## 5.1 ドメインモデルを作成する
 
-様々な値をアプリが保持するので、アプリを表すドメインモデルをオブジェクトとして作成します。
+業務やサービスを実現するためのドメイン（問題領域）の知識やルール、要求事項を、EntityやValue Objectなどのモノとして捉えられるオブジェクトとして、あるいはモノとして捉えられないものをServiceとして、ドメインモデルを作成します。
 
-Service/Domain/Modelsフォルダ作成し、Application.swift の Swiftファイルを新規作成します。
+ここではアプリを一つのドメインモデルとして定義することとします。Service/Domain/Modelsフォルダ作成し、Application.swift の Swiftファイルを新規作成します。
+
+Applicationはチュートリアルの完了記録を持たなければいけないため、ここではそれをComputed Propertyで実装することとします。
 
 ```Application.swift
-class Application {
+struct Application {
 
     var hasCompletedTutorial: Bool {
         get {
@@ -261,25 +276,25 @@ class Application {
 ```
 
 一旦、呼ばれたら true を返すのみとします。
-在るべき実装としては、データ読み書き用のプロトコルを宣言し、それを実装する形でインフラ層でデータ読み書き機能を実装し、それを使うようにします（6で行います）。
+在るべき実装としては、データ読み書き用のプロトコルを宣言し、それを実装する形でインフラ層でデータ読み書き機能を実装し、それを使うようにします（7で行います）。
 
-## 4.2 ドメインモデルを利用してユースケースを実装する
+## 5.2 ドメインモデルを利用してユースケースを実装する
 
 
 ```Boot.swift
-    private func detect() -> AnyPublisher<Boot, Error> {
+    private func detect() -> AnyPublisher<Self, Error> {
         // Deferredでsubscribesされてから実行されるようになる
         // Futureは一度だけ結果を返す
         return Deferred {
-            Future<Boot, Error> { promise in
+            Future<Self, Error> { promise in
                 // Futureが非同期になる場合、sinkする側ではcancellableをstoreしておかないと、
                 // 非同期処理が終わる前にsubsciptionはキャンセルされてしまうので注意
                 // @see: https://forums.swift.org/t/combine-future-broken/28560/2
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                     if Application().hasCompletedTutorial {
-                        promise(.success(.basic(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示)))
+                        promise(.success(.last(scene: .完了済の場合_アプリはログイン画面を表示する)))
                     } else {
-                        promise(.success(.alternate(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示)))
+                        promise(.success(.last(scene: .完了済でない場合_アプリはチュートリアル画面を表示する)))
                     }
                 }
             }
@@ -288,18 +303,18 @@ class Application {
     }
 ```
 
-# 5. プレゼンテーション層でのユースケース呼び出し
+# 6. プレゼンテーション層でのユースケース呼び出し
 
 ユーザの入力イベントなどをトリガーとして、プレゼンテーション層からユースケースを実行する必要があります。
 
-## 5.1 ユースケースの実行
+## 6.1 ユースケースの実行
 
-以下のように、Bootユースケースを初期化し、interact関数を実行し、結果をサブスクライブするようにします（これをどこに実装するかについては5.2参照）。
+以下のように、Bootユースケースを初期化し、interacted関数を実行し、結果をサブスクライブするようにします（これをどこに実装するかについては後述します）。
 結果は実際に実行されたシーンの配列（これをscenarioと呼ぶことにします）で返ってくるので、その最後のシーンが何だったかによって、次の処理を変更します。
 
 ```swift
-    Boot()
-        .interact()
+    Boot.basic(scene: .ユーザはHome画面でアイコンを選択する)
+        .interacted()
         .sink { completion in
             if case .finished = completion {
                 print("boot は正常終了")
@@ -308,45 +323,47 @@ class Application {
             }
         } receiveValue: { scenario in
             print("usecase - boot: \(scenario)")
-            
-            if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
+            guard case let .last(scene) = scenario.last else { fatalError() }
+
+            switch scene {
+            case .完了済の場合_アプリはログイン画面を表示する:
                 // TODO
 
-            } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
+            case .完了済でない場合_アプリはチュートリアル画面を表示する:
                 // TODO
             }
         }
 ```
 
-## 5.2 ユースケースをどこから呼ぶべきか
+## 6.2 ユースケースをどこから呼ぶべきか
 
 拡張性の担保や再利用性を考えた場合、Viewは表示のために設定された値を表示するためのコードのみを持つべきです。
 値を取得するためのコード、ユースケースの結果に応じて表示内容を加工するなどの処理は、別のオブジェクトで担うようにします。
 
-ここではそれら、Viewから呼ばれてユースケースを実行し、その結果をViewに伝える（Viewが参照する値を保持する）役割をもつオブジェクトを`Presenter`とします。
+ここでは `View` から呼ばれてユースケースを実行し、その結果による値の更新をするオブジェクトとして `Performer` を用意します。`View` は `Performer` の持つ値を監視することで、Reactiveに書き換わるように実装します。
 
-## 5.3 Presenterの実装
+## 6.3 Performerの実装
 
-先述の通り、「Viewは表示のために設定された値を表示するためのコードのみを持つべき」です。Viewを表示するには、ユーザに表示したい様々な値を設定してあげる必要があります。
+先述の通り、「`View`は表示のために設定された値を表示するためのコードのみを持つべき」です。`View`を表示するには、ユーザに表示したい様々な値を設定してあげる必要があります。
 
 この処理を、SwiftUIでは Swift5.1で導入された`Property Wrapper`という機能を使って実現しています。
 
 `Property Wrapper` とは、プロパティの制御をテンプレート化したもので、SwiftUI でのView Modelとして `ObservableObject` などの `Property Wrapper` が用意されています。
-@see: https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app
 
-ここでは、`Presenter` を `ObservableObject` として実装します。
+> @see: https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app
+
+ここでは、`Performer` を `ObservableObject` として、Service/Application以下に実装します。
 
 
-```Presenter.swift
+```Performer.swift
 import Combine
 
-class Presenter: ObservableObject {
-    
+class Performer: ObservableObject {
     private var cancellables = [AnyCancellable]()
     
-    func boot() {
-        Boot()
-            .interact()
+    func boot(from initialScene: Boot) {
+        initialScene
+            .interacted()
             .sink { completion in
                 if case .finished = completion {
                     print("boot は正常終了")
@@ -355,11 +372,13 @@ class Presenter: ObservableObject {
                 }
             } receiveValue: { scenario in
                 print("usecase - boot: \(scenario)")
-                
-                if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
+                guard case let .last(scene) = scenario.last else { fatalError() }
+
+                switch scene {
+                case .完了済の場合_アプリはログイン画面を表示する:
                     // TODO
 
-                } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
+                case .完了済でない場合_アプリはチュートリアル画面を表示する:
                     // TODO
                 }
             }
@@ -368,19 +387,18 @@ class Presenter: ObservableObject {
 }
 ```
 
-ユースケースの実行結果で遷移する画面を変更したいため、ContetViewで保持していた currentViewプロパティ を `Presenter` に移植します。
+ユースケースの実行結果で遷移する画面を変更したいため、ContetViewで保持していた currentViewプロパティ を `Performer` に移植します。currentViewプロパティはViewで勝手に書き換えられないように、private(set) としておきます。
 
 
-```Presenter.swift
-class Presenter: ObservableObject {
-    
-    @Published var currentView: Views = .splash
+```Performer.swift
+class Performer: ObservableObject {
+    @Published private(set) var currentView: Views = .splash
     
     private var cancellables = [AnyCancellable]()
     
-    func boot() {
-        Boot()
-            .interact()
+    func boot(from initialScene: Boot) {
+        initialScene
+            .interacted()
             .sink { completion in
                 if case .finished = completion {
                     print("boot は正常終了")
@@ -389,11 +407,13 @@ class Presenter: ObservableObject {
                 }
             } receiveValue: { scenario in
                 print("usecase - boot: \(scenario)")
-                
-                if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
+                guard case let .last(scene) = scenario.last else { fatalError() }
+
+                switch scene {
+                case .完了済の場合_アプリはログイン画面を表示する:
                     self.currentView = .login
 
-                } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
+                case .完了済でない場合_アプリはチュートリアル画面を表示する:
                     self.currentView = .tutorial
                 }
             }
@@ -402,22 +422,22 @@ class Presenter: ObservableObject {
 }
 ```
 
-## 5.4 ViewとPresenterをつなぐ
+## 6.4 ViewとPerformerをつなぐ
 
-`Presenter` を `ObservableObject` として作成しましたが、`ObservableObject` を View（SwiftUI）に繋ぐ方法には以下があります。
+`Performer` を `ObservableObject` として作成しましたが、`ObservableObject` を View（SwiftUI）に繋ぐ方法には以下があります。
 
-### 5.4.1 単一のViewとつなぐ（ライフサイクルなし）
+### 6.4.1 単一のViewとつなぐ（ライフサイクルなし）
 
 以下のように `@StateObject` として宣言すると、作成されたプロパティは、Viewが書き変わっても値が保持されます。
 
 ```swift
 struct ContentView: View {
 
-    @StateObject var presenter = Presenter()
+    @StateObject var performer = Performer()
     ...
 ```
 
-### 5.4.1 単一のViewとつなぐ（ライフサイクルあり）
+### 6.4.1 単一のViewとつなぐ（ライフサイクルあり）
 
 以下のように `@ObservedObject` として宣言すると、作成されたプロパティは、Viewが書き変わると初期化されます。
 
@@ -425,24 +445,24 @@ struct ContentView: View {
 ```swift
 struct ContentView: View {
 
-    @ObservedObject var presenter = Presenter()
+    @ObservedObject var performer = Performer()
     ...
 ```
 
-### 5.4.2 あるView以下の子孫すべてとつなぐ
+### 6.4.2 あるView以下の子孫すべてとつなぐ
 
-以下のように、`.environmentObject`モディファイアで指定し、View側に `@EnvironmentObject`を用意すると、`.environmentObject`モディファイアで指定したView以下、すべての子孫で同一の `Presenter` を参照できます。
+以下のように、`.environmentObject`モディファイアで指定し、View側に `@EnvironmentObject`を用意すると、`.environmentObject`モディファイアで指定したView以下、すべての子孫で同一の `Performer` を参照できます。
 
 ```CALearningApp.swift
 @main
 struct CALearningApp: App {
 
-    @StateObject var presenter = Presenter()
+    @StateObject var performer = Performer()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(presenter)
+                .environmentObject(performer)
         }
     }
 }
@@ -450,7 +470,7 @@ struct CALearningApp: App {
 ```ContentView.swift
 struct ContentView: View {
 
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var performer: Performer
     ...
 }
 ``` 
@@ -461,12 +481,12 @@ struct ContentView: View {
 @main
 struct CALearningApp: App {
 
-    @StateObject var presenter = Presenter()
+    @StateObject var performer = Performer()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(presenter)
+                .environmentObject(performer)
         }
     }
 }
@@ -475,10 +495,10 @@ struct CALearningApp: App {
 ```ContentView.swift
 struct ContentView: View {
 
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var performer: Performer
 
     var body: some View {
-        switch presenter.currentView {
+        switch performer.currentView {
         case .splash:
             Splash()
         case .tutorial:
@@ -496,27 +516,27 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(Presenter())
+            .environmentObject(Performer())
     }
 }
 ```
 
 
-## 5.5 ViewからPresenterを経由してユースケースを実行する
+## 6.5 ViewからPerformerを経由してユースケースを実行する
 
 
-アプリが起動されるとまずはSplash画面を表示し、ユースケース「ユーザはアプリを起動する」が実行されるようにします。
-以下のように、Splash内で onAppearモディファイアを使ってPresenterのメソッドを呼び出します。
+アプリが起動されるとまずはSplash画面を表示し、ユースケース「アプリを起動する」が実行されるようにします。
+以下のように、Splash内で onAppearモディファイアを使ってPerformerのメソッドを呼び出します。
 
 ```Splash.swift
 struct Splash: View {
     
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var performer: Performer
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.presenter.boot()
+                self.performer.boot(from .basic(scene: .ユーザはHome画面でアイコンを選択する))
             }
     }
 }
@@ -526,15 +546,16 @@ Run でアプリを実行します。「Splash」が表示されてから、2秒
 
 また、以下のようにコンソールにログが出ています。
 
-> usecase - boot: [CALearning.Boot.basic(scene: CALearning.Boot.Basics.アプリはユーザがチュートリアルを完了した記録がないかを調べる), CALearning.Boot.basic(scene: CALearning.Boot.Basics.チュートリアル完了の記録がある場合_アプリはログイン画面を表示)]
+> usecase - boot: [CALearning.Boot.basic(scene: CALearning.Boot.Basics.ユーザはHome画面でアイコンを選択する), CALearning.Boot.basic(scene: CALearning.Boot.Basics.アプリはチュートリアル完了済かを確認する), CALearning.Boot.last(scene: CALearning.Boot.Goals.完了済でない場合_アプリはチュートリアル画面を表示する)]
 > boot は正常終了
 
-これは usecase bootが実行され、基本コースの `アプリはユーザがチュートリアルを完了した記録がないかを調べる` → `チュートリアル完了の記録がある場合_アプリはログイン画面を表示` というシナリオを通ったことを示しています。
+これはユースケース Boot が実行され、基本コースの `ユーザはHome画面でアイコンを選択する` → `アプリはチュートリアル完了済かを確認する` → `完了済でない場合_アプリはチュートリアル画面を表示する` というシナリオを通ったことを示しています。
 
 
-# 6. インフラ層と依存性逆転の原則
+# 7. インフラ層と依存性逆転の原則
 
 さて、ドメインモデルの実装に戻ります。
+
 チュートリアルが終わっているか否かをドメインモデルであるApplicationが判断できるようにしたいですが、ここでデータ保存などのインフラ層に置くべきコードを書くのはご法度です。
 
 そこで、依存性逆転の原則に則り、データ保存の仕様を決めるプロトコルを作成し、インフラ層でそれを実装するようにします。
@@ -569,7 +590,7 @@ protocol StoreInterface {
 }
 ```
 
-これを実装するクラスため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swiftファイルを新規作成します。
+これを実装するため、Service/Infrastructureフォルダを作成し、UserDefaultsDataStore.swift の Swiftファイルを新規作成します。
 ここではデータストアの実体としてUserDefaultsを使います。
 
 ```UserDefaultsDataStore.swift
@@ -638,7 +659,7 @@ struct Dependencies {
 ```
 
 
-# 7. 振る舞い駆動開発
+# 8. 振る舞いのテスト
 
 QuickおよびNimbleというパッケージをUnitTest用のターゲットに導入します。
 Xcodeのメニューから、File > Add packages... を開き、右上の検索窓に以下を入力し、パッケージを追加します。
@@ -664,32 +685,34 @@ import Nimble
 class BootSpec: QuickSpec {
 
     override func spec() {
-        let presenter = Presenter()
-        
         describe("アプリを起動する") {
-            context("チュートリアル完了の記録がある場合") {
-                beforeEach {
-                    presenter.currentView = .splash
-                    Application().hasCompletedTutorial = true
-                }
-                it("アプリはログイン画面を表示") {
-                    presenter.boot()
-                    
-                    expect(presenter.currentView)
-                        .toEventually(equal(Views.login), timeout: .seconds(2))
-                        
-                }
-            }
-            context("チュートリアル完了の記録がない場合") {
-                beforeEach {
-                    presenter.currentView = .splash
-                    Application().hasCompletedTutorial = false
-                }
-                it("アプリはチュートリアル画面を表示") {
-                    presenter.boot()
-                    
-                    expect(presenter.currentView)
-                        .toEventually(equal(Views.tutorial), timeout: .seconds(2))
+            context("ユーザはHome画面でアイコンを選択する") {
+                context("アプリはチュートリアル完了済かを確認する") {
+                    context("完了済の場合") {
+                        let performer = Performer()
+                        beforeEach {
+                            Application().hasCompletedTutorial = true
+                        }
+                        it("アプリはログイン画面を表示する") {
+                            performer.boot(from:.basic(scene: .ユーザはHome画面でアイコンを選択する))
+                            
+                            expect(performer.currentView)
+                                .toEventually(equal(Views.login), timeout: .seconds(3)) // Bootで2秒待たせているので、それより長くすること
+                                
+                        }
+                    }
+                    context("完了済でない場合") {
+                        let performer = Performer()
+                        beforeEach {
+                            Application().hasCompletedTutorial = false
+                        }
+                        it("アプリはチュートリアル画面を表示する") {
+                            performer.boot(from:.basic(scene: .ユーザはHome画面でアイコンを選択する))
+                            
+                            expect(performer.currentView)
+                                .toEventually(equal(Views.tutorial), timeout: .seconds(3)) // Bootで2秒待たせているので、それより長くすること
+                        }
+                    }
                 }
             }
         }
@@ -701,11 +724,37 @@ describe にはユースケースを記述します。
 context にはユースケースシナリオの分岐部分を記述します。
 it には期待する結果を記述します。
 
-itってなんやねん、というと、英語では it should be... と期待する結果を書くから it なのです。
+itってなんやねんというと、英語では it should be... と期待する結果を書くから it なのだそうです。
 
-ユースケースシナリオ＝仕様＝テストです。テストさえ書けば、詳細設計書は不要です（Tests as Documentation）。
+ユースケースシナリオ＋値の更新＝アプリの振る舞い＝仕様＝テストです。テストさえ書けば、詳細設計書は不要です（Tests as Documentation）。
 
-このアーキテクチャでは、Viewがユーザの操作を受け付けるとPresenterを通してユースケースを実行するので、振る舞いテストとしては、Viewから呼ぶPresenterのメソッドを直接呼び出し、View Modelなどが期待する結果となっているかのアサーションを記述します。
+このアーキテクチャでは、Viewがユーザの操作を受け付けるとPerformerを通してユースケースを実行するので、振る舞いテストとしては、Viewから呼ぶPrformerのメソッドを直接呼び出し、@Publishを付けたプロパティが期待する結果となっているかのアサーションを記述します。
+
+テストを起動すると、アプリが起動するため、そのままでは【アプリを起動する】のユースケースが、アプリの実装とテストとで二重で実施されてしまいます。
+そこで、テスト時には以下のように、アプリの表示を行わないようにします。
+
+```CALerningApp.swift
+let IS_TEST = ProcessInfo.processInfo.environment["IS_TEST"] == "true"
+
+@main
+struct CALearningApp: App {
+    
+    @StateObject var performer = Performer()
+    
+    var body: some Scene {
+        WindowGroup {
+            if !IS_TEST {
+                ContentView()
+                    .environmentObject(performer)
+            } else {
+                Text("Testing...")
+            }
+        }
+    }
+}
+```
+
+環境変数は、Edit Schema > Test > Arguments > Environment Variables から設定できます（Use the Run action's arguments and environment variablesのチェックは外して下さい）。
 
 
 もちろんユースケース以外にも、複雑なメソッドの機能テストも振る舞いを記述してテストをすることができます。

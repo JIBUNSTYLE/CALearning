@@ -20,7 +20,7 @@ protocol Usecase {
     ///
     /// - Parameter contexts: ユースケースシナリオの（画面での分岐を除く）分岐をけcaseに持つenumのある要素
     /// - Returns: 引数のenumと同様のenumで、引数の分岐を処理した結果の要素
-    func interact() -> AnyPublisher<[Self], Error>
+    func interacted() -> AnyPublisher<[Self], Error>
 }
 
 extension Usecase {
@@ -34,30 +34,31 @@ extension Usecase {
         .eraseToAnyPublisher()
     }
     
-    private func recursive(contexts: [Self]) -> AnyPublisher<[Self], Error> {
-        guard let context = contexts.last else { fatalError() }
+    private func recursive(scenario: [Self]) -> AnyPublisher<[Self], Error> {
+        guard let context = scenario.last else { fatalError() }
         
         // 終了条件
         guard let future = context.next() else {
             return Deferred {
                 Future<[Self], Error> { promise in
-                    promise(.success(contexts))
+                    promise(.success(scenario))
                 }
             }
+            .receive(on: DispatchQueue.main) // sink後の処理はメインスレッドで行われるようにする
             .eraseToAnyPublisher()
         }
         
         // 再帰呼び出し
         return future
-            .flatMap { nextContext -> AnyPublisher<[Self], Error> in
-                var _contexts = contexts
-                _contexts.append(nextContext)
-                return self.recursive(contexts: _contexts)
+            .flatMap { nextScene -> AnyPublisher<[Self], Error> in
+                var _scenario = scenario
+                _scenario.append(nextScene)
+                return self.recursive(scenario: _scenario)
             }
             .eraseToAnyPublisher()
     }
     
-    func interact() -> AnyPublisher<[Self], Error> {
-        return self.recursive(contexts: [self])
+    func interacted() -> AnyPublisher<[Self], Error> {
+        return self.recursive(scenario: [self])
     }
 }

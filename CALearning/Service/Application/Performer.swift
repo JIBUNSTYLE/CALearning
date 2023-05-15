@@ -1,5 +1,5 @@
 //
-//  Presenter.swift
+//  Performer.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -8,15 +8,19 @@
 import Foundation
 import Combine
 
-class Presenter: ObservableObject {
+class Performer: ObservableObject {
     
-    @Published var currentView: Views = .splash
+    @Published private(set) var currentView: Views = .splash {
+        didSet {
+            print("===fff=== \(oldValue), \(currentView)")
+        }
+    }
     
     private var cancellables = [AnyCancellable]()
     
-    func boot() {
-        Boot()
-            .interact()
+    func boot(from initialScene: Boot) {
+        initialScene
+            .interacted()
             .sink { completion in
                 if case .finished = completion {
                     print("boot は正常終了")
@@ -26,10 +30,14 @@ class Presenter: ObservableObject {
             } receiveValue: { scenario in
                 print("usecase - boot: \(scenario)")
                 
-                if case .basic(.チュートリアル完了の記録がある場合_アプリはログイン画面を表示) = scenario.last {
+                guard case let .last(scene) = scenario.last else { fatalError() }
+                
+                switch scene {
+                case .完了済の場合_アプリはログイン画面を表示する:
                     self.currentView = .login
+                    print("======= \(self.currentView), \(Views.login)")
 
-                } else if case .alternate(.チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示) = scenario.last {
+                case .完了済でない場合_アプリはチュートリアル画面を表示する:
                     self.currentView = .tutorial
                 }
             }

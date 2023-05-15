@@ -9,12 +9,12 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var presenter: Presenter
+    @EnvironmentObject var performer: Performer
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.presenter.boot()
+                self.performer.boot(from:.basic(scene: .ユーザはHome画面でアイコンを選択する))
             }
     }
 }
@@ -22,6 +22,6 @@ struct Splash: View {
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Splash()
-            .environmentObject(Presenter())
+            .environmentObject(Performer())
     }
 }

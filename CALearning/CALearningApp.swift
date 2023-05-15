@@ -7,15 +7,21 @@
 
 import SwiftUI
 
+let IS_TEST = ProcessInfo.processInfo.environment["IS_TEST"] == "true"
+
 @main
 struct CALearningApp: App {
     
-    @StateObject var presenter = Presenter()
+    @StateObject var performer = Performer()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(presenter)
+            if !IS_TEST {
+                ContentView()
+                    .environmentObject(performer)
+            } else {
+                Text("Testing...")
+            }
         }
     }
 }
