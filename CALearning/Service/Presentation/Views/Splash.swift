@@ -14,7 +14,7 @@ struct Splash: View {
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.dispatcher.dispatch(Usecases.booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)))
+                self.dispatcher.dispatch(.booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる)))
             }
     }
 }
