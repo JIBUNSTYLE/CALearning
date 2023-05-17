@@ -26,7 +26,7 @@ struct ApplicationPerformer : Performer {
 
 extension ApplicationPerformer {
     
-    func boot(_ from: Usecase<Usecases.Booting>, with actor: UserActor) {
+    func boot(from initialScene: Usecase<Usecases.Booting>, with actor: UserActor) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -44,7 +44,7 @@ extension ApplicationPerformer {
 //
 //        Application().discardUdid()
 //
-        from
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
@@ -70,8 +70,8 @@ extension ApplicationPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func closeDialog(_ from: Usecase<Usecases.CloseDialog>, with actor: UserActor) {
-        from
+    func closeDialog(from initialScene: Usecase<Usecases.CloseDialog>, with actor: UserActor) {
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {

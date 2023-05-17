@@ -106,36 +106,36 @@ extension Dispatcher {
         self.resetUsecaseState()
     }
     
-    func dispatch(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
-        self.usecaseStatus = .executing(usecase: from, file: file, line: line, function: function, startAt: Date())
+    func dispatch(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+        self.usecaseStatus = .executing(usecase: usecase, file: file, line: line, function: function, startAt: Date())
 
-        switch from {
-        case let .booting(from):
-            self.applicationPerformer.boot(from, with: self.actor)
+        switch usecase {
+        case let .booting(from: initialScene):
+            self.applicationPerformer.boot(from: initialScene, with: self.actor)
 
-        case let .completeTutorial(from):
-            self.signInPerformer.completeTutorial(from, with: self.actor)
+        case let .completeTutorial(from: initialScene):
+            self.signInPerformer.completeTutorial(from:initialScene, with: self.actor)
             
-        case let .signingIn(from):
-            self.signInPerformer.signIn(from, with: self.actor)
+        case let .signingIn(from: initialScene):
+            self.signInPerformer.signIn(from: initialScene, with: self.actor)
             
-        case let .stopSigningIn(from):
-            self.signInPerformer.stopSigningIn(from, with: self.actor)
+        case let .stopSigningIn(from: initialScene):
+            self.signInPerformer.stopSigningIn(from: initialScene, with: self.actor)
             
-        case let .trialUsing(from):
-            self.signInPerformer.trial(from, with: self.actor)
+        case let .trialUsing(from: initialScene):
+            self.signInPerformer.trial(from: initialScene, with: self.actor)
             
-        case let .purchase(from):
-            self.shoppingPerformer.purchase(from, with: self.actor)
+        case let .purchase(from: initialScene):
+            self.shoppingPerformer.purchase(from: initialScene, with: self.actor)
             
-        case let .closeDialog(from):
-            self.applicationPerformer.closeDialog(from, with: self.actor)
+        case let .closeDialog(from: initialScene):
+            self.applicationPerformer.closeDialog(from: initialScene, with: self.actor)
         }
     }
     
-    func dispatchMainAsync(_ from: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatchMainAsync(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         DispatchQueue.main.async {
-            self.dispatch(from, file: file, line: line, function: function)
+            self.dispatch(usecase, file: file, line: line, function: function)
         }
     }
 }

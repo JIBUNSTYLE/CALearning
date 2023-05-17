@@ -28,8 +28,8 @@ struct SignInPerformer: Performer {
 
 extension SignInPerformer {
     
-    func signIn(_ from: Usecase<Usecases.SigningIn>, with actor: UserActor) {
-        from
+    func signIn(from initialScene: Usecase<Usecases.SigningIn>, with actor: UserActor) {
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
@@ -63,8 +63,8 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func stopSigningIn(_ from: Usecase<Usecases.StopSigningIn>, with actor: UserActor) {
-        from
+    func stopSigningIn(from initialScene: Usecase<Usecases.StopSigningIn>, with actor: UserActor) {
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
@@ -79,9 +79,9 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
  
-    func trial(_ from: Usecase<Usecases.TrialUsing>, with actor: UserActor) {
+    func trial(from initialScene: Usecase<Usecases.TrialUsing>, with actor: UserActor) {
         self.store.signInValidationResult = nil
-        from
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
@@ -95,8 +95,8 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func completeTutorial(_ from: Usecase<Usecases.CompleteTutorial>, with actor: UserActor) {
-        from
+    func completeTutorial(from initialScene: Usecase<Usecases.CompleteTutorial>, with actor: UserActor) {
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {

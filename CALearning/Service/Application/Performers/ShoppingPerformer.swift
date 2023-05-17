@@ -28,8 +28,8 @@ struct ShoppingPerformer: Performer {
 
 extension ShoppingPerformer {
     
-    func purchase(_ from: Usecase<Usecases.Purchase>, with actor: UserActor) {
-        from
+    func purchase(from initialScene: Usecase<Usecases.Purchase>, with actor: UserActor) {
+        initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: { completion in
@@ -38,7 +38,7 @@ extension ShoppingPerformer {
                     guard case let .failure(error) = completion
                         , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
                     // 再開したいユースケースを保存
-                    self.dispatcher.change(actor: actor.update(usecaseToResume: .purchase(from: from)))
+                    self.dispatcher.change(actor: actor.update(usecaseToResume: .purchase(from: initialScene)))
                     // ログインを促す
                     self.dispatcher.set(isSignInModalPresented: true)
                 }
