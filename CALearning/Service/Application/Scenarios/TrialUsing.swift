@@ -12,13 +12,13 @@ import RobustiveSwift
 /// ユースケース【お試し利用する】を実現します。
 extension Usecases.TrialUsing : Scenario {
     
-    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
         switch currentScene {
         case .basic(.ユーザはログインしないで使うボタンを押下する):
             return self.just(next: .last(scene: .アプリはホーム画面を表示する))
             
         case .last:
-            return nil
+            fatalError()
         }
     }
 }

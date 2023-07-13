@@ -12,7 +12,7 @@ import RobustiveSwift
 /// ユースケース【ログインする】を実現します。
 extension Usecases.SigningIn : Scenario {
     
-    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
         switch currentScene {
         case let .basic(scene: .ユーザはログインボタンを押下する(id, password)):
             return self.just(next: .basic(scene: .アプリは入力が正しいかを確認する(id: id, password: password)))
@@ -24,7 +24,7 @@ extension Usecases.SigningIn : Scenario {
             return self.signIn(id, password)
             
         case .last:
-            return nil
+            fatalError()
         }
         
     }

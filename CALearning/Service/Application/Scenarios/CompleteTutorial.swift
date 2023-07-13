@@ -12,7 +12,7 @@ import RobustiveSwift
 /// ユースケース【チュートリアルを完了する】を実現します。
 extension Usecases.CompleteTutorial : Scenario {
     
-    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
         switch currentScene {
         case .basic(.ユーザはチュートリアルを閉じる):
             return self.just(next: .basic(scene: .アプリはチュートリアル完了を記録する))
@@ -21,7 +21,7 @@ extension Usecases.CompleteTutorial : Scenario {
             return self.save()
             
         case .last:
-            return nil
+            fatalError()
         }
     }
     

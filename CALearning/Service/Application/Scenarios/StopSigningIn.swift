@@ -12,13 +12,13 @@ import RobustiveSwift
 /// ユースケース【ログインをやめる】を実現します。
 extension Usecases.StopSigningIn : Scenario {
     
-    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
         switch currentScene {
         case .basic(.ユーザはキャンセルボタンを押下する):
             return self.just(next: .last(scene: .アプリはログインモーダルを閉じる))
             
         case .last:
-            return nil
+            fatalError()
         }
     }
 }

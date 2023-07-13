@@ -12,7 +12,7 @@ import RobustiveSwift
 /// ユースケース【アプリを起動する】を実現します。
 extension Usecases.Booting : Scenario {
     
-    func next(to currentScene: Usecase<Self>) -> AnyPublisher<Usecase<Self>, Error>? {
+    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
         switch currentScene {
         case .basic(scene: .ユーザはアプリを起動する):
             return self.just(next: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))
@@ -27,7 +27,7 @@ extension Usecases.Booting : Scenario {
             return self.publishUdid()
             
         case .last:
-            return nil
+            fatalError()
         }
     }
     

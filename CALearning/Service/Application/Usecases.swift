@@ -52,7 +52,8 @@ enum UsecaseStatus {
 enum Usecases {
     /// ユースケース【アプリを起動する】を実現します。
     struct Booting : Scenes {
-
+        typealias UsecaseActor = UserActor
+        
         enum Basics {
             case ユーザはアプリを起動する
             case アプリはサーバで発行したUDIDが保存されていないかを調べる
@@ -72,6 +73,7 @@ enum Usecases {
 
     /// ユースケース【チュートリアルを完了する】を実現します。
     struct CompleteTutorial : Scenes {
+        typealias UsecaseActor = UserActor
         
         enum Basics {
             case ユーザはチュートリアルを閉じる
@@ -87,6 +89,7 @@ enum Usecases {
 
     /// ユースケース【ログインする】を実現します。
     struct SigningIn : Scenes {
+        typealias UsecaseActor = UserActor
         
         enum Basics {
             case ユーザはログインボタンを押下する(id: String?, password: String?)
@@ -108,6 +111,8 @@ enum Usecases {
 
     /// ユースケース【ログインをやめる】を実現します。
     struct StopSigningIn : Scenes {
+        typealias UsecaseActor = UserActor
+        
         enum Basics {
             case ユーザはキャンセルボタンを押下する
        }
@@ -121,6 +126,8 @@ enum Usecases {
 
     /// ユースケース【お試し利用する】を実現します。
     struct TrialUsing : Scenes {
+        typealias UsecaseActor = UserActor
+        
         enum Basics {
             case ユーザはログインしないで使うボタンを押下する
         }
@@ -134,6 +141,8 @@ enum Usecases {
 
     /// ユースケース【購入する】を実現します。
     struct Purchase : Scenes {
+        typealias UsecaseActor = UserActor
+        
         enum Basics {
             case ユーザは購入ボタンを押下する
         }
@@ -147,6 +156,8 @@ enum Usecases {
 
     /// ユースケース【ダイアログを閉じる】を実現します。
     struct CloseDialog : Scenes {
+        typealias UsecaseActor = UserActor
+        
         enum Basics {
             case ユーザはOKボタンを押下する
         }
