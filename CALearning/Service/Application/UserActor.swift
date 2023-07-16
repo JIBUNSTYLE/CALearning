@@ -30,10 +30,10 @@ struct UserActor : Actor, CustomStringConvertible {
 
 extension Scenario {
 
-    func authorize<T: Actor>(_ actor: T, toInteract usease: Usecase<Self>) throws -> Bool {
+    func authorize<T: Actor>(_ actor: T, toInteract: Scene<Self>) throws -> Bool {
         guard let userActor = actor as? UserActor else {
             fatalError()
         }
-        return AccountModel().authorize(userActor, toInteract: usease)
+        return AccountModel().authorize(userActor, toInteract: toInteract)
     }
 }

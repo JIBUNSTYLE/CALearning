@@ -28,7 +28,7 @@ struct ShoppingPerformer: Performer {
 
 extension ShoppingPerformer {
     
-    func purchase(from initialScene: Usecase<Usecases.Purchase>, with actor: UserActor) {
+    func purchase(from initialScene: Scene<Usecases.Purchase>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor

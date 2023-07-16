@@ -169,11 +169,11 @@ enum Usecases {
         }
     }
 
-    case booting(from: Usecase<Booting>)
-    case completeTutorial(from: Usecase<CompleteTutorial>)
-    case signingIn(from: Usecase<SigningIn>)
-    case stopSigningIn(from: Usecase<StopSigningIn>)
-    case trialUsing(from: Usecase<TrialUsing>)
-    case purchase(from: Usecase<Purchase>)
-    case closeDialog(from: Usecase<CloseDialog>)
+    case booting(from: Scene<Booting>)
+    case completeTutorial(from: Scene<CompleteTutorial>)
+    case signingIn(from: Scene<SigningIn>)
+    case stopSigningIn(from: Scene<StopSigningIn>)
+    case trialUsing(from: Scene<TrialUsing>)
+    case purchase(from: Scene<Purchase>)
+    case closeDialog(from: Scene<CloseDialog>)
 }

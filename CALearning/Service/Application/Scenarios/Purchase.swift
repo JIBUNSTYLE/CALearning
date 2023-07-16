@@ -12,7 +12,7 @@ import RobustiveSwift
 /// ユースケース【購入する】を実現します。
 extension Usecases.Purchase : Scenario {
     
-    func next(to currentScene: Usecase<Self>, by actor: UsecaseActor) -> AnyPublisher<Usecase<Self>, Error> {
+    func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {
         case .basic(.ユーザは購入ボタンを押下する):
             return self.just(next: .last(scene: .アプリは購入確認画面を表示する))

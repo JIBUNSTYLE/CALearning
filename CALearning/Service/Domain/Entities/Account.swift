@@ -89,7 +89,7 @@ struct Account {
 class AccountModel : Entity {
     typealias Properties = Account
     
-    func authorize<T: Scenario>(_ actor: UserActor, toInteract usecase: Usecase<T>) -> Bool {
+    func authorize<T: Scenario>(_ actor: UserActor, toInteract: Scene<T>) -> Bool {
         switch T.self {
         case is Usecases.Booting.Type
             , is Usecases.CompleteTutorial.Type
