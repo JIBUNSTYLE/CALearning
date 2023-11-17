@@ -37,6 +37,9 @@
 		707CA98D279F8FA500EAFC66 /* Booting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA98C279F8FA500EAFC66 /* Booting.swift */; };
 		707CA995279FA89A00EAFC66 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA994279FA89A00EAFC66 /* Application.swift */; };
 		707CA997279FD1BA00EAFC66 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CA996279FD1BA00EAFC66 /* Dispatcher.swift */; };
+		707E2BAB2AC2C0100011AC87 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707E2BAA2AC2C0100011AC87 /* LocationManager.swift */; };
+		707E2BAD2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707E2BAC2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift */; };
+		707E2BAF2AC2C0EC0011AC87 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707E2BAE2AC2C0EC0011AC87 /* Location.swift */; };
 		708415C3283524BB00BAED01 /* UserActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708415C2283524BB00BAED01 /* UserActor.swift */; };
 		70873E9A27E02F7D007EE181 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9927E02F7D007EE181 /* Account.swift */; };
 		70873E9E27E0300B007EE181 /* ArchitecturalProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70873E9D27E0300B007EE181 /* ArchitecturalProtocols.swift */; };
@@ -105,6 +108,11 @@
 		707CA98C279F8FA500EAFC66 /* Booting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Booting.swift; sourceTree = "<group>"; };
 		707CA994279FA89A00EAFC66 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		707CA996279FD1BA00EAFC66 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
+		707E2BAA2AC2C0100011AC87 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		707E2BAC2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationManagerWrapper.swift; sourceTree = "<group>"; };
+		707E2BAE2AC2C0EC0011AC87 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		707E2BB02AC2C2A70011AC87 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		707E2BB22AC2C2F30011AC87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		708415C2283524BB00BAED01 /* UserActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActor.swift; sourceTree = "<group>"; };
 		70873E9927E02F7D007EE181 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		70873E9D27E0300B007EE181 /* ArchitecturalProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchitecturalProtocols.swift; sourceTree = "<group>"; };
@@ -158,6 +166,7 @@
 			children = (
 				7077C99A27A0D4760035E404 /* DataStore.swift */,
 				7077C9BD27AB7ABD0035E404 /* Backend.swift */,
+				707E2BAA2AC2C0100011AC87 /* LocationManager.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -169,6 +178,7 @@
 				7077C9BF27AB7B280035E404 /* ApiBackend.swift */,
 				7077C99D27A0D5A70035E404 /* UserDefaultsDataStore.swift */,
 				708A75FE27F46A970047016B /* KeyChainDataStore.swift */,
+				707E2BAC2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -208,6 +218,7 @@
 		707CA954279F833700EAFC66 /* CALearning */ = {
 			isa = PBXGroup;
 			children = (
+				707E2BB22AC2C2F30011AC87 /* Info.plist */,
 				707CA980279F8B6300EAFC66 /* Service */,
 				707CA98E279F932100EAFC66 /* System */,
 				707CA955279F833700EAFC66 /* CALearningApp.swift */,
@@ -345,6 +356,7 @@
 		708CA92A29DAC89700BCFD49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				707E2BB02AC2C2A70011AC87 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -353,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				707CA994279FA89A00EAFC66 /* Application.swift */,
+				707E2BAE2AC2C0EC0011AC87 /* Location.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -529,6 +542,7 @@
 				708415C3283524BB00BAED01 /* UserActor.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
 				7077C99B27A0D4760035E404 /* DataStore.swift in Sources */,
+				707E2BAB2AC2C0100011AC87 /* LocationManager.swift in Sources */,
 				70A945F929DD4EB500AFC6B9 /* TrialUsing.swift in Sources */,
 				7077C9A927A8F9560035E404 /* ApiClient.swift in Sources */,
 				70D4DC5227FDDD5600C02521 /* SignInPerformer.swift in Sources */,
@@ -546,6 +560,8 @@
 				7077F51229C7F5E6006233CB /* ApplicationPerformer.swift in Sources */,
 				70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
+				707E2BAF2AC2C0EC0011AC87 /* Location.swift in Sources */,
+				707E2BAD2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift in Sources */,
 				707CA956279F833700EAFC66 /* CALearningApp.swift in Sources */,
 				707CA98D279F8FA500EAFC66 /* Booting.swift in Sources */,
 			);
@@ -711,6 +727,9 @@
 				DEVELOPMENT_TEAM = X6UZ6GLW57;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CALearning/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "テスト用です";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "テスト用なのです";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -740,6 +759,9 @@
 				DEVELOPMENT_TEAM = X6UZ6GLW57;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CALearning/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "テスト用です";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "テスト用なのです";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

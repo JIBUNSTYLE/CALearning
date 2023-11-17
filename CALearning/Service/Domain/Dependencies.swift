@@ -14,12 +14,15 @@ struct Dependencies {
     // 依存性逆転が必要なものが増えたら足していく
     private(set) var dataStore: DataStore
     private(set) var backend: Backend
+    private(set) var locationManager: LocationManager
    
     init(
         dataStore: DataStore = UserDefaultsDataStore()
         , backend: Backend? = nil
+        , locationManager: LocationManager = CLLocationManagerWrapper()
     ) {
         self.dataStore = dataStore
+        self.locationManager = locationManager
         
         if let b = backend {
             self.backend = b
@@ -37,8 +40,10 @@ struct Dependencies {
     func set(
         dataStore: DataStore? = nil
         , backend: Backend? = nil
+        , locationManager: LocationManager? = nil
     ) {
         if let d = dataStore { Dependencies.shared.dataStore = d }
         if let b = backend { Dependencies.shared.backend = b }
+        if let l = locationManager { Dependencies.shared.locationManager = l }
     }
 }

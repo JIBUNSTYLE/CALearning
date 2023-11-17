@@ -85,6 +85,9 @@ struct SignIn: View {
                     TermsOfService()
                 }
             )
+            .onAppear {
+                Dependencies.shared.locationManager.requestAuthorization()
+            }
         }
 }
 
