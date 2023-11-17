@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【チュートリアルを完了する】を実現します。
-extension Usecases.SignIn.CompleteTutorial : Scenario {
+extension Domains.SignIn.Usecases.CompleteTutorial : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {

@@ -13,13 +13,13 @@ struct UserActor : Actor, CustomStringConvertible {
     
     let udid: String?
     let user: User? // nil の場合はアノニマス
-    let usecaseToResume: Usecases?
+    let usecaseToResume: Domains?
     
     var description: String {
         "udid: \(self.udid ?? "-"), user: \(self.user?.mailAddress ?? "-")"
     }
     
-    func update(udid: String? = nil, user: User? = nil, usecaseToResume: Usecases? = nil) -> Self {
+    func update(udid: String? = nil, user: User? = nil, usecaseToResume: Domains? = nil) -> Self {
         return UserActor(
             udid: udid ?? self.udid
             , user: user ?? self.user

@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【アプリを起動する】を実現します。
-extension Usecases.Application.Booting : Scenario {
+extension Domains.Application.Usecases.Booting : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {

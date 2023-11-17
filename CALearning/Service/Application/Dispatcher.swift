@@ -106,11 +106,11 @@ extension Dispatcher {
         self.resetUsecaseState()
     }
     
-    func dispatch(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatch(_ domain: Domains, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         
-        self.usecaseStatus = .executing(usecase: usecase, file: file, line: line, function: function, startAt: Date())
+        self.usecaseStatus = .executing(usecase: domain, file: file, line: line, function: function, startAt: Date())
         
-        switch usecase {
+        switch domain {
         case let .application(usecase):
             self.applicationPerformer.dispatch(usecase, with: self.actor)
             
@@ -122,7 +122,7 @@ extension Dispatcher {
         }
     }
     
-    func dispatchMainAsync(_ domain: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatchMainAsync(_ domain: Domains, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         DispatchQueue.main.async {
             self.dispatch(domain, file: file, line: line, function: function)
         }
