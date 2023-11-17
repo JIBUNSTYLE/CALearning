@@ -91,22 +91,22 @@ class AccountModel : Entity {
     
     func authorize<T: Scenario>(_ actor: UserActor, toInteract: Scene<T>) -> Bool {
         switch T.self {
-        case is Domains.Application.Usecases.Booting.Type
-            , is Domains.Application.Usecases.CloseDialog.Type
-            , is Domains.SignIn.Usecases.CompleteTutorial.Type
+        case is Usecases.Application.Booting.Type
+            , is Usecases.Application.CloseDialog.Type
+            , is Usecases.SignIn.CompleteTutorial.Type
             : do {
             // Actorが誰でも実行可能
             return true
         }
-        case is Domains.SignIn.Usecases.SigningIn.Type
-            , is Domains.SignIn.Usecases.StopSigningIn.Type
-            , is Domains.SignIn.Usecases.TrialUsing.Type : do {
+        case is Usecases.SignIn.SigningIn.Type
+            , is Usecases.SignIn.StopSigningIn.Type
+            , is Usecases.SignIn.TrialUsing.Type : do {
             // 未サインインユーザのみ実行可能
             guard case .anyone = actor.userType else { return false }
             return true
         }
             
-        case is Domains.Shopping.Usecases.Purchase.Type : do {
+        case is Usecases.Shopping.Purchase.Type : do {
             // サインイン済みユーザのみ実行可能
             guard case .signedIn = actor.userType else { return false }
             return true

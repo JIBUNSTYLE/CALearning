@@ -21,7 +21,7 @@ class Dispatcher : ObservableObject {
     @Published private(set) var isSignInModalPresented = false
 
     // 二度押し防止でボタンなどを制御するため、ユースケース実行状態を管理
-    private(set) var usecaseStatus: UsecaseStatus = .idle
+    private(set) var usecaseStatus: UsecaseStatuses = .idle
     
     var alertContent = AlertContent(title: "お知らせ", message: "ほげほげ")
     
@@ -106,11 +106,11 @@ extension Dispatcher {
         self.resetUsecaseState()
     }
     
-    func dispatch(_ domain: Domains, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatch(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         
-        self.usecaseStatus = .executing(usecase: domain, file: file, line: line, function: function, startAt: Date())
+        self.usecaseStatus = .executing(usecase: usecase, file: file, line: line, function: function, startAt: Date())
         
-        switch domain {
+        switch usecase {
         case let .application(usecase):
             self.applicationPerformer.dispatch(usecase, with: self.actor)
             
@@ -122,9 +122,9 @@ extension Dispatcher {
         }
     }
     
-    func dispatchMainAsync(_ domain: Domains, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatchMainAsync(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         DispatchQueue.main.async {
-            self.dispatch(domain, file: file, line: line, function: function)
+            self.dispatch(usecase, file: file, line: line, function: function)
         }
     }
 }

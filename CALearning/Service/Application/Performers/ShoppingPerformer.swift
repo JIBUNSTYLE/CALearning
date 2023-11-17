@@ -13,7 +13,7 @@ class ShoppingStore: ObservableObject {
 }
 
 struct ShoppingPerformer: Performer {
-    typealias Usecases = Domains.Shopping.Usecases
+    typealias Usecases = U.Shopping
     typealias Store = ShoppingStore
 
     private let dispatcher: Dispatcher
@@ -45,7 +45,7 @@ extension ShoppingPerformer {
                     guard case let .failure(error) = completion
                             , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
                     // 再開したいユースケースを保存
-                    self.dispatcher.change(actor: actor.update(usecaseToResume: Domains.shopping(usecase: .purchase(from: initialScene))))
+                    self.dispatcher.change(actor: actor.update(usecaseToResume: U.shopping(usecase: .purchase(from: initialScene))))
                     // ログインを促す
                     self.dispatcher.set(isSignInModalPresented: true)
 

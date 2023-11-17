@@ -18,9 +18,9 @@ protocol ValueObject {
 protocol Service {}
 
 protocol Performer {
-    associatedtype Domain
+    associatedtype Usecases
     associatedtype Store : ObservableObject
     
     var store: Store { get }
-    func dispatch(_ usecase: Domain, with actor: UserActor)
+    func dispatch(_ usecase: Usecases, with actor: UserActor)
 }
