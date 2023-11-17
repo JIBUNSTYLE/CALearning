@@ -34,7 +34,7 @@ struct SignIn: View {
                             TextField("Input your password", text: $password)
                         }
                         Button("→ SignIn") {
-                            self.dispatcher.dispatch(.signingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id.isEmpty ? nil : self.id , password: self.password.isEmpty ? nil : self.password))))
+                            self.dispatcher.dispatch(.signIn(usecase: .signingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id.isEmpty ? nil : self.id , password: self.password.isEmpty ? nil : self.password)))))
                         }
                         .disabled(self.dispatcher.usecaseStatus.isExecuting)
                         if let result = self.signInStore.signInValidationResult
@@ -64,7 +64,7 @@ struct SignIn: View {
                             Spacer()
                             HStack {
                                 Button("→ ログインしないで使う") {
-                                    self.dispatcher.dispatch(.trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する)))
+                                    self.dispatcher.dispatch(.signIn(usecase: .trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する))))
                                 }
                                 Spacer()
                                 Button("→ Terms of Service") {

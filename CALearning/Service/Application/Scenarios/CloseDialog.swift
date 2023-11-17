@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【ダイアログを閉じる】を実現します。
-extension Usecases.CloseDialog : Scenario {
+extension Usecases.Application.CloseDialog : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {

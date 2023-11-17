@@ -13,6 +13,7 @@ class SignInStore : ObservableObject {
 }
 
 struct SignInPerformer: Performer {
+    typealias Domain = Usecases.SignIn
     typealias Store = SignInStore
     
     private let dispatcher: Dispatcher
@@ -22,13 +23,29 @@ struct SignInPerformer: Performer {
     init(with dispatcher: Dispatcher) {
         self.dispatcher = dispatcher
     }
+    
+    func dispatch(_ usecase: Domain, with actor: UserActor) {
+        switch usecase {
+        case let .completeTutorial(from: initialScene):
+            self.completeTutorial(from: initialScene, with: actor)
+            
+        case let .signingIn(from: initialScene):
+            self.signIn(from: initialScene, with: actor)
+            
+        case let .stopSigningIn(from: initialScene):
+            self.stopSigningIn(from: initialScene, with: actor)
+            
+        case let .trialUsing(from: initialScene):
+            self.trial(from: initialScene, with: actor)
+        }
+    }
 }
 
 // MARK: - Behaviors
 
 extension SignInPerformer {
     
-    func signIn(from initialScene: Scene<Usecases.SigningIn>, with actor: UserActor) {
+    func signIn(from initialScene: Scene<Usecases.SignIn.SigningIn>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor
@@ -63,7 +80,7 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func stopSigningIn(from initialScene: Scene<Usecases.StopSigningIn>, with actor: UserActor) {
+    func stopSigningIn(from initialScene: Scene<Usecases.SignIn.StopSigningIn>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor
@@ -79,7 +96,7 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
  
-    func trial(from initialScene: Scene<Usecases.TrialUsing>, with actor: UserActor) {
+    func trial(from initialScene: Scene<Usecases.SignIn.TrialUsing>, with actor: UserActor) {
         self.store.signInValidationResult = nil
         initialScene
             .interacted(
@@ -95,7 +112,7 @@ extension SignInPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func completeTutorial(from initialScene: Scene<Usecases.CompleteTutorial>, with actor: UserActor) {
+    func completeTutorial(from initialScene: Scene<Usecases.SignIn.CompleteTutorial>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor

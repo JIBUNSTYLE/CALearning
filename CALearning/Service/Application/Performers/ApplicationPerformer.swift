@@ -11,6 +11,7 @@ import RobustiveSwift
 class ApplicationStore : ObservableObject {}
 
 struct ApplicationPerformer : Performer {
+    typealias Domain = Usecases.Application
     typealias Store = ApplicationStore
     
     private let dispatcher: Dispatcher
@@ -20,13 +21,23 @@ struct ApplicationPerformer : Performer {
     init(with dispatcher: Dispatcher) {
         self.dispatcher = dispatcher
     }
+           
+    func dispatch(_ usecase: Domain, with actor: UserActor) {
+        switch usecase {
+        case let .booting(from: initialScene):
+            self.boot(from: initialScene, with: actor)
+            
+        case let .closeDialog(from: initialScene):
+            self.closeDialog(from: initialScene, with: actor)
+        }
+    }
 }
 
 // MARK: - Behaviors
 
 extension ApplicationPerformer {
     
-    func boot(from initialScene: Scene<Usecases.Booting>, with actor: UserActor) {
+    func boot(from initialScene: Scene<Usecases.Application.Booting>, with actor: UserActor) {
         
 //        let apiClient = MockApiClient<Apis.Udid>(
 //            stub: .success(entity: Apis.Udid.Entity(udid: "hoge"))
@@ -70,7 +81,7 @@ extension ApplicationPerformer {
             .store(in: &self.dispatcher.cancellables)
     }
     
-    func closeDialog(from initialScene: Scene<Usecases.CloseDialog>, with actor: UserActor) {
+    func closeDialog(from initialScene: Scene<Usecases.Application.CloseDialog>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor

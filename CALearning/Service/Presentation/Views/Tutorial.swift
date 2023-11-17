@@ -16,7 +16,7 @@ struct Tutorial: View {
             Text("Tutorial!")
             Spacer()
             Button("→ Complete") {
-                self.dispatcher.dispatch(.completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる)))
+                self.dispatcher.dispatch(.signIn(usecase: .completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる))))
             }
             Spacer()
         }

@@ -19,7 +19,7 @@ struct Home: View {
             Text("Actor: \(self.dispatcher.actor.description)")
             Spacer()
             Button("→ Purchase") {
-                self.dispatcher.dispatch(.purchase(from: .basic(scene: .ユーザは購入ボタンを押下する)))
+                self.dispatcher.dispatch(.shopping(usecase: .purchase(from: .basic(scene: .ユーザは購入ボタンを押下する))))
             }
             .disabled(self.shoppingStore.isConfirming)
             Spacer()

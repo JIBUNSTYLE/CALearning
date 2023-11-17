@@ -13,6 +13,7 @@ class ShoppingStore: ObservableObject {
 }
 
 struct ShoppingPerformer: Performer {
+    typealias Domain = Usecases.Shopping
     typealias Store = ShoppingStore
 
     private let dispatcher: Dispatcher
@@ -22,25 +23,32 @@ struct ShoppingPerformer: Performer {
     init(with dispatcher: Dispatcher) {
         self.dispatcher = dispatcher
     }
+    
+    func dispatch(_ usecase: Domain, with actor: UserActor) {
+        switch usecase {
+        case let .purchase(from: initialScene):
+            self.purchase(from: initialScene, with: actor)
+        }
+    }
 }
 
 // MARK: - Behaviors
 
 extension ShoppingPerformer {
     
-    func purchase(from initialScene: Scene<Usecases.Purchase>, with actor: UserActor) {
+    func purchase(from initialScene: Scene<Usecases.Shopping.Purchase>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: { completion in
                     self.dispatcher.commonCompletionProcess(with: completion)
-                    
                     guard case let .failure(error) = completion
-                        , case RobustiveError.Interaction<Usecases.Purchase, UserActor>.notAuthorized = error else { return }
+                            , case RobustiveError.Interaction<Usecases.Shopping.Purchase, UserActor>.notAuthorized = error else { return }
                     // 再開したいユースケースを保存
-                    self.dispatcher.change(actor: actor.update(usecaseToResume: .purchase(from: initialScene)))
+                    self.dispatcher.change(actor: actor.update(usecaseToResume: Usecases.shopping(usecase: .purchase(from: initialScene))))
                     // ログインを促す
                     self.dispatcher.set(isSignInModalPresented: true)
+
                 }
             ) { (goal, scenario) in
                 switch goal {

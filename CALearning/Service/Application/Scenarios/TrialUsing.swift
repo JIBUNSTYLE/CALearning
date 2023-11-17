@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【お試し利用する】を実現します。
-extension Usecases.TrialUsing : Scenario {
+extension Usecases.SignIn.TrialUsing : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {

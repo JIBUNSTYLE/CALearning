@@ -107,35 +107,24 @@ extension Dispatcher {
     }
     
     func dispatch(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+        
         self.usecaseStatus = .executing(usecase: usecase, file: file, line: line, function: function, startAt: Date())
-
+        
         switch usecase {
-        case let .booting(from: initialScene):
-            self.applicationPerformer.boot(from: initialScene, with: self.actor)
-
-        case let .completeTutorial(from: initialScene):
-            self.signInPerformer.completeTutorial(from:initialScene, with: self.actor)
+        case let .application(usecase):
+            self.applicationPerformer.dispatch(usecase, with: self.actor)
             
-        case let .signingIn(from: initialScene):
-            self.signInPerformer.signIn(from: initialScene, with: self.actor)
+        case let .signIn(usecase):
+            self.signInPerformer.dispatch(usecase, with: self.actor)
             
-        case let .stopSigningIn(from: initialScene):
-            self.signInPerformer.stopSigningIn(from: initialScene, with: self.actor)
-            
-        case let .trialUsing(from: initialScene):
-            self.signInPerformer.trial(from: initialScene, with: self.actor)
-            
-        case let .purchase(from: initialScene):
-            self.shoppingPerformer.purchase(from: initialScene, with: self.actor)
-            
-        case let .closeDialog(from: initialScene):
-            self.applicationPerformer.closeDialog(from: initialScene, with: self.actor)
+        case let .shopping(usecase):
+            self.shoppingPerformer.dispatch(usecase, with: self.actor)
         }
     }
     
-    func dispatchMainAsync(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatchMainAsync(_ domain: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         DispatchQueue.main.async {
-            self.dispatch(usecase, file: file, line: line, function: function)
+            self.dispatch(domain, file: file, line: line, function: function)
         }
     }
 }

@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【ログインする】を実現します。
-extension Usecases.SigningIn : Scenario {
+extension Usecases.SignIn.SigningIn : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {

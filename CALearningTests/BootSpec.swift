@@ -19,7 +19,7 @@ class BootSpec: QuickSpec {
         describe("アプリを起動する") {
             context("UDIDがない場合") {
                 beforeEach {
-                    dispatcher.currentView = .splash
+                    dispatcher.routing(to: .splash)
                     Application().discardUdid()
                 }
                 it("アプリはUDIDを取得する") {
@@ -43,18 +43,18 @@ class BootSpec: QuickSpec {
                         let backend = ApiBackend(apiClient: mockApiClient)
                         Dependencies.shared.set(backend: backend)
                         
-                        dispatcher.boot()
+                        dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     }
                 }
             }
             context("チュートリアル完了の記録がある場合") {
                 beforeEach {
-                    dispatcher.currentView = .splash
+                    dispatcher.routing(to: .splash)
                     Application().save(udid: "hogehoge")
                     Application().hasCompletedTutorial = true
                 }
                 it("アプリはログイン画面を表示") {
-                    dispatcher.boot()
+                    dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     
                     expect(dispatcher.currentView)
                         .toEventually(equal(Views.signIn), timeout: .seconds(2))
@@ -63,14 +63,14 @@ class BootSpec: QuickSpec {
             }
             context("チュートリアル完了の記録がない場合") {
                 beforeEach {
-                    presenter.currentView = .splash
+                    dispatcher.routing(to: .splash)
                     Application().save(udid: "hogehoge")
                     Application().hasCompletedTutorial = false
                 }
                 it("アプリはチュートリアル画面を表示") {
-                    presenter.boot()
+                    dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     
-                    expect(presenter.currentView)
+                    expect(dispatcher.currentView)
                         .toEventually(equal(Views.tutorial), timeout: .seconds(2))
                 }
             }

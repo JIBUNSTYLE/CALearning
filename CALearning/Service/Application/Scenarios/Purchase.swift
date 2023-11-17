@@ -10,7 +10,7 @@ import Combine
 import RobustiveSwift
 
 /// ユースケース【購入する】を実現します。
-extension Usecases.Purchase : Scenario {
+extension Usecases.Shopping.Purchase : Scenario {
     
     func next(to currentScene: Scene<Self>, by actor: UsecaseActor) -> AnyPublisher<Scene<Self>, Error> {
         switch currentScene {
