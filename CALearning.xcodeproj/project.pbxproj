@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -52,11 +52,15 @@
 		70A945FD29DD54CA00AFC6B9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FC29DD54CA00AFC6B9 /* Home.swift */; };
 		70A945FF29DE448B00AFC6B9 /* StopSigningIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A945FE29DE448B00AFC6B9 /* StopSigningIn.swift */; };
 		70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A9460029DE557000AFC6B9 /* CloseDialog.swift */; };
-		70BEB7F728C22F05004538EB /* Usecases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Usecases.swift */; };
+		70BEB7F728C22F05004538EB /* Requirements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BEB7F628C22F05004538EB /* Requirements.swift */; };
 		70D4DC5227FDDD5600C02521 /* SignInPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D4DC5127FDDD5600C02521 /* SignInPerformer.swift */; };
 		70F57A7B281A32140036EE53 /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7A281A32140036EE53 /* TermsOfService.swift */; };
 		70F57A7D281A32920036EE53 /* SigningIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7C281A32920036EE53 /* SigningIn.swift */; };
 		70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7E281A5A4A0036EE53 /* Validation.swift */; };
+		70FFAA612EE08127004AA039 /* RobustiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 70FFAA602EE08127004AA039 /* RobustiveSwift */; };
+		70FFAA632EE08740004AA039 /* R+Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA622EE08721004AA039 /* R+Application.swift */; };
+		70FFAA672EE0883F004AA039 /* R+SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA652EE08836004AA039 /* R+SignIn.swift */; };
+		70FFAA6E2EE08889004AA039 /* R+Shopping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA6C2EE08885004AA039 /* R+Shopping.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,18 +122,20 @@
 		70873E9D27E0300B007EE181 /* ArchitecturalProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchitecturalProtocols.swift; sourceTree = "<group>"; };
 		708A75FE27F46A970047016B /* KeyChainDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainDataStore.swift; sourceTree = "<group>"; };
 		708A760227F48E7D0047016B /* GoogleMapApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapApiClient.swift; sourceTree = "<group>"; };
-		708CA92729DAC5C100BCFD49 /* RobustiveSwift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RobustiveSwift; path = ../RobustiveSwift; sourceTree = "<group>"; };
 		70A945F429DD3A1F00AFC6B9 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		70A945F629DD3A9400AFC6B9 /* ShoppingPerformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingPerformer.swift; sourceTree = "<group>"; };
 		70A945F829DD4EB500AFC6B9 /* TrialUsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialUsing.swift; sourceTree = "<group>"; };
 		70A945FC29DD54CA00AFC6B9 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		70A945FE29DE448B00AFC6B9 /* StopSigningIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopSigningIn.swift; sourceTree = "<group>"; };
 		70A9460029DE557000AFC6B9 /* CloseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseDialog.swift; sourceTree = "<group>"; };
-		70BEB7F628C22F05004538EB /* Usecases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Usecases.swift; sourceTree = "<group>"; };
+		70BEB7F628C22F05004538EB /* Requirements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requirements.swift; sourceTree = "<group>"; };
 		70D4DC5127FDDD5600C02521 /* SignInPerformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPerformer.swift; sourceTree = "<group>"; };
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		70F57A7C281A32920036EE53 /* SigningIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningIn.swift; sourceTree = "<group>"; };
 		70F57A7E281A5A4A0036EE53 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		70FFAA622EE08721004AA039 /* R+Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+Application.swift"; sourceTree = "<group>"; };
+		70FFAA652EE08836004AA039 /* R+SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+SignIn.swift"; sourceTree = "<group>"; };
+		70FFAA6C2EE08885004AA039 /* R+Shopping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+Shopping.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +145,7 @@
 			files = (
 				708CA92C29DAC8E000BCFD49 /* RobustiveSwift in Frameworks */,
 				7077C9A527A8F36C0035E404 /* Alamofire in Frameworks */,
+				70FFAA612EE08127004AA039 /* RobustiveSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,7 +178,7 @@
 			path = Interfaces;
 			sourceTree = "<group>";
 		};
-		7077C99C27A0D58D0035E404 /* Infrastructure */ = {
+		7077C99C27A0D58D0035E404 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
 				7077C9BB27AB5C540035E404 /* Apis.swift */,
@@ -180,7 +187,7 @@
 				708A75FE27F46A970047016B /* KeyChainDataStore.swift */,
 				707E2BAC2AC2C06C0011AC87 /* CLLocationManagerWrapper.swift */,
 			);
-			path = Infrastructure;
+			path = Dependencies;
 			sourceTree = "<group>";
 		};
 		7077C9B027A8FDB50035E404 /* Implementations */ = {
@@ -195,7 +202,6 @@
 		707CA949279F833700EAFC66 = {
 			isa = PBXGroup;
 			children = (
-				708CA92729DAC5C100BCFD49 /* RobustiveSwift */,
 				707CA97F279F83B600EAFC66 /* README.md */,
 				707CA954279F833700EAFC66 /* CALearning */,
 				707CA965279F833900EAFC66 /* CALearningTests */,
@@ -258,9 +264,9 @@
 		707CA980279F8B6300EAFC66 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				7077C99C27A0D58D0035E404 /* Infrastructure */,
+				7077C99C27A0D58D0035E404 /* Dependencies */,
 				707CA992279FA87800EAFC66 /* Domain */,
-				707CA98B279F8F6A00EAFC66 /* Application */,
+				707CA98B279F8F6A00EAFC66 /* Implementation */,
 				707CA981279F8B6A00EAFC66 /* Presentation */,
 				7077C9AC27A8F9BD0035E404 /* ServiceErrors.swift */,
 			);
@@ -287,16 +293,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		707CA98B279F8F6A00EAFC66 /* Application */ = {
+		707CA98B279F8F6A00EAFC66 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
 				707CA996279FD1BA00EAFC66 /* Dispatcher.swift */,
 				708415C2283524BB00BAED01 /* UserActor.swift */,
-				70BEB7F628C22F05004538EB /* Usecases.swift */,
 				708A75FB27E0C4D30047016B /* Scenarios */,
 				70D4DC5027FDDBF200C02521 /* Performers */,
 			);
-			path = Application;
+			path = Implementation;
 			sourceTree = "<group>";
 		};
 		707CA98E279F932100EAFC66 /* System */ = {
@@ -323,20 +328,22 @@
 		707CA992279FA87800EAFC66 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				707CA993279FA88A00EAFC66 /* Entities */,
+				707CA993279FA88A00EAFC66 /* Models */,
+				70FFAA6F2EE0898B004AA039 /* Usecases */,
 				708D97502A0C822B001A874E /* Services */,
 				7077C99927A0D4390035E404 /* Interfaces */,
+				70BEB7F628C22F05004538EB /* Requirements.swift */,
 				7077C9A127A0D8BD0035E404 /* Dependencies.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
 		};
-		707CA993279FA88A00EAFC66 /* Entities */ = {
+		707CA993279FA88A00EAFC66 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				70873E9927E02F7D007EE181 /* Account.swift */,
 			);
-			path = Entities;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		708A75FB27E0C4D30047016B /* Scenarios */ = {
@@ -380,6 +387,16 @@
 			path = Performers;
 			sourceTree = "<group>";
 		};
+		70FFAA6F2EE0898B004AA039 /* Usecases */ = {
+			isa = PBXGroup;
+			children = (
+				70FFAA622EE08721004AA039 /* R+Application.swift */,
+				70FFAA6C2EE08885004AA039 /* R+Shopping.swift */,
+				70FFAA652EE08836004AA039 /* R+SignIn.swift */,
+			);
+			path = Usecases;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -399,6 +416,7 @@
 			packageProductDependencies = (
 				7077C9A427A8F36C0035E404 /* Alamofire */,
 				708CA92B29DAC8E000BCFD49 /* RobustiveSwift */,
+				70FFAA602EE08127004AA039 /* RobustiveSwift */,
 			);
 			productName = CALearning;
 			productReference = 707CA952279F833700EAFC66 /* CALearning.app */;
@@ -480,6 +498,7 @@
 				7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */,
 				7077C99427A007EB0035E404 /* XCRemoteSwiftPackageReference "Nimble" */,
 				7077C9A327A8F36C0035E404 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				70FFAA5F2EE08127004AA039 /* XCLocalSwiftPackageReference "../RobustiveSwift" */,
 			);
 			productRefGroup = 707CA953279F833700EAFC66 /* Products */;
 			projectDirPath = "";
@@ -535,9 +554,11 @@
 				70A945F729DD3A9400AFC6B9 /* ShoppingPerformer.swift in Sources */,
 				70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
+				70FFAA6E2EE08889004AA039 /* R+Shopping.swift in Sources */,
 				70873E9A27E02F7D007EE181 /* Account.swift in Sources */,
 				70A945F529DD3A1F00AFC6B9 /* Purchase.swift in Sources */,
 				7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */,
+				70FFAA672EE0883F004AA039 /* R+SignIn.swift in Sources */,
 				7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */,
 				708415C3283524BB00BAED01 /* UserActor.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
@@ -552,11 +573,12 @@
 				707CA98A279F8C5600EAFC66 /* SignIn.swift in Sources */,
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */,
+				70FFAA632EE08740004AA039 /* R+Application.swift in Sources */,
 				70F57A7D281A32920036EE53 /* SigningIn.swift in Sources */,
 				708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */,
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,
 				7077C9B427A8FF760035E404 /* AlamofireApiClient.swift in Sources */,
-				70BEB7F728C22F05004538EB /* Usecases.swift in Sources */,
+				70BEB7F728C22F05004538EB /* Requirements.swift in Sources */,
 				7077F51229C7F5E6006233CB /* ApplicationPerformer.swift in Sources */,
 				70167B6228196EA400C40F0E /* CompleteTutorial.swift in Sources */,
 				707CA986279F8C1500EAFC66 /* Splash.swift in Sources */,
@@ -724,7 +746,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CALearning/Preview Content\"";
-				DEVELOPMENT_TEAM = X6UZ6GLW57;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CALearning/Info.plist;
@@ -756,7 +778,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CALearning/Preview Content\"";
-				DEVELOPMENT_TEAM = X6UZ6GLW57;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CALearning/Info.plist;
@@ -897,6 +919,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		70FFAA5F2EE08127004AA039 /* XCLocalSwiftPackageReference "../RobustiveSwift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../RobustiveSwift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		7077C99127A007D70035E404 /* XCRemoteSwiftPackageReference "Quick" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -941,6 +970,10 @@
 			productName = Alamofire;
 		};
 		708CA92B29DAC8E000BCFD49 /* RobustiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RobustiveSwift;
+		};
+		70FFAA602EE08127004AA039 /* RobustiveSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RobustiveSwift;
 		};

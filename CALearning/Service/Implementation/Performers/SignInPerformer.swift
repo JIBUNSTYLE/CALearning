@@ -13,7 +13,7 @@ class SignInStore : ObservableObject {
 }
 
 struct SignInPerformer: Performer {
-    typealias Usecases = U.SignIn
+    typealias Usecases = R.SignIn
     typealias Store = SignInStore
     
     private let dispatcher: Dispatcher

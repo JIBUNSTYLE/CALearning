@@ -70,6 +70,12 @@ class Dispatcher : ObservableObject {
     var shoppingStore: ShoppingStore {
         self.shoppingPerformer.store
     }
+    
+    private var performers: [any Performer] = []
+    
+    func add<T>(performer: T) where T : Performer {
+        self.performers.append(performer)
+    }
 }
 
 // MARK: - setter
@@ -106,7 +112,7 @@ extension Dispatcher {
         self.resetUsecaseState()
     }
     
-    func dispatch(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatch(_ usecase: Requirements, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         
         self.usecaseStatus = .executing(usecase: usecase, file: file, line: line, function: function, startAt: Date())
         
@@ -122,7 +128,7 @@ extension Dispatcher {
         }
     }
     
-    func dispatchMainAsync(_ usecase: Usecases, file: String = #file, line: Int = #line, function: String = #function) -> Void {
+    func dispatchMainAsync(_ usecase: Requirements, file: String = #file, line: Int = #line, function: String = #function) -> Void {
         DispatchQueue.main.async {
             self.dispatch(usecase, file: file, line: line, function: function)
         }

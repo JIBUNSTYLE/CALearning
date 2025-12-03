@@ -11,7 +11,7 @@ import RobustiveSwift
 class ApplicationStore : ObservableObject {}
 
 struct ApplicationPerformer : Performer {
-    typealias Usecases = U.Application
+    typealias Usecases = R.Application
     typealias Store = ApplicationStore
     
     private let dispatcher: Dispatcher
