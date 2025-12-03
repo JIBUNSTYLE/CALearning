@@ -57,6 +57,3 @@ enum Requirements {
 }
 
 typealias R = Requirements
-
-
-
