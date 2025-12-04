@@ -10,7 +10,7 @@ import RobustiveSwift
 
 extension R {
     
-    enum Application {        
+    enum Application {
         case booting(from: Scene<Booting>)
         case closeDialog(from: Scene<CloseDialog>)
     }

@@ -1,5 +1,5 @@
 //
-//  Dispatcher.swift
+//  FrontendService.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/01/25.
@@ -14,7 +14,7 @@ struct AlertContent {
     let message: String
 }
 
-class Dispatcher : ObservableObject {
+class FrontendService : ObservableObject {
     // ViewからはReadonlyとして扱う
     @Published private(set) var currentView: Views = .splash
     @Published private(set) var isAlertPresented = false
@@ -29,57 +29,57 @@ class Dispatcher : ObservableObject {
     
     var cancellables = [AnyCancellable]()
     
-    private var _application: ApplicationPerformer?
-    private var _signIn: SignInPerformer?
-    private var _shopping: ShoppingPerformer?
+    private var _application: ApplicationStore?
+    private var _signIn: SignInStore?
+    private var _shopping: ShoppingStore?
 
-    private var applicationPerformer: ApplicationPerformer {
-        if let performer = self._application {
-            return performer
+    private var applicationStore: ApplicationStore {
+        if let store = self._application {
+            return store
         } else {
-            let performer = ApplicationPerformer(with: self)
-            self._application = performer
-            return performer
+            let store = ApplicationStore(with: self)
+            self._application = store
+            return store
         }
     }
     
-    private var signInPerformer: SignInPerformer {
-        if let performer = self._signIn {
-            return performer
+    private var signInStore: SignInStore {
+        if let store = self._signIn {
+            return store
         } else {
-            let performer = SignInPerformer(with: self)
-            self._signIn = performer
-            return performer
+            let store = SignInStore(with: self)
+            self._signIn = store
+            return store
         }
     }
     
-    private var shoppingPerformer: ShoppingPerformer {
-        if let performer = self._shopping {
-            return performer
+    private var shoppingStore: ShoppingStore {
+        if let store = self._shopping {
+            return store
         } else {
-            let performer = ShoppingPerformer(with: self)
-            self._shopping = performer
-            return performer
+            let store = ShoppingStore(with: self)
+            self._shopping = store
+            return store
         }
     }
     
-    var signInStore: SignInStore {
-        self.signInPerformer.store
+    var signInState: SignInState {
+        self.signInStore.state
     }
     
-    var shoppingStore: ShoppingStore {
-        self.shoppingPerformer.store
+    var shoppingState: ShoppingState {
+        self.shoppingStore.state
     }
     
-    private var performers: [any Performer] = []
+    private var stores: [any Store] = []
     
-    func add<T>(performer: T) where T : Performer {
-        self.performers.append(performer)
+    func add<T>(store: T) where T : Store {
+        self.stores.append(store)
     }
 }
 
 // MARK: - setter
-extension Dispatcher {
+extension FrontendService {
     
     func routing(to view: Views) {
         DispatchQueue.main.async {
@@ -105,8 +105,8 @@ extension Dispatcher {
     }
 }
     
-// MARK: - usecase dispatcher
-extension Dispatcher {
+// MARK: - usecase FrontendService
+extension FrontendService {
     
     func commonCompletionProcess<T>(with completion: Subscribers.Completion<T>, for behavior: String? = #function) {
         self.resetUsecaseState()
@@ -118,13 +118,13 @@ extension Dispatcher {
         
         switch usecase {
         case let .application(usecase):
-            self.applicationPerformer.dispatch(usecase, with: self.actor)
+            self.applicationStore.dispatch(usecase, with: self.actor)
             
         case let .signIn(usecase):
-            self.signInPerformer.dispatch(usecase, with: self.actor)
+            self.signInStore.dispatch(usecase, with: self.actor)
             
         case let .shopping(usecase):
-            self.shoppingPerformer.dispatch(usecase, with: self.actor)
+            self.shoppingStore.dispatch(usecase, with: self.actor)
         }
     }
     

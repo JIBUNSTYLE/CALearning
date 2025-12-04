@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Tutorial: View {
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
     
     var body: some View {
         VStack {
@@ -16,7 +16,7 @@ struct Tutorial: View {
             Text("Tutorial!")
             Spacer()
             Button("→ Complete") {
-                self.dispatcher.dispatch(.signIn(usecase: .completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる))))
+                self.service.dispatch(.signIn(usecase: .completeTutorial(from:.basic(scene: .ユーザはチュートリアルを閉じる))))
             }
             Spacer()
         }
@@ -26,6 +26,6 @@ struct Tutorial: View {
 struct Tutorial_Previews: PreviewProvider {
     static var previews: some View {
         Tutorial()
-            .environmentObject(Dispatcher())
+            .environmentObject(FrontendService())
     }
 }

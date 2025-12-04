@@ -1,5 +1,5 @@
 //
-//  +CompleteTutprial.swift
+//  +CompleteTutorial.swift
 //  CALearning
 //
 //  Created by 斉藤  祐輔 on 2025/12/04.

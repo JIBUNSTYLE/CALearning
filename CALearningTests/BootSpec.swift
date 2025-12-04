@@ -14,12 +14,12 @@ import Nimble
 class BootSpec: QuickSpec {
 
     override func spec() {
-        let dispatcher = Dispatcher()
+        let service = FrontendService()
         
         describe("アプリを起動する") {
             context("UDIDがない場合") {
                 beforeEach {
-                    dispatcher.routing(to: .splash)
+                    service.routing(to: .splash)
                     Application().discardUdid()
                 }
                 it("アプリはUDIDを取得する") {
@@ -43,34 +43,34 @@ class BootSpec: QuickSpec {
                         let backend = ApiBackend(apiClient: mockApiClient)
                         Dependencies.shared.set(backend: backend)
                         
-                        dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
+                        service.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     }
                 }
             }
             context("チュートリアル完了の記録がある場合") {
                 beforeEach {
-                    dispatcher.routing(to: .splash)
+                    service.routing(to: .splash)
                     Application().save(udid: "hogehoge")
                     Application().hasCompletedTutorial = true
                 }
                 it("アプリはログイン画面を表示") {
-                    dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
+                    service.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     
-                    expect(dispatcher.currentView)
+                    expect(service.currentView)
                         .toEventually(equal(Views.signIn), timeout: .seconds(2))
                         
                 }
             }
             context("チュートリアル完了の記録がない場合") {
                 beforeEach {
-                    dispatcher.routing(to: .splash)
+                    service.routing(to: .splash)
                     Application().save(udid: "hogehoge")
                     Application().hasCompletedTutorial = false
                 }
                 it("アプリはチュートリアル画面を表示") {
-                    dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
+                    service.dispatch(.application(usecase: .booting(from: .basic(scene: .ユーザはアプリを起動する))))
                     
-                    expect(dispatcher.currentView)
+                    expect(service.currentView)
                         .toEventually(equal(Views.tutorial), timeout: .seconds(2))
                 }
             }

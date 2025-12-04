@@ -9,12 +9,12 @@ import SwiftUI
 
 struct Splash: View {
     
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
     
     var body: some View {
         Text("Slash")
             .onAppear {
-                self.dispatcher.dispatch(.application(usecase: .booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))))
+                self.service.dispatch(.application(usecase: .booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))))
             }
     }
 }
@@ -22,6 +22,6 @@ struct Splash: View {
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Splash()
-            .environmentObject(Dispatcher())
+            .environmentObject(FrontendService())
     }
 }

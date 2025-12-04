@@ -1,5 +1,5 @@
 //
-//  SignInPerformer.swift
+//  SignInStore.swift
 //  CALearning
 //
 //  Created by 斉藤 祐輔 on 2022/04/06.
@@ -8,20 +8,20 @@
 import Foundation
 import RobustiveSwift
 
-class SignInStore : ObservableObject {
+class SignInState : ObservableObject {
     @Published fileprivate(set) var signInValidationResult: SignInValidationResult?
 }
 
-struct SignInPerformer: Performer {
+struct SignInStore: Store {
     typealias Usecases = R.SignIn
-    typealias Store = SignInStore
+    typealias State = SignInState
     
-    private let dispatcher: Dispatcher
+    private let service: FrontendService
     
-    let store = Store()
+    let state = State()
     
-    init(with dispatcher: Dispatcher) {
-        self.dispatcher = dispatcher
+    init(with service: FrontendService) {
+        self.service = service
     }
     
     func dispatch(_ usecase: Usecases, with actor: UserActor) {
@@ -43,41 +43,41 @@ struct SignInPerformer: Performer {
 
 // MARK: - Behaviors
 
-extension SignInPerformer {
+extension SignInStore {
     
     func signIn(from initialScene: Scene<Usecases.SigningIn>, with actor: UserActor) {
         initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, _) in
                 switch goal {
                 case let .ログイン認証に失敗した場合_アプリはログイン画面にエラー内容を表示する(error):
-                    self.dispatcher.set(isAlertPresented: true)
+                    self.service.set(isAlertPresented: true)
 
                 case let .ログイン認証に成功した場合_アプリはホーム画面を表示する(user):
                     let usecaseToResume = actor.usecaseToResume
-                    self.dispatcher.change(actor: actor.update(user: user))
-                    self.dispatcher.routing(to: .home)
-                    self.dispatcher.set(isSignInModalPresented: false)
+                    self.service.change(actor: actor.update(user: user))
+                    self.service.routing(to: .home)
+                    self.service.set(isSignInModalPresented: false)
                     
                     guard let usecase = usecaseToResume else { return }
                     // receiveValueのクロージャが終わってからreceiveCompletionが呼ばれるため
                     // ここでdispatchするとreceiveCompletionでresetUsecaseStateが走り、
                     // resumeしたユースケースの実行時間が測れないためmainスレッドから実行している
-                    self.dispatcher.dispatchMainAsync(usecase)
+                    self.service.dispatchMainAsync(usecase)
 
                 case let .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result):
-                    self.store.signInValidationResult = result
-                    self.dispatcher.set(isAlertPresented: true)
+                    self.state.signInValidationResult = result
+                    self.service.set(isAlertPresented: true)
                     
                 case .予期せぬエラーが発生した場合_アプリはログイン画面にエラー内容を表示する(error: let error):
                     print(error)
                 }
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
     
     func stopSigningIn(from initialScene: Scene<Usecases.StopSigningIn>, with actor: UserActor) {
@@ -85,31 +85,31 @@ extension SignInPerformer {
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, _) in
                 if case .アプリはログインモーダルを閉じる = goal {
-                    self.store.signInValidationResult = nil
-                    self.dispatcher.set(isSignInModalPresented: false)
+                    self.state.signInValidationResult = nil
+                    self.service.set(isSignInModalPresented: false)
                 }
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
  
     func trial(from initialScene: Scene<Usecases.TrialUsing>, with actor: UserActor) {
-        self.store.signInValidationResult = nil
+        self.state.signInValidationResult = nil
         initialScene
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, _) in
                 if case .アプリはホーム画面を表示する = goal {
-                    self.dispatcher.routing(to: .home)
+                    self.service.routing(to: .home)
                 }
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
     
     func completeTutorial(from initialScene: Scene<Usecases.CompleteTutorial>, with actor: UserActor) {
@@ -117,14 +117,14 @@ extension SignInPerformer {
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, _) in
                 if case .アプリはログイン画面を表示する = goal {
-                    self.dispatcher.routing(to: .signIn)
+                    self.service.routing(to: .signIn)
                 }
                 
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
 }

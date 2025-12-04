@@ -26,13 +26,10 @@ extension R.SignIn.CompleteTutorial : Scenario {
     }
     
     private func save() -> AnyPublisher<Scene<Self>, Error> {
-        return Deferred {
-            Future<Scene<Self>, Error> { promise in
-                Application().hasCompletedTutorial = true
-                promise(.success(.last(scene: .アプリはログイン画面を表示する)))
-            }
+        return DeferredFuture { promise in
+            Application().hasCompletedTutorial = true
+            promise(.success(.last(scene: .アプリはログイン画面を表示する)))
         }
-        .eraseToAnyPublisher()
     }
     
 }

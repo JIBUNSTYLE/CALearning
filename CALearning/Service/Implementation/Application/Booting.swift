@@ -32,35 +32,24 @@ extension R.Application.Booting : Scenario {
     }
     
     private func checkUdid() -> AnyPublisher<Scene<Self>, Error> {
-        return Deferred {
-            Future<Scene<Self>, Error> { promise in
-                guard let udid = Application().udid else {
-                    return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
-                }
-                promise(.success(.basic(scene: .UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
+        return DeferredFuture { promise in
+            guard let udid = Application().udid else {
+                return promise(.success(.alternate(scene: .UDIDがない場合_アプリはUDIDを取得する)))
             }
+            promise(.success(.basic(scene: .UDIDがある場合_アプリはユーザがチュートリアルを完了した記録がないかを調べる(udid: udid))))
         }
-        .eraseToAnyPublisher()
     }
     
     private func detect(udid: String) -> AnyPublisher<Scene<Self>, Error> {
-        // Deferredでsubscribesされてから実行されるようになる
-        // Futureは一度だけ結果を返す
-        return Deferred {
-            Future<Scene<Self>, Error> { promise in
-                // Futureが非同期になる場合、sinkする側ではcancellableをstoreしておかないと、
-                // 非同期処理が終わる前にsubsciptionはキャンセルされてしまうので注意
-                // @see: https://forums.swift.org/t/combine-future-broken/28560/2
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                    if Application().hasCompletedTutorial {
-                        promise(.success(.last(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid: udid))))
-                    } else {
-                        promise(.success(.last(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid: udid))))
-                    }
+        return DeferredFuture { promise in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                if Application().hasCompletedTutorial {
+                    promise(.success(.last(scene: .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid: udid))))
+                } else {
+                    promise(.success(.last(scene: .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid: udid))))
                 }
             }
         }
-        .eraseToAnyPublisher()
     }
     
     private func publishUdid() -> AnyPublisher<Scene<Self>, Error> {

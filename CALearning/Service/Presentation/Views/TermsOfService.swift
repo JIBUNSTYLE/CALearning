@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TermsOfService: View {
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
     
     var body: some View {
         VStack {

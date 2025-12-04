@@ -33,56 +33,51 @@ class AlamofireApiClient: ApiClient {
     }
     
     func call<T>(api: T) -> AnyPublisher<T.Entity, ErrorWrapper> where T: Api {
+        return DeferredFuture { promise in
+            guard case .reachable(_) = self.reachablityStatus else {
+                return promise(.failure(
+                    ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api.description(), causedBy: nil)
+                ))
+            }
+            
+            print(">>>>> API Request: \(api.url) with \(api.params)")
+            
+            AF.request(
+                api.url
+                , method: api.method
+                , parameters: api.params
+                , encoding: api.encoding
+                , headers: api.headers
+            )
+                .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
+                .responseDecodable(of: T.Entity.self, decoder: api.decoder) { response in
+                    
+                    switch response.result {
+                    case .success(let entity):
+                        promise(.success(entity))
 
-        return Deferred {
-            Future<T.Entity, ErrorWrapper> { promise in
-                
-                guard case .reachable(_) = self.reachablityStatus else {
-                    return promise(.failure(
-                        ErrorWrapper.service(error: ServiceErrors.client(.ネットワーク接続不可), args: api.description(), causedBy: nil)
-                    ))
-                }
-                
-                print(">>>>> API Request: \(api.url) with \(api.params)")
-                
-                AF.request(
-                    api.url
-                    , method: api.method
-                    , parameters: api.params
-                    , encoding: api.encoding
-                    , headers: api.headers
-                )
-                    .validate(statusCode: 200..<300) // 正常系のレスポンスかどうかチェック
-                    .responseDecodable(of: T.Entity.self, decoder: api.decoder) { response in
-                        
-                        switch response.result {
-                        case .success(let entity):
-                            promise(.success(entity))
+                    case .failure(let error):
 
-                        case .failure(let error):
-
-                            if case 400 = response.response?.statusCode
-                                , let data = response.data
-                            {
-                                do {
-                                    let errorResponse = try api.deserializeErrorResponse(data)
-                                    return promise(.failure(
-                                        ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api.description(), causedBy: error)
-                                    ))
-                                } catch let error {
-                                    return promise(.failure(
-                                        ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api.description(), causedBy: error)
-                                    ))
-                                }
+                        if case 400 = response.response?.statusCode
+                            , let data = response.data
+                        {
+                            do {
+                                let errorResponse = try api.deserializeErrorResponse(data)
+                                return promise(.failure(
+                                    ErrorWrapper.service(error: ServiceErrors.server(errorResponse), args: api.description(), causedBy: error)
+                                ))
+                            } catch let error {
+                                return promise(.failure(
+                                    ErrorWrapper.system(error: SystemErrors.api(.エラーレスポンスのデシリアライズに失敗(responseJson: String(data: data, encoding: .utf8) ?? "※ 文字列への変換もできませんでした")), args: api.description(), causedBy: error)
+                                ))
                             }
-                            
-                            promise(.failure(
-                                ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api.description(), causedBy: error)
-                            ))
                         }
-                }
+                        
+                        promise(.failure(
+                            ErrorWrapper.system(error: SystemErrors.api(.HTTPクライアントエラー(statusCode: response.response?.statusCode)), args: api.description(), causedBy: error)
+                        ))
+                    }
             }
         }
-        .eraseToAnyPublisher()
     }
 }

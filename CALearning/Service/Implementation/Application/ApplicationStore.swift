@@ -1,5 +1,5 @@
 //
-//  ApplicationPerformer.swift
+//  ApplicationStore.swift
 //  CALearning
 //
 //  Created by 斉藤  祐輔 on 2023/03/20.
@@ -8,20 +8,20 @@
 import Foundation
 import RobustiveSwift
 
-class ApplicationStore : ObservableObject {}
+class ApplicationState : ObservableObject {}
 
-struct ApplicationPerformer : Performer {
+struct ApplicationStore : Store {
     typealias Usecases = R.Application
-    typealias Store = ApplicationStore
+    typealias State = ApplicationState
     
-    private let dispatcher: Dispatcher
+    private let service: FrontendService
     
-    let store = Store()
+    let state = State()
     
-    init(with dispatcher: Dispatcher) {
-        self.dispatcher = dispatcher
+    init(with service: FrontendService) {
+        self.service = service
     }
-           
+               
     func dispatch(_ usecase: Usecases, with actor: UserActor) {
         switch usecase {
         case let .booting(from: initialScene):
@@ -35,7 +35,7 @@ struct ApplicationPerformer : Performer {
 
 // MARK: - Behaviors
 
-extension ApplicationPerformer {
+extension ApplicationStore {
     
     func boot(from initialScene: Scene<Usecases.Booting>, with actor: UserActor) {
         
@@ -59,26 +59,26 @@ extension ApplicationPerformer {
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, scenario) in
                 switch goal {
                 case let .チュートリアル完了の記録がある場合_アプリはログイン画面を表示(udid):
-                    self.dispatcher.change(actor: actor.update(udid: udid))
-                    self.dispatcher.routing(to: .signIn)
+                    self.service.change(actor: actor.update(udid: udid))
+                    self.service.routing(to: .signIn)
 
                 case let .チュートリアル完了の記録がない場合_アプリはチュートリアル画面を表示(udid):
-                    self.dispatcher.change(actor: actor.update(udid: udid))
-                    self.dispatcher.routing(to: .tutorial)
+                    self.service.change(actor: actor.update(udid: udid))
+                    self.service.routing(to: .tutorial)
 
                 case let .UDIDの発行に失敗した場合_アプリはリトライダイアログを表示する(error):
-                    self.dispatcher.alertContent = AlertContent(title: "システムエラー", message: "UDIDの発行に失敗しました")
+                    self.service.alertContent = AlertContent(title: "システムエラー", message: "UDIDの発行に失敗しました")
                     // TODO: リトライ
                     // TODO: システムエラーと文言をenum化
-                    self.dispatcher.set(isAlertPresented: true)
+                    self.service.set(isAlertPresented: true)
                 }
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
     
     func closeDialog(from initialScene: Scene<Usecases.CloseDialog>, with actor: UserActor) {
@@ -86,13 +86,13 @@ extension ApplicationPerformer {
             .interacted(
                 by: actor
                 , receiveCompletion: {
-                    self.dispatcher.commonCompletionProcess(with: $0)
+                    self.service.commonCompletionProcess(with: $0)
                 }
             ) { (goal, _) in
                 if case .アプリはダイアログを閉じる = goal {
-                    self.dispatcher.set(isAlertPresented: false)
+                    self.service.set(isAlertPresented: false)
                 }
             }
-            .store(in: &self.dispatcher.cancellables)
+            .store(in: &self.service.cancellables)
     }
 }

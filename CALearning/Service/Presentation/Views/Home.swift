@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct Home: View {
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
     
-    @StateObject var shoppingStore: ShoppingStore
+    @StateObject var shoppingStore: ShoppingState
     
     
     var body: some View {
         VStack {
             Spacer()
-            Text("Actor: \(self.dispatcher.actor.description)")
+            Text("Actor: \(self.service.actor.description)")
             Spacer()
             Button("→ Purchase") {
-                self.dispatcher.dispatch(.shopping(usecase: .purchase(from: .basic(scene: .ユーザは購入ボタンを押下する))))
+                self.service.dispatch(.shopping(usecase: .purchase(from: .basic(scene: .ユーザは購入ボタンを押下する))))
             }
             .disabled(self.shoppingStore.isConfirming)
             Spacer()
@@ -29,8 +29,8 @@ struct Home: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        let dispatcher = Dispatcher()
-        Home(shoppingStore: dispatcher.shoppingStore)
-            .environmentObject(dispatcher)
+        let service = FrontendService()
+        Home(shoppingStore: service.shoppingState)
+            .environmentObject(service)
     }
 }

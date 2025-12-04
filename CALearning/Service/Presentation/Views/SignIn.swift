@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SignIn: View {
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
     
-    @StateObject var signInStore: SignInStore
+    @StateObject var signInStore: SignInState
     
     @State var id: String = ""
     @State var password: String = ""
@@ -34,9 +34,9 @@ struct SignIn: View {
                             TextField("Input your password", text: $password)
                         }
                         Button("→ SignIn") {
-                            self.dispatcher.dispatch(.signIn(usecase: .signingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id.isEmpty ? nil : self.id , password: self.password.isEmpty ? nil : self.password)))))
+                            self.service.dispatch(.signIn(usecase: .signingIn(from: .basic(scene: .ユーザはログインボタンを押下する(id: self.id.isEmpty ? nil : self.id , password: self.password.isEmpty ? nil : self.password)))))
                         }
-                        .disabled(self.dispatcher.usecaseStatus.isExecuting)
+                        .disabled(self.service.usecaseStatus.isExecuting)
                         if let result = self.signInStore.signInValidationResult
                             , case let .failed(idValidationResult, passwordValidationResult) = result {
                             switch idValidationResult {
@@ -60,11 +60,11 @@ struct SignIn: View {
                         } else {
                             Text("")
                         }
-                        if !self.dispatcher.isSignInModalPresented {
+                        if !self.service.isSignInModalPresented {
                             Spacer()
                             HStack {
                                 Button("→ ログインしないで使う") {
-                                    self.dispatcher.dispatch(.signIn(usecase: .trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する))))
+                                    self.service.dispatch(.signIn(usecase: .trialUsing(from: .basic(scene: .ユーザはログインしないで使うボタンを押下する))))
                                 }
                                 Spacer()
                                 Button("→ Terms of Service") {
@@ -93,8 +93,8 @@ struct SignIn: View {
 
 struct SignIn_Previews: PreviewProvider {
     static var previews: some View {
-        let dispatcher = Dispatcher()
-        SignIn(signInStore: dispatcher.signInStore)
-            .environmentObject(dispatcher)
+        let service = FrontendService()
+        SignIn(signInStore: service.signInState)
+            .environmentObject(service)
     }
 }

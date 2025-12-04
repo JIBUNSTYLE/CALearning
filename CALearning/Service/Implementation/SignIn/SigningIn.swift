@@ -30,18 +30,15 @@ extension R.SignIn.SigningIn : Scenario {
     }
     
     private func validate(_ id: String?, _ password: String?) -> AnyPublisher<Scene<Self>, Error> {
-        return Deferred {
-            Future<Scene<Self>, Error> { promise in
-                let result = AccountModel().validate(id, password)
-                switch result {
-                case let .success(id, password):
-                    return promise(.success(.basic(scene: .入力が正しい場合_アプリはログインを試行する(id: id, password: password))))
-                case .failed:
-                    return promise(.success(.last(scene: .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result: result))))
-                }
+        return DeferredFuture { promise in
+            let result = AccountModel().validate(id, password)
+            switch result {
+            case let .success(id, password):
+                return promise(.success(.basic(scene: .入力が正しい場合_アプリはログインを試行する(id: id, password: password))))
+            case .failed:
+                return promise(.success(.last(scene: .入力が正しくない場合_アプリはログイン画面にエラー内容を表示する(result: result))))
             }
         }
-        .eraseToAnyPublisher()
     }
     
     private func signIn(_ id: String, _ password: String) -> AnyPublisher<Scene<Self>, Error> {

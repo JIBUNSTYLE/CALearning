@@ -12,18 +12,18 @@ enum Views {
 }
 
 struct ContentView: View {
-    @EnvironmentObject var dispatcher: Dispatcher
+    @EnvironmentObject var service: FrontendService
 
     var body: some View {
-        switch self.dispatcher.currentView {
+        switch self.service.currentView {
         case .splash:
             Splash()
         case .tutorial:
             Tutorial()
         case .signIn:
-            SignIn(signInStore: self.dispatcher.signInStore)
+            SignIn(signInStore: self.service.signInState)
         case .home:
-            Home(shoppingStore: self.dispatcher.shoppingStore)
+            Home(shoppingStore: self.service.shoppingState)
         }
     }
 }
@@ -31,6 +31,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(Dispatcher())
+            .environmentObject(FrontendService())
     }
 }

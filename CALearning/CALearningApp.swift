@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct CALearningApp: App {
-    @StateObject var dispatcher = Dispatcher()
+    @StateObject var service = FrontendService()
     
     init() {
         @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
@@ -17,18 +17,18 @@ struct CALearningApp: App {
     
     private var isAlertPresented: Binding<Bool> {
         Binding {
-            self.dispatcher.isAlertPresented
+            self.service.isAlertPresented
         } set: { _ in }
     }
     
     private var isSignInModalPresented: Binding<Bool> {
         Binding( get: {
-            self.dispatcher.isSignInModalPresented
+            self.service.isSignInModalPresented
         }, set: { newValue in
             guard newValue == false else { return }
-            if self.dispatcher.isSignInModalPresented {
+            if self.service.isSignInModalPresented {
                 print("スワイプで閉じる")
-                self.dispatcher.dispatch(.signIn(usecase: .stopSigningIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する))))
+                self.service.dispatch(.signIn(usecase: .stopSigningIn(from: .basic(scene: .ユーザはキャンセルボタンを押下する))))
             } else {
                 print("ユースケース完了で閉じる")
             }
@@ -38,33 +38,33 @@ struct CALearningApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(dispatcher)
+                .environmentObject(service)
                 .alert(
-                    self.dispatcher.alertContent.title
+                    self.service.alertContent.title
                     , isPresented: self.isAlertPresented
                     , actions: {
                         Button("OK") {
-                            self.dispatcher.dispatch(.application(usecase: .closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する))))
+                            self.service.dispatch(.application(usecase: .closeDialog(from: .basic(scene: .ユーザはOKボタンを押下する))))
                         }
                     }
                     , message: {
-                        Text(self.dispatcher.alertContent.message)
+                        Text(self.service.alertContent.message)
                     }
                 )
                 .sheet(isPresented: self.isSignInModalPresented) {
-                    SignIn(signInStore: self.dispatcher.signInStore)
+                    SignIn(signInStore: self.service.signInState)
                         .alert(
-                            self.dispatcher.alertContent.title
+                            self.service.alertContent.title
                             , isPresented: self.isAlertPresented
                             , actions: {
                                 Button("OK") {
                                 }
                             }
                             , message: {
-                                Text(self.dispatcher.alertContent.message)
+                                Text(self.service.alertContent.message)
                             }
                         )
-                        .environmentObject(dispatcher)
+                        .environmentObject(service)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
                     print("★★ applicationDidBecomeActive")
