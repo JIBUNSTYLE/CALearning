@@ -12,7 +12,7 @@ struct Splash: View {
     @EnvironmentObject var service: FrontendService
     
     var body: some View {
-        Text("Slash")
+        Text("Splash")
             .onAppear {
                 self.service.dispatch(.application(usecase: .booting(from: .basic(scene: .アプリはサーバで発行したUDIDが保存されていないかを調べる))))
             }
