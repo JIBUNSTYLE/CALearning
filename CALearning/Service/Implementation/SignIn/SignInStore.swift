@@ -41,7 +41,7 @@ struct SignInStore: Store {
     }
 }
 
-// MARK: - Behaviors
+// MARK: - Mutations
 
 extension SignInStore {
     

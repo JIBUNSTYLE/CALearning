@@ -33,7 +33,7 @@ struct ApplicationStore : Store {
     }
 }
 
-// MARK: - Behaviors
+// MARK: - Mutations
 
 extension ApplicationStore {
     

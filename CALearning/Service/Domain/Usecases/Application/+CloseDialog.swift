@@ -9,7 +9,7 @@ import Foundation
 import RobustiveSwift
 
 extension R.Application {
-    /// ユースケース【ダイアログを閉じる】を実現します。
+    /// ユースケース【ダイアログを閉じる】のシーン一覧
     struct CloseDialog : Scenes {
         typealias UsecaseActor = UserActor
         

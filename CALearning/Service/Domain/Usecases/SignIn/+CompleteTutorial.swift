@@ -9,7 +9,7 @@ import Foundation
 import RobustiveSwift
 
 extension R.SignIn {
-    /// ユースケース【チュートリアルを完了する】を実現します。
+    /// ユースケース【チュートリアルを完了する】のシーン一覧
     struct CompleteTutorial : Scenes {
         typealias UsecaseActor = UserActor
         

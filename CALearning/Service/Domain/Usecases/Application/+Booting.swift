@@ -9,7 +9,7 @@ import Foundation
 import RobustiveSwift
 
 extension R.Application {
-    /// ユースケース【アプリを起動する】を実現します。
+    /// ユースケース【アプリを起動する】のシーン一覧
     struct Booting : Scenes {
         typealias UsecaseActor = UserActor
         

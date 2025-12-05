@@ -51,6 +51,23 @@ enum UsecaseStatuses {
 }
 
 enum Requirements {
+    
+    enum Application {
+        case booting(from: Scene<Booting>)
+        case closeDialog(from: Scene<CloseDialog>)
+    }
+    
+    enum SignIn {
+        case completeTutorial(from: Scene<CompleteTutorial>)
+        case signingIn(from: Scene<SigningIn>)
+        case stopSigningIn(from: Scene<StopSigningIn>)
+        case trialUsing(from: Scene<TrialUsing>)
+    }
+    
+    enum Shopping {
+        case purchase(from: Scene<Purchase>)
+    }
+    
     case application(usecase: Application)
     case signIn(usecase: SignIn)
     case shopping(usecase: Shopping)

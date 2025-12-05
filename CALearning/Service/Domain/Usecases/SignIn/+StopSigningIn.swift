@@ -9,7 +9,7 @@ import Foundation
 import RobustiveSwift
 
 extension R.SignIn {
-    /// ユースケース【ログインをやめる】を実現します。
+    /// ユースケース【ログインをやめる】のシーン一覧
     struct StopSigningIn : Scenes {
         typealias UsecaseActor = UserActor
         

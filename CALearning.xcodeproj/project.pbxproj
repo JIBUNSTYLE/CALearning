@@ -59,9 +59,6 @@
 		70F57A7D281A32920036EE53 /* SigningIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7C281A32920036EE53 /* SigningIn.swift */; };
 		70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F57A7E281A5A4A0036EE53 /* Validation.swift */; };
 		70FFAA612EE08127004AA039 /* RobustiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 70FFAA602EE08127004AA039 /* RobustiveSwift */; };
-		70FFAA632EE08740004AA039 /* R+Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA622EE08721004AA039 /* R+Application.swift */; };
-		70FFAA672EE0883F004AA039 /* R+SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA652EE08836004AA039 /* R+SignIn.swift */; };
-		70FFAA6E2EE08889004AA039 /* R+Shopping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA6C2EE08885004AA039 /* R+Shopping.swift */; };
 		70FFAA722EE0E0CA004AA039 /* +Booting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA712EE0E0BB004AA039 /* +Booting.swift */; };
 		70FFAA742EE0E1A6004AA039 /* +CloseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA732EE0E197004AA039 /* +CloseDialog.swift */; };
 		70FFAA782EE0E21E004AA039 /* +CompleteTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FFAA772EE0E209004AA039 /* +CompleteTutorial.swift */; };
@@ -142,9 +139,6 @@
 		70F57A7A281A32140036EE53 /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		70F57A7C281A32920036EE53 /* SigningIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningIn.swift; sourceTree = "<group>"; };
 		70F57A7E281A5A4A0036EE53 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
-		70FFAA622EE08721004AA039 /* R+Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+Application.swift"; sourceTree = "<group>"; };
-		70FFAA652EE08836004AA039 /* R+SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+SignIn.swift"; sourceTree = "<group>"; };
-		70FFAA6C2EE08885004AA039 /* R+Shopping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "R+Shopping.swift"; sourceTree = "<group>"; };
 		70FFAA712EE0E0BB004AA039 /* +Booting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+Booting.swift"; sourceTree = "<group>"; };
 		70FFAA732EE0E197004AA039 /* +CloseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+CloseDialog.swift"; sourceTree = "<group>"; };
 		70FFAA772EE0E209004AA039 /* +CompleteTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+CompleteTutorial.swift"; sourceTree = "<group>"; };
@@ -426,9 +420,6 @@
 				70FFAA702EE0E0AF004AA039 /* Application */,
 				70FFAA762EE0E1EC004AA039 /* SignIn */,
 				70FFAA752EE0E1E2004AA039 /* Shopping */,
-				70FFAA622EE08721004AA039 /* R+Application.swift */,
-				70FFAA652EE08836004AA039 /* R+SignIn.swift */,
-				70FFAA6C2EE08885004AA039 /* R+Shopping.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -620,11 +611,9 @@
 				70A9460129DE557000AFC6B9 /* CloseDialog.swift in Sources */,
 				7077C9A227A0D8BD0035E404 /* Dependencies.swift in Sources */,
 				70FFAA7A2EE0E258004AA039 /* +SigningIn.swift in Sources */,
-				70FFAA6E2EE08889004AA039 /* R+Shopping.swift in Sources */,
 				70873E9A27E02F7D007EE181 /* Account.swift in Sources */,
 				70A945F529DD3A1F00AFC6B9 /* Purchase.swift in Sources */,
 				7077C9B227A8FDF20035E404 /* MockApiClient.swift in Sources */,
-				70FFAA672EE0883F004AA039 /* R+SignIn.swift in Sources */,
 				7077C9C027AB7B280035E404 /* ApiBackend.swift in Sources */,
 				708415C3283524BB00BAED01 /* UserActor.swift in Sources */,
 				707CA958279F833700EAFC66 /* ContentView.swift in Sources */,
@@ -644,7 +633,6 @@
 				707CA988279F8C3E00EAFC66 /* Tutorial.swift in Sources */,
 				70FFAA722EE0E0CA004AA039 /* +Booting.swift in Sources */,
 				70F57A7F281A5A4A0036EE53 /* Validation.swift in Sources */,
-				70FFAA632EE08740004AA039 /* R+Application.swift in Sources */,
 				70F57A7D281A32920036EE53 /* SigningIn.swift in Sources */,
 				708A760327F48E7D0047016B /* GoogleMapApiClient.swift in Sources */,
 				7077C9AD27A8F9BD0035E404 /* ServiceErrors.swift in Sources */,

@@ -32,7 +32,7 @@ struct ShoppingStore: Store {
     }
 }
 
-// MARK: - Behaviors
+// MARK: - Mutations
 
 extension ShoppingStore {
     
